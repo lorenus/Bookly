@@ -45,4 +45,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function libros(){
+        return $this->belongsToMany(Libro::class, 'libros_usuario')
+                ->withPivot('estado', 'comprado', 'valoracion')
+                ->withTimestamps();
+    }
+
+    public function prestamosComoPropietario(){
+        return $this->hasMany(Prestamo::class, 'propietario_id');
+    }
+
+    public function prestamosComoReceptor(){
+        return $this->hasMany(Prestamo::class, 'receptor_id');
+    }
+
+    public function notificacionesEnviadas(){
+        return $this->hasMany(Notificacion::class, 'emisor_id');
+    }
+
+    public function notificacionesRecibidas(){
+        return $this->hasMany(Notificacion::class, 'receptor_id');
+    }
 }

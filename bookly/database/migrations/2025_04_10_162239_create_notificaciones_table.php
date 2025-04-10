@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mensajes', function (Blueprint $table) {
+        Schema::create('notificaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('emisor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('receptor_id')->constrained('users')->onDelete('cascade');
             $table->enum('tipo',['amistad','recomendacion','prestamo']);
+            $table->text('contenido');
             $table->json('datos')->nullable();
             $table->enum('estado', ['pendiente','aceptada','rechazada','leida'])->default('pendiente');
             $table->timestamps();
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mensajes');
+        Schema::dropIfExists('notificaciones');
     }
 };
