@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ListaController extends Controller
 {
+    public function index()
+    {
+        return view('listas.index', [
+            'listas' => [
+                'leyendo' => 'Leyendo Actualmente',
+                'leido' => 'Mis Últimas Lecturas',
+                'favoritos' => 'Mis Favoritos'
+            ]
+        ]);
+    }
+    
     public function show($tipoLista)
     {
         $estados = [
