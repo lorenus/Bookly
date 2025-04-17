@@ -34,9 +34,13 @@ class LibroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Libro $libro)
+    public function show($id)
     {
-        //
+        $libro = Libro::with('usuarios')->findOrFail($id);
+        
+        return view('libros.show', [
+            'libro' => $libro
+        ]);
     }
 
     /**

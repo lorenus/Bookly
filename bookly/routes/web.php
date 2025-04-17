@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 
 // Libro
 Route::middleware('auth')->group(function () {
-    Route::get('/libro', [LibroController::class, 'index'])->name('libros.index');
+    Route::get('/libro/{id}', [LibroController::class, 'show'])->name('libro.show');
 });
 
 Route::middleware('auth')->group(function () {

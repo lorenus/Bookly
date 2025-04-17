@@ -9,10 +9,6 @@ class ListaController extends Controller
 {
     public function show($tipoLista)
     {
-        logger("-------------------");
-        logger("Solicitud recibida para lista: " . $tipoLista);
-        logger("Usuario autenticado: " . (Auth::check() ? Auth::id() : 'NO'));
-
         $estados = [
             'leyendo' => 'leyendo',
             'leido' => 'leido',       
