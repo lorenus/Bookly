@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListaController;
 use App\Http\Controllers\AmistadController;
 use App\Http\Controllers\MensajeController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,6 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/perfil', [ProfileController::class, 'show'])->name('perfil');
     Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/perfil/actualizar', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     // Listas
     Route::get('/listas', [ListaController::class, 'index'])->name('listas.index');

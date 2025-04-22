@@ -27,10 +27,11 @@
             <a href="{{ route('prestar') }}">Prestar libro</a>
             <a href="{{ route('mensajes') }}">Mensajes</a>
             <a href="{{ route('profile.edit') }}">Editar perfil</a>
-            <a href="{{ route('logros') }}"
-                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                📊 {{ __('Cerrar sesión') }}
-            </a>
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
     </div>
 </div>
