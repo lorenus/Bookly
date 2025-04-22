@@ -62,4 +62,16 @@ class PrestamoController extends Controller
     {
         //
     }
+
+    public function marcarDevuelto(Prestamo $prestamo)
+    {
+        // Verificar que el usuario es el propietario
+        if ($prestamo->propietario_id != auth()->guard()->user()->id) {
+            abort(403, 'No tienes permiso para realizar esta acción');
+        }
+
+        $prestamo->update(['devuelto' => true]);
+
+        return back()->with('success', 'Libro marcado como devuelto');
+    }
 }

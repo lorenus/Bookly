@@ -6,6 +6,7 @@ use App\Http\Controllers\ListaController;
 use App\Http\Controllers\AmistadController;
 use App\Http\Controllers\MensajeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\PrestamoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,8 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Listas
     Route::get('/listas', [ListaController::class, 'index'])->name('listas.index');
     Route::get('/listas/biblioteca', [ListaController::class, 'biblioteca'])->name('listas.biblioteca');
-    Route::get('/listas/{tipoLista}', [ListaController::class, 'show'])->name('listas.show');
     Route::get('/listas/prestados', [ListaController::class, 'prestados'])->name('listas.prestados');
+    Route::get('/listas/{tipoLista}', [ListaController::class, 'show'])->name('listas.show');
 
 
     // Social
@@ -38,6 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Libros
     Route::get('/libro/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/prestar', [LibroController::class, 'prestar'])->name('prestar');
+    Route::patch('/prestamos/{prestamo}/devolver', [PrestamoController::class, 'marcarDevuelto'])
+    ->name('prestamos.marcar-devuelto')
+    ->middleware('auth');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
     Route::post('/libros/{libro}/comprar', [ListaController::class, 'marcarComoComprado'])->name('libros.comprar');
 });

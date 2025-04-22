@@ -4,17 +4,22 @@
 <div class="container mx-auto px-4 py-8">
     <!-- Encabezado -->
     <div class="mb-8">
-        <h1 class="text-2xl font-bold text-gray-800">{{ $titulo ?? 'Mi Colección' }}</h1>
-        <p class="text-gray-600 mt-1">{{ $libros->count() }} libros</p>
+        <h1 class="text-2xl font-bold text-gray-800">{{ $titulo }}</h1>
+        <p class="text-gray-600 mt-1">{{ $libros->count() }} 
+            @if($libros->count()>1)
+                libros
+            @else
+                libro
+            @endif
+        </p>
     </div>
 
-    <!-- Grid de libros - 6 por fila -->
     @if($libros->count() > 0)
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             @foreach($libros as $libro)
-                <div class="book-card group">
-                    <!-- Contenedor de la portada - Tamaño fijo -->
-                    <div class="relative pb-[150%] mb-2 rounded-md overflow-hidden shadow-sm bg-gray-100 group-hover:shadow-md transition-shadow">
+                <div class="book-card group relative">
+                    <!-- Portada del libro -->
+                    <div class="relative pb-[150%] mb-2 rounded-md overflow-hidden shadow-sm bg-gray-100">
                         @if($libro->urlPortada)
                             <img src="{{ $libro->urlPortada }}" 
                                  alt="Portada de {{ $libro->titulo }}" 
@@ -26,20 +31,45 @@
                                 </svg>
                             </div>
                         @endif
+                        
+                        <!-- Badge de préstamo -->
+                        <span class="absolute top-2 right-2 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">
+                            Prestado
+                        </span>
                     </div>
                     
-                    <!-- Título - Una sola línea -->
+                    <!-- Información básica -->
                     <h3 class="text-sm font-medium text-gray-800 truncate">{{ $libro->titulo }}</h3>
-                    
-                    <!-- Autor - Opcional -->
                     <p class="text-xs text-gray-500 truncate">{{ $libro->autor }}</p>
+                    
+                    <!-- Información del préstamo -->
+                    @if($mostrarInfoPrestamo ?? false)
+                        @php
+                            $prestamo = $libro->prestamos->first();
+                        @endphp
+                        <div class="mt-1 text-xs text-gray-600">
+                            <p>Prestado a: <span class="font-medium">{{ $prestamo->receptor->name }}</span></p>
+                            <p>Hasta: {{ $prestamo->fecha_limite->format('d/m/Y') }}</p>
+                            @if($prestamo->estaRetrasado())
+                                <p class="text-red-500 font-medium">¡Retrasado!</p>
+                            @endif
+                            
+                            <!-- Botón para marcar como devuelto -->
+                            <form action="{{ route('prestamos.marcar-devuelto', $prestamo->id) }}" method="POST" class="mt-2">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
+                                    Marcar devuelto
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             @endforeach
         </div>
     @else
-        <!-- Mensaje vacío -->
         <div class="text-center py-12 bg-gray-50 rounded-lg">
-            <p class="text-gray-500">No hay libros en esta lista</p>
+            <p class="text-gray-500">No has prestado ningún libro actualmente</p>
         </div>
     @endif
 </div>

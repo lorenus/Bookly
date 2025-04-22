@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class ListaController extends Controller {
-    public function index() {
+class ListaController extends Controller
+{
+    public function index()
+    {
         return view('listas.index', [
             'listas' => [
                 'leyendo' => 'Leyendo Actualmente',
@@ -16,7 +18,8 @@ class ListaController extends Controller {
         ]);
     }
 
-    public function show($tipoLista) {
+    public function show($tipoLista)
+    {
         $user = User::with('libros')->find(Auth::id());
         $estados = [
             'leyendo' => 'leyendo',
@@ -51,7 +54,8 @@ class ListaController extends Controller {
         ]);
     }
 
-    public function biblioteca() {
+    public function biblioteca()
+    {
         $user = User::with('libros')->find(Auth::id());
 
         $libros = $user->libros()
@@ -62,6 +66,29 @@ class ListaController extends Controller {
         return view('listas.show', [
             'libros' => $libros,
             'titulo' => 'Mi Biblioteca'
+        ]);
+    }
+
+    public function prestados()
+    {
+        $user = User::with('libros')->find(Auth::id());
+
+        $librosPrestados = $user->libros()
+            ->whereHas('prestamos', function ($query) use ($user) {
+                $query->where('propietario_id', $user->id)
+                    ->where('devuelto', false);
+            })
+            ->with(['prestamos' => function ($query) use ($user) {
+                $query->where('propietario_id', $user->id)
+                    ->where('devuelto', false)
+                    ->with('receptor'); 
+            }])
+            ->get();
+
+        return view('listas.show', [
+            'libros' => $librosPrestados,
+            'titulo' => 'Libros Prestados',
+            'mostrarInfoPrestamo' => true 
         ]);
     }
 }
