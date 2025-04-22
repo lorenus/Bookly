@@ -34,7 +34,7 @@
 
         </div>
 
-        <div class="flex items-center mt-4"  href="{{ route('dashboard') }}">
+        <div class="flex items-center mt-4"  href="{{ route('perfil') }}">
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
