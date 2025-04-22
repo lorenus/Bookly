@@ -39,8 +39,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/prestar', [LibroController::class, 'prestar'])->name('prestar');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
 
-    // Logros
-    Route::get('/logros', [ListaController::class, 'index'])->name('logros.index');
 });
 
 require __DIR__ . '/auth.php';
