@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Libro;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class ListaController extends Controller
-{
-    public function index()
-    {
+class ListaController extends Controller {
+    public function index() {
         return view('listas.index', [
             'listas' => [
                 'leyendo' => 'Leyendo Actualmente',
@@ -17,12 +15,12 @@ class ListaController extends Controller
             ]
         ]);
     }
-    
-    public function show($tipoLista)
-    {
+
+    public function show($tipoLista) {
+        $user = User::with('libros')->find(Auth::id());
         $estados = [
             'leyendo' => 'leyendo',
-            'leido' => 'leido',       
+            'leido' => 'leido',
             'favoritos' => 'favoritos',
             'porLeer' => 'porLeer',
         ];
@@ -31,17 +29,14 @@ class ListaController extends Controller
             abort(404);
         }
 
-        $query = Libro::whereHas('usuarios', function($query) use ($tipoLista, $estados) {
-            $query->where('user_id', Auth::id());
-            
-            if ($tipoLista === 'favoritos') {
-                $query->where('valoracion', 5);
-            } else {
-                $query->where('estado', $estados[$tipoLista]);
-            }
-        });
-
-        $libros = $query->get();
+        $libros = $user->libros()
+            ->when($tipoLista === 'favoritos', function ($query) {
+                return $query->where('libros_usuario.valoracion', 5);
+            }, function ($query) use ($tipoLista, $estados) {
+                return $query->where('libros_usuario.estado', $estados[$tipoLista]);
+            })
+            ->withPivot(['estado', 'valoracion', 'comprado'])
+            ->get();
 
         $titulos = [
             'leyendo' => 'Leyendo actualmente',
@@ -53,6 +48,20 @@ class ListaController extends Controller
         return view('listas.show', [
             'libros' => $libros,
             'titulo' => $titulos[$tipoLista],
+        ]);
+    }
+
+    public function biblioteca() {
+        $user = User::with('libros')->find(Auth::id());
+
+        $libros = $user->libros()
+            ->where('libros_usuario.comprado', true)
+            ->withPivot(['estado', 'valoracion', 'comprado'])
+            ->get();
+
+        return view('listas.show', [
+            'libros' => $libros,
+            'titulo' => 'Mi Biblioteca'
         ]);
     }
 }

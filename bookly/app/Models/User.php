@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Amistad;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -51,25 +52,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function libros(){
-        return $this->belongsToMany(Libro::class, 'libros_usuario')
-                ->withPivot('estado', 'comprado', 'valoracion')
-                ->withTimestamps();
-    }
 
-    public function prestamosComoPropietario(){
+    public function prestamosComoPropietario()
+    {
         return $this->hasMany(Prestamo::class, 'propietario_id');
     }
 
-    public function prestamosComoReceptor(){
+    public function prestamosComoReceptor()
+    {
         return $this->hasMany(Prestamo::class, 'receptor_id');
     }
 
-    public function notificacionesEnviadas(){
+    public function notificacionesEnviadas()
+    {
         return $this->hasMany(Notificacion::class, 'emisor_id');
     }
 
-    public function notificacionesRecibidas(){
+    public function notificacionesRecibidas()
+    {
         return $this->hasMany(Notificacion::class, 'receptor_id');
     }
 
@@ -86,6 +86,24 @@ class User extends Authenticatable
     public function amigos()
     {
         return $this->belongsToMany(User::class, 'amistades', 'user_id', 'amigo_id')
-                   ->wherePivot('estado', 'aceptada');
+            ->wherePivot('estado', 'aceptada');
+    }
+
+    public function libros()
+    {
+        // Verificación explícita de la relación
+        if (!method_exists($this, 'belongsToMany')) {
+            throw new \RuntimeException('El método belongsToMany no está disponible');
+        }
+
+        $relation = $this->belongsToMany(Libro::class, 'libros_usuario')
+            ->withPivot(['estado', 'comprado', 'valoracion'])
+            ->withTimestamps();
+
+        if (!$relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsToMany) {
+            throw new \RuntimeException('La relación no se creó correctamente');
+        }
+
+        return $relation;
     }
 }

@@ -42,6 +42,8 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
+             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan optimize:clear",
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [

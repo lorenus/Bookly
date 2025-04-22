@@ -23,9 +23,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Listas
     Route::get('/listas', [ListaController::class, 'index'])->name('listas.index');
-    Route::get('/listas/{tipoLista}', [ListaController::class, 'show'])->name('listas.show');
     Route::get('/listas/biblioteca', [ListaController::class, 'biblioteca'])->name('listas.biblioteca');
+    Route::get('/listas/{tipoLista}', [ListaController::class, 'show'])->name('listas.show');
     Route::get('/listas/prestados', [ListaController::class, 'prestados'])->name('listas.prestados');
+
 
     // Social
     Route::get('/amigos', [AmistadController::class, 'index'])->name('amigos');
@@ -38,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/libro/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/prestar', [LibroController::class, 'prestar'])->name('prestar');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
-
+    Route::post('/libros/{libro}/comprar', [ListaController::class, 'marcarComoComprado'])->name('libros.comprar');
 });
 
 require __DIR__ . '/auth.php';
