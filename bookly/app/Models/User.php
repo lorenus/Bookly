@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Amistad;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,5 +71,21 @@ class User extends Authenticatable
 
     public function notificacionesRecibidas(){
         return $this->hasMany(Notificacion::class, 'receptor_id');
+    }
+
+    public function amistadesComoUsuario()
+    {
+        return $this->hasMany(Amistad::class, 'user_id');
+    }
+
+    public function amistadesComoAmigo()
+    {
+        return $this->hasMany(Amistad::class, 'amigo_id');
+    }
+
+    public function amigos()
+    {
+        return $this->belongsToMany(User::class, 'amistades', 'user_id', 'amigo_id')
+                   ->wherePivot('estado', 'aceptada');
     }
 }

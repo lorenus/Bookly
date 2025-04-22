@@ -13,12 +13,13 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
- 
+
     // Perfil
     Route::get('/perfil', [ProfileController::class, 'show'])->name('perfil');
     Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/perfil/actualizar', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+    Route::delete('/perfil/eliminar', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Listas
     Route::get('/listas', [ListaController::class, 'index'])->name('listas.index');
@@ -28,6 +29,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Social
     Route::get('/amigos', [AmistadController::class, 'index'])->name('amigos');
+    Route::post('/amigos', [AmistadController::class, 'store'])->name('amigos.store');
+    Route::put('/amigos/{notificacion}', [AmistadController::class, 'update'])->name('amigos.update');
+    Route::delete('/amigos/{user}', [AmistadController::class, 'destroy'])->name('amigos.destroy');
     Route::get('/mensajes', [MensajeController::class, 'index'])->name('mensajes');
 
     // Libros
@@ -35,6 +39,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/prestar', [LibroController::class, 'prestar'])->name('prestar');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
 
+    // Logros
+    Route::get('/logros', [ListaController::class, 'index'])->name('logros.index');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

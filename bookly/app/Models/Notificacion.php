@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User;
 
-class Notificacion extends Model
-{
+class Notificacion extends Model {
+    
+    protected $table = 'notificaciones';
+
     protected $fillable = [
         'emisor_id',
         'receptor_id',
