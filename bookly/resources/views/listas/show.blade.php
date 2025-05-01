@@ -55,7 +55,7 @@
                             @endif
                             
                             <!-- Botón para marcar como devuelto -->
-                            <form action="{{ route('prestamos.marcar-devuelto', $prestamo->id) }}" method="POST" class="mt-2">
+                            <form action="{{ route('prestamos.devolver', $prestamo->id) }}" method="POST" class="mt-2">
                                 @csrf
                                 @method('PATCH')
                                 <button type="submit" class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">

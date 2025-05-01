@@ -37,13 +37,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mensajes', [MensajeController::class, 'index'])->name('mensajes');
 
     // Libros
-    Route::get('/libro/{id}', [LibroController::class, 'show'])->name('libro.show');
-    Route::get('/prestar', [LibroController::class, 'prestar'])->name('prestar');
-    Route::patch('/prestamos/{prestamo}/devolver', [PrestamoController::class, 'marcarDevuelto'])
-    ->name('prestamos.marcar-devuelto')
-    ->middleware('auth');
+    Route::get('/libros/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
     Route::post('/libros/{libro}/comprar', [ListaController::class, 'marcarComoComprado'])->name('libros.comprar');
+
+    // Préstamos
+    Route::get('/prestamos', [PrestamoController::class, 'create'])->name('prestamos.crear');
+    Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.guardar');
+    Route::patch('/prestamos/{prestamo}/devolver', [PrestamoController::class, 'marcarDevuelto'])->name('prestamos.devolver')->middleware('auth');
 });
 
 require __DIR__ . '/auth.php';
