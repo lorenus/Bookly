@@ -105,7 +105,12 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                        
+                       <button >
+                            <a href="{{ route('prestamos.crear', ['libro_id' => $book['id']]) }}" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
+                                Prestar libro
+                            </a>
+                       </button>
                 </div>
             </div>
         </div>

@@ -13,18 +13,18 @@ class BookSearchController extends Controller
     {
         try {
             $query = $request->input('query');
-            
+
             if (empty($query)) {
                 return response()->json([]);
             }
 
-            // 1. Primero busca en la base de datos local
-            $localResults = Libro::where(function($q) use ($query) {
-                    $q->where('titulo', 'LIKE', "%{$query}%")
-                      ->orWhere('autor', 'LIKE', "%{$query}%")
-                      ->orWhere('isbn', $query);
-                })
-                ->limit(5)
+            // 1. Buscar en la base de datos local
+            $localResults = Libro::where(function ($q) use ($query) {
+                $q->where('titulo', 'LIKE', "%{$query}%")
+                    ->orWhere('autor', 'LIKE', "%{$query}%")
+                    ->orWhere('isbn', $query);
+            })
+                ->limit(5) // Limitar a 5 para no traer más de lo necesario
                 ->get()
                 ->map(function ($libro) {
                     return [
@@ -37,31 +37,50 @@ class BookSearchController extends Controller
                             ]
                         ]
                     ];
-                });
+                })
+                ->toArray();
 
-            // Si hay resultados locales, devolverlos
-            if ($localResults->isNotEmpty()) {
-                Log::info("Resultados locales encontrados para: $query");
-                return response()->json($localResults);
+            $results = $localResults;
+            $remainingSlots = 5 - count($results);
+
+            Log::info("Resultados locales para: $query", ['count' => count($results)]);
+
+            // 2. Si necesitamos más resultados, buscar en Google Books API
+            if ($remainingSlots > 0) {
+                $response = Http::withoutVerifying()
+                    ->timeout(15)
+                    ->get('https://www.googleapis.com/books/v1/volumes', [
+                        'q' => $query, // Búsqueda más amplia
+                        'maxResults' => $remainingSlots,
+                        'key' => env('GOOGLE_BOOKS_API_KEY')
+                    ]);
+
+                if ($response->successful()) {
+                    $apiItems = $response->json()['items'] ?? [];
+                    
+                    // Procesar resultados de API para formato consistente
+                    $apiResults = array_map(function ($item) {
+                        return [
+                            'id' => $item['id'] ?? null,
+                            'volumeInfo' => [
+                                'title' => $item['volumeInfo']['title'] ?? 'Sin título',
+                                'authors' => $item['volumeInfo']['authors'] ?? [],
+                                'imageLinks' => [
+                                    'thumbnail' => $item['volumeInfo']['imageLinks']['thumbnail'] ?? null
+                                ]
+                            ]
+                        ];
+                    }, array_slice($apiItems, 0, $remainingSlots));
+
+                    $results = array_merge($results, $apiResults);
+                    Log::info("Resultados API para: $query", ['count' => count($apiResults)]);
+                } else {
+                    Log::error("Error en API Google Books", ['status' => $response->status()]);
+                }
             }
 
-            // 2. Si no hay resultados locales, buscar en Google Books API
-            $response = Http::withoutVerifying()
-                ->timeout(15)
-                ->get('https://www.googleapis.com/books/v1/volumes', [
-                    'q' => "intitle:{$query} OR inauthor:{$query} OR isbn:{$query}",
-                    'maxResults' => 5,
-                    'key' => env('GOOGLE_BOOKS_API_KEY')
-                ]);
-
-            if ($response->successful()) {
-                $items = $response->json()['items'] ?? [];
-                Log::info("Resultados API para: $query", ['count' => count($items)]);
-                return response()->json($items);
-            }
-
-            Log::error("Error en API Google Books", ['status' => $response->status()]);
-            return response()->json([]);
+            Log::info("Resultados totales para: $query", ['count' => count($results)]);
+            return response()->json(array_slice($results, 0, 5)); // Asegurar máximo 5 resultados
 
         } catch (\Exception $e) {
             Log::error("Error en búsqueda", ['error' => $e->getMessage()]);
