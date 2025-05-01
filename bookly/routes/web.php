@@ -2,10 +2,7 @@
 
 use App\Http\Controllers\AmistadController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-<<<<<<< HEAD
 use App\Http\Controllers\BookSearchController;
-=======
->>>>>>> 49c6cc64e6a8896053b549d0720699152e0ab4a9
 use App\Http\Controllers\LibroController;
 use App\Http\Controllers\ListaController;
 use App\Http\Controllers\MensajeController;
