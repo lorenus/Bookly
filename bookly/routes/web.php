@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\LibroController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ListaController;
 use App\Http\Controllers\AmistadController;
-use App\Http\Controllers\MensajeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\BookSearchController;
+use App\Http\Controllers\LibroController;
+use App\Http\Controllers\ListaController;
+use App\Http\Controllers\MensajeController;
 use App\Http\Controllers\PrestamoController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,7 +42,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/libros/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
     Route::post('/libros/{libro}/comprar', [ListaController::class, 'marcarComoComprado'])->name('libros.comprar');
-
+    Route::get('/buscar-libros', [BookSearchController::class, 'search'])->name('books.search');
+    
     // Préstamos
     Route::get('/prestamos', [PrestamoController::class, 'create'])->name('prestamos.crear');
     Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.guardar');

@@ -3,126 +3,90 @@
 @section('content')
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Barra de búsqueda NUEVA -->
-        <div class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Buscar libros en Google Books</h2>
-            <div class="relative">
-                <input
-                    type="text"
-                    id="book-search"
-                    placeholder="Escribe el título de un libro..."
-                    class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <div id="search-results" class="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 shadow-lg rounded-md hidden max-h-96 overflow-y-auto border border-gray-200 dark:border-gray-700"></div>
-            </div>
-        </div>
-
-        <!-- Tu contenido ORIGINAL (sin cambios) -->
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 dark:text-gray-100">
-                <ul class="space-y-2">
-                    <li>
-                        <a href="{{ route('logros') }}" class="text-blue-500 hover:underline">
-                            {{ __('Logros') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('listas.show', 'leyendo') }}" class="text-blue-500 hover:underline">
-                            {{ __('Leyendo Actualmente') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('listas.show', 'leido') }}" class="text-blue-500 hover:underline">
-                            {{ __('Mis Últimas Lecturas') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('listas.show', 'favoritos') }}" class="text-blue-500 hover:underline">
-                            {{ __('Mis favoritos') }}
-                        </a>
-                    </li>
-                </ul>
+                <!-- Botón de volver -->
+                <a href="{{ url()->previous() }}" class="inline-block mb-6 text-blue-500 hover:underline">
+                    &larr; Volver
+                </a>
+
+                <!-- Contenido del libro -->
+                <div class="flex flex-col md:flex-row gap-8">
+                    <!-- Portada -->
+                    <div class="md:w-1/5">
+                        @if(isset($book['volumeInfo']['imageLinks']['thumbnail']))
+                            <img src="{{ str_replace('http://', 'https://', $book['volumeInfo']['imageLinks']['thumbnail']) }}" 
+                                 alt="Portada de {{ $book['volumeInfo']['title'] }}" 
+                                 class="w-32 h-48 object-cover rounded mx-auto" >
+                        @else
+                            <div class="bg-gray-200 dark:bg-gray-700 h-64 flex items-center justify-center rounded-lg">
+                                <span class="text-gray-500 dark:text-gray-400">Sin portada</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Detalles -->
+                    <div class="md:w-2/3">
+                        <h1 class="text-3xl font-bold mb-2">{{ $book['volumeInfo']['title'] ?? 'Título desconocido' }}</h1>
+                        
+                        @if(isset($book['volumeInfo']['authors']))
+                            <p class="text-xl text-gray-600 dark:text-gray-300 mb-4">
+                                Por {{ implode(', ', $book['volumeInfo']['authors']) }}
+                            </p>
+                        @endif
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            @if(isset($book['volumeInfo']['publishedDate']))
+                                <div>
+                                    <span class="font-semibold">Año:</span>
+                                    {{ \Carbon\Carbon::parse($book['volumeInfo']['publishedDate'])->year }}
+                                </div>
+                            @endif
+                            
+                            @if(isset($book['volumeInfo']['pageCount']))
+                                <div>
+                                    <span class="font-semibold">Páginas:</span>
+                                    {{ $book['volumeInfo']['pageCount'] }}
+                                </div>
+                            @endif
+                            
+                            @if(isset($book['volumeInfo']['publisher']))
+                                <div>
+                                    <span class="font-semibold">Editorial:</span>
+                                    {{ $book['volumeInfo']['publisher'] }}
+                                </div>
+                            @endif
+                            
+                            @if(isset($book['volumeInfo']['language']))
+                                <div>
+                                    <span class="font-semibold">Idioma:</span>
+                                    {{ strtoupper($book['volumeInfo']['language']) }}
+                                </div>
+                            @endif
+                        </div>
+
+                        @if(isset($book['volumeInfo']['description']))
+                            <div class="prose dark:prose-invert max-w-none">
+                                <h3 class="font-semibold text-lg">Sinopsis</h3>
+                                <p>{{ $book['volumeInfo']['description'] }}</p>
+                            </div>
+                        @endif
+
+                        <!-- Botones de acción -->
+                        <div class="mt-8 flex gap-4">
+                            <a href="#" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                                Añadir a mi lista
+                            </a>
+                            @if(isset($book['volumeInfo']['previewLink']))
+                                <a href="{{ $book['volumeInfo']['previewLink'] }}" target="_blank" class="px-4 py-2 border border-blue-500 text-blue-500 rounded hover:bg-blue-50 transition">
+                                    Vista previa
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-@push('styles')
-<style>
-    #search-results a:hover {
-        background-color: #f3f4f6;
-        /* hover claro */
-    }
-
-    .dark #search-results a:hover {
-        background-color: #374151;
-        /* hover oscuro */
-    }
-</style>
-@endpush
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-                const searchInput = document.getElementById('book-search');
-                const resultsContainer = document.getElementById('search-results');
-                let debounceTimer;
-
-                searchInput.addEventListener('input', function(e) {
-                    clearTimeout(debounceTimer);
-                    const query = e.target.value.trim();
-
-                    if (query.length < 3) {
-                        resultsContainer.classList.add('hidden');
-                        return;
-                    }
-
-                    debounceTimer = setTimeout(() => {
-                        fetch(`/api/search-books?q=${encodeURIComponent(query)}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.items && data.items.length > 0) {
-                                    resultsContainer.innerHTML = '';
-                                    data.items.forEach(book => {
-                                        const bookElement = document.createElement('a');
-                                        bookElement.href = `/libros/google/${book.id}`;
-                                        bookElement.className = 'block p-3 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-600';
-
-                                        bookElement.innerHTML = `
-                                        <div class="flex items-center">
-                                            <img src="${book.volumeInfo.imageLinks?.thumbnail || '/images/default-book.png'}" 
-                                                alt="${book.volumeInfo.title}" 
-                                                class="w-10 h-12 object-cover mr-3 rounded">
-                                            <div>
-                                                <h3 class="font-medium text-gray-900 dark:text-white truncate">${book.volumeInfo.title}</h3>
-                                                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
-                                                    ${book.volumeInfo.authors?.join(', ') || 'Autor desconocido'}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    `;
-                                        resultsContainer.appendChild(bookElement);
-                                    });
-                                    resultsContainer.classList.remove('hidden');
-                                } else {
-                                    resultsContainer.innerHTML = '<p class="p-3 text-gray-500 dark:text-gray-400">No se encontraron resultados</p>';
-                                    resultsContainer.classList.remove('hidden');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                resultsContainer.innerHTML = '<p class="p-3 text-red-500">Error al buscar libros</p>';
-                                resultsContainer.classList.remove('hidden');
-                            });
-                    }, 300);
-                });
-
-                // Ocultar resultados al hacer clic fuera
-                document.addEventListener('click', function(e) {
-                        if (!searchInput.contains(e.target)) {
-                                resultsContainer.classList.add('hidden');
-                            }
-                        });
-                });
-</script>
-@endpush
 @endsection

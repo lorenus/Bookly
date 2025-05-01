@@ -6,6 +6,7 @@ use App\Models\Libro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 
 class LibroController extends Controller
@@ -39,10 +40,11 @@ class LibroController extends Controller
      */
     public function show($id)
     {
-        $libro = Libro::with('usuarios')->findOrFail($id);
-
+        $response = Http::withoutVerifying()
+            ->get("https://www.googleapis.com/books/v1/volumes/{$id}");
+    
         return view('libros.show', [
-            'libro' => $libro
+            'book' => $response->json()
         ]);
     }
 
