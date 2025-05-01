@@ -42,7 +42,7 @@ class LibroController extends Controller
     {
         $response = Http::withoutVerifying()
             ->get("https://www.googleapis.com/books/v1/volumes/{$id}");
-    
+
         return view('libros.show', [
             'book' => $response->json()
         ]);
@@ -102,5 +102,80 @@ class LibroController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
+    }
+
+    public function addToList(Request $request)
+    {
+        $request->validate([
+            'libro_id' => 'required|string',
+            'titulo' => 'required|string',
+            'autor' => 'nullable|string',
+            'portada' => 'nullable|url',
+            'estado' => 'required|in:leyendo,leido,porLeer,favoritos'
+        ]);
+
+        $userId = Auth::id();
+
+        // Obtener detalles completos del libro de la API si es necesario
+        $bookDetails = Http::withoutVerifying()
+            ->get("https://www.googleapis.com/books/v1/volumes/{$request->libro_id}")
+            ->json();
+
+        // Buscar o crear el libro con todos los campos requeridos
+        $libro = Libro::firstOrCreate(
+            ['google_id' => $request->libro_id],
+            [
+                'titulo' => $request->titulo,
+                'autor' => $request->autor,
+                'sinopsis' => $bookDetails['volumeInfo']['description'] ?? 'Sin sinopsis disponible',
+                'urlPortada' => $request->portada,
+                'isbn' => $this->extractIsbn($bookDetails),
+                'numPaginas' => $bookDetails['volumeInfo']['pageCount'] ?? null
+            ]
+        );
+
+        // Añadir a la lista del usuario
+        DB::table('libros_usuario')->updateOrInsert(
+            [
+                'user_id' => $userId,
+                'libro_id' => $libro->id
+            ],
+            [
+                'estado' => $request->estado,
+                'valoracion' => $request->estado === 'favoritos' ? 5 : null,
+                'comprado' => false,
+                'updated_at' => now()
+            ]
+        );
+
+        return back()->with('success', 'Libro añadido a tu lista');
+    }
+
+    // Función auxiliar para extraer ISBN si está en el ID
+    private function extractIsbn(array $bookData)
+    {
+        // Verifica si existen los identificadores industriales
+        if (!isset($bookData['volumeInfo']['industryIdentifiers'])) {
+            return null;
+        }
+
+        // Busca ISBN en los identificadores
+        foreach ($bookData['volumeInfo']['industryIdentifiers'] as $identifier) {
+            if (
+                isset($identifier['type'], $identifier['identifier']) &&
+                in_array($identifier['type'], ['ISBN_13', 'ISBN_10'])
+            ) {
+                return $identifier['identifier'];
+            }
+        }
+
+        // Intenta extraer ISBN del ID de Google Books como respaldo
+        if (isset($bookData['id']) && is_string($bookData['id'])) {
+            if (preg_match('/[0-9]{9,13}/', $bookData['id'], $matches)) {
+                return $matches[0];
+            }
+        }
+
+        return null;
     }
 }

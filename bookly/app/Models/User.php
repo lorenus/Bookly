@@ -91,19 +91,9 @@ class User extends Authenticatable
 
     public function libros()
     {
-        // Verificación explícita de la relación
-        if (!method_exists($this, 'belongsToMany')) {
-            throw new \RuntimeException('El método belongsToMany no está disponible');
-        }
-
-        $relation = $this->belongsToMany(Libro::class, 'libros_usuario')
-            ->withPivot(['estado', 'comprado', 'valoracion'])
-            ->withTimestamps();
-
-        if (!$relation instanceof \Illuminate\Database\Eloquent\Relations\BelongsToMany) {
-            throw new \RuntimeException('La relación no se creó correctamente');
-        }
-
-        return $relation;
+        return $this->belongsToMany(Libro::class, 'libros_usuario')
+        ->withPivot(['estado', 'comprado', 'valoracion'])
+        ->withTimestamps();
+        
     }
 }
