@@ -11,26 +11,30 @@ use Illuminate\Support\Facades\Auth;
 class AmistadController extends Controller
 {
     public function index()
-    {
-        // Obtener amigos aceptados
-        $amigosAceptados = Amistad::where(function ($query) {
-            $query->where('user_id', Auth::id())
-                ->orWhere('amigo_id', Auth::id());
+{
+    $user = Auth::user();
+    
+    // Obtener IDs de amigos sin duplicados
+    $amigosIds = Amistad::where('estado', 'aceptada')
+        ->where(function($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->orWhere('amigo_id', $user->id);
         })
-            ->where('estado', 'aceptada')
-            ->with(['usuario', 'amigo'])
-            ->get()
-            ->map(function ($amistad) {
-                return $amistad->user_id == Auth::id()
-                    ? $amistad->amigo
-                    : $amistad->usuario;
-            });
+        ->get()
+        ->map(function($amistad) use ($user) {
+            return $amistad->user_id == $user->id 
+                ? $amistad->amigo_id 
+                : $amistad->user_id;
+        })
+        ->unique();
 
-        return view('amigos.index', [
-            'amigos' => $amigosAceptados,
-            'usuarios' => User::where('id', '!=', Auth::id())->get()
-        ]);
-    }
+    $amigos = User::whereIn('id', $amigosIds)->get();
+
+    return view('amigos.index', [
+        'amigos' => $amigos,
+        'usuarios' => User::where('id', '!=', $user->id)->get()
+    ]);
+}
 
     public function store(Request $request)
     {
@@ -81,4 +85,33 @@ class AmistadController extends Controller
 
         return back()->with('success', 'Amistad eliminada correctamente');
     }
+
+    public function detalleAmigo(User $amigo)
+{
+    $user = Auth::user();
+    
+    $esAmigo = Amistad::where('estado', 'aceptada')
+        ->where(function($query) use ($user, $amigo) {
+            $query->where('user_id', $user->id)
+                ->where('amigo_id', $amigo->id);
+        })
+        ->orWhere(function($query) use ($user, $amigo) {
+            $query->where('user_id', $amigo->id)
+                ->where('amigo_id', $user->id);
+        })
+        ->exists();
+
+    if (!$esAmigo) {
+        abort(403, 'No tienes permiso para ver este perfil');
+    }
+
+    return response()->json([
+        'id' => $amigo->id,
+        'name' => $amigo->name,
+        'apellidos' => $amigo->apellidos,
+        'email' => $amigo->email,
+        'imgPerfil' => $amigo->imgPerfil,
+        'retoAnual' => $amigo->retoAnual
+    ]);
+}
 }

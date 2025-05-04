@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900 dark:text-gray-100">
+    <div>
+        <div>
+            <div>
                 <!-- Botón de volver -->
                 <a href="{{ url()->previous() }}" class="inline-block mb-6 text-blue-500 hover:underline">
                     &larr; Volver
@@ -19,8 +19,8 @@
                             alt="Portada de {{ $book['volumeInfo']['title'] }}"
                             class="w-32 h-48 object-cover rounded mx-auto">
                         @else
-                        <div class="bg-gray-200 dark:bg-gray-700 h-64 flex items-center justify-center rounded-lg">
-                            <span class="text-gray-500 dark:text-gray-400">Sin portada</span>
+                        <div>
+                            <span>Sin portada</span>
                         </div>
                         @endif
                     </div>
@@ -81,14 +81,14 @@
                                 <label for="comprado" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Marcar como comprado
                                 </label>
-                                <button type="submit" class="ml-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
+                                <button type="submit">
                                     Guardar
                                 </button>
                             </form>
 
                             <!-- Dropdown para añadir a lista -->
                             <div x-data="{ open: false }" class="relative inline-block">
-                                <button @click="open = !open" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                                <button @click="open = !open">
                                     Añadir a mi lista
                                 </button>
 
