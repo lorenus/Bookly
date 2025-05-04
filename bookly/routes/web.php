@@ -11,7 +11,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () { return view('welcome');})->name('welcome');
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -42,6 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/libros/{libro}/comprar', [ListaController::class, 'marcarComoComprado'])->name('libros.comprar');
     Route::get('/buscar-libros', [BookSearchController::class, 'search'])->name('books.search');
     Route::post('/libros/add-to-list', [LibroController::class, 'addToList'])->name('libros.add-to-list')->middleware('auth');
+
+    // Mensajes
+    Route::get('/mensajes', [MensajeController::class, 'index'])->name('mensajes.index');
+    Route::post('/mensajes/{notificacion}/aceptar', [MensajeController::class, 'aceptarNotificacion'])->name('mensajes.aceptar');
+    Route::post('/mensajes/{notificacion}/rechazar', [MensajeController::class, 'rechazarNotificacion'])->name('mensajes.rechazar');
     
     // Préstamos
     Route::get('/prestamos', [PrestamoController::class, 'create'])->name('prestamos.crear');

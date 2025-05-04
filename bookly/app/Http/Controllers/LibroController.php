@@ -128,7 +128,7 @@ class LibroController extends Controller
                 'titulo' => $request->titulo,
                 'autor' => $request->autor,
                 'sinopsis' => $bookDetails['volumeInfo']['description'] ?? 'Sin sinopsis disponible',
-                'urlPortada' => $request->portada,
+                'urlPortada' => $request->portada ?? asset('images/default-cover.jpg'),
                 'isbn' => $this->extractIsbn($bookDetails),
                 'numPaginas' => $bookDetails['volumeInfo']['pageCount'] ?? null
             ]

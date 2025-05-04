@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('autor');
             $table->integer('numPaginas');
             $table->string('sinopsis');
-            $table->string('urlPortada')->nullable;
+            $table->string('urlPortada')->nullable();
             $table->timestamps();
         });
     }

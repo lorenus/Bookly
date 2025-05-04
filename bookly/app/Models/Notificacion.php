@@ -4,11 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Foundation\Auth\User;
+use App\Models\Libro; // Asegúrate de importar el modelo Libro
 
 class Notificacion extends Model {
     
     protected $table = 'notificaciones';
+
+    // Tipos de notificación como constantes
+    public const TIPO_AMISTAD = 'amistad';
+    public const TIPO_PRESTAMO = 'prestamo';
+    public const TIPO_RECOMENDACION = 'recomendacion';
+
+    // Estados como constantes
+    public const ESTADO_PENDIENTE = 'pendiente';
+    public const ESTADO_ACEPTADA = 'aceptada';
+    public const ESTADO_RECHAZADA = 'rechazada';
+    public const ESTADO_LEIDA = 'leida';
 
     protected $fillable = [
         'emisor_id',
@@ -19,66 +30,64 @@ class Notificacion extends Model {
         'estado',
     ];
 
-    protected $casts = ['datos' => 'array'];
+    protected $casts = [
+        'datos' => 'array', // Para almacenar JSON (ej: ID del libro, fecha límite)
+    ];
 
-    public function remitente(): BelongsTo{
+    // Relaciones
+    public function remitente(): BelongsTo {
         return $this->belongsTo(User::class, 'emisor_id');
     }
 
-    public function destinatario(): BelongsTo{
+    public function destinatario(): BelongsTo {
         return $this->belongsTo(User::class, 'receptor_id');
     }
 
-    public function marcarComoLeida(){
-        $this->update(['estado' => 'leida']);
+    // Métodos para cambiar estado
+    public function marcarComoAceptada() {
+        $this->update(['estado' => self::ESTADO_ACEPTADA]);
     }
 
-    public function aceptar(){
-        $this->update(['estado' => 'aceptada']);
+    public function marcarComoRechazada() {
+        $this->update(['estado' => self::ESTADO_RECHAZADA]);
     }
 
-    public function rechazar(){
-        $this->update(['estado' => 'rechazada']);
-    }
-
-    public static function crearNotificacionRecomendacion($emisorId, $receptorId, $libroId, $libroTitulo){
+    // Factory methods (para crear notificaciones)
+    public static function crearSolicitudAmistad(int $emisorId, int $receptorId): self {
         return self::create([
             'emisor_id' => $emisorId,
             'receptor_id' => $receptorId,
-            'tipo' => 'recomendacion',
-            'contenido' => "Te recomiendo el libro: {$libroTitulo}",
-            'data' => [
-                'libro_id' => $libroId,
-                'libro_titulo' => $libroTitulo
-            ]
+            'tipo' => self::TIPO_AMISTAD,
+            'contenido' => 'Te ha enviado una solicitud de amistad',
+            'estado' => self::ESTADO_PENDIENTE,
+            'datos' => null,
         ]);
     }
 
-    public static function crearNotificacionAmistad($emisorId, $receptorId){
+    public static function crearNotificacionPrestamo(int $emisorId, int $receptorId, Libro $libro, string $fechaLimite): self {
         return self::create([
             'emisor_id' => $emisorId,
             'receptor_id' => $receptorId,
-            'tipo' => 'amistad',
-            'contenido' => '¡Te ha enviado una solicitud de amistad!',
-            'datos' => null,
-            'estado' => 'pendiente'
-        ]); 
+            'tipo' => self::TIPO_PRESTAMO,
+            'contenido' => "Te han prestado el libro: {$libro->titulo}. Devuélvelo antes del {$fechaLimite}",
+            'estado' => self::ESTADO_PENDIENTE,
+            'datos' => [
+                'libro_id' => $libro->id,
+                'fecha_limite' => $fechaLimite,
+            ],
+        ]);
     }
 
-    public static function crearNotificacionPrestamo($emisorId, $receptorId, $libroId, $fechaLimite){
-        $libro = Libro::find($libroId);
-    
-            return self::create([
-                'emisor_id' => $emisorId,
-                'receptor_id' => $receptorId,
-                'tipo' => 'prestamo',
-                'contenido' => "Te han prestado el libro: {$libro->title}. Devuélvelo antes del {$fechaLimite}",
-                'datos' => [
-                    'libro_id' => $libroId,
-                    'libro_titulo' => $libro->title,
-                    'fecha_limite' => $fechaLimite
-                ],
-                'estado' => 'pendiente'
-            ]);
+    public static function crearRecomendacionLibro(int $emisorId, int $receptorId, Libro $libro): self {
+        return self::create([
+            'emisor_id' => $emisorId,
+            'receptor_id' => $receptorId,
+            'tipo' => self::TIPO_RECOMENDACION,
+            'contenido' => "Te recomiendo el libro: {$libro->titulo}",
+            'estado' => self::ESTADO_PENDIENTE,
+            'datos' => [
+                'libro_id' => $libro->id,
+            ],
+        ]);
     }
 }
