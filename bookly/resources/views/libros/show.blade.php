@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+
+@if(session('success'))
+    <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="mb-4 p-2 bg-red-100 text-red-700 rounded">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="py-12">
     <div>
         <div>
@@ -75,13 +88,22 @@
                         <!-- Botones de acción -->
                         <div class="mt-8 space-y-4">
                             <!-- Formulario para marcar como comprado -->
-                            <form action="{{ route('libros.comprar', ['libro' => $book['id']]) }}" method="POST" class="flex items-center gap-2">
+                            <form action="{{ route('libros.comprar', $book['id']) }}" method="POST" class="flex items-center gap-2">
                                 @csrf
-                                <input type="checkbox" id="comprado" name="comprado" class="rounded text-blue-500">
+                                @method('POST')
+
+                                @php
+                                $isComprado = Auth::user()->libros()->where('libro_id', $book['id'])->where('comprado', true)->exists();
+                                @endphp
+
+                                <input type="checkbox" id="comprado" name="comprado"
+                                    class="rounded text-blue-500" {{ $isComprado ? 'checked' : '' }}>
+
                                 <label for="comprado" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                                     Marcar como comprado
                                 </label>
-                                <button type="submit">
+
+                                <button type="submit" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
                                     Guardar
                                 </button>
                             </form>

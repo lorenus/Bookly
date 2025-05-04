@@ -72,37 +72,48 @@ class LibroController extends Controller
         //
     }
 
-    public function marcarComoComprado($libroId)
-    {
-        try {
-            $userId = Auth::id();
+    public function marcarComoComprado(Request $request, $googleId)
+{
+    try {
+        $userId = Auth::id();
+        $comprado = $request->has('comprado');
 
-            $exists = DB::table('libros_usuario')
-                ->where('user_id', $userId)
-                ->where('libro_id', $libroId)
-                ->exists();
+        // Buscar el libro local por google_id
+        $libro = Libro::where('google_id', $googleId)->first();
 
-            if ($exists) {
-                DB::table('libros_usuario')
-                    ->where('user_id', $userId)
-                    ->where('libro_id', $libroId)
-                    ->update(['comprado' => true]);
-            } else {
-                DB::table('libros_usuario')->insert([
-                    'user_id' => $userId,
-                    'libro_id' => $libroId,
-                    'comprado' => true,
-                    'estado' => 'porLeer',
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
-            }
+        if (!$libro) {
+            // Si no existe, crearlo primero
+            $response = Http::get("https://www.googleapis.com/books/v1/volumes/{$googleId}");
+            $bookData = $response->json();
 
-            return back()->with('success', 'Libro añadido a tu biblioteca');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            $libro = Libro::create([
+                'google_id' => $googleId,
+                'titulo' => $bookData['volumeInfo']['title'] ?? 'Sin título',
+                'autor' => implode(', ', $bookData['volumeInfo']['authors'] ?? []),
+                // ... otros campos necesarios
+            ]);
         }
+
+        // Ahora usa el ID local
+        DB::table('libros_usuario')->updateOrInsert(
+            [
+                'user_id' => $userId,
+                'libro_id' => $libro->id
+            ],
+            [
+                'comprado' => $comprado,
+                'estado' => 'porLeer',
+                'updated_at' => now()
+            ]
+        );
+
+        return back()->with('success', $comprado 
+            ? 'Libro marcado como comprado' 
+            : 'Libro marcado como no comprado');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Error: ' . $e->getMessage());
     }
+}
 
     public function addToList(Request $request)
     {

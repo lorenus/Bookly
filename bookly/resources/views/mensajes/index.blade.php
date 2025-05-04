@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Botón de volver -->
+<a href="{{ route('perfil') }}" class="inline-block mb-6 text-blue-500 hover:underline">
+    &larr; Volver
+</a>
+
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6">Notificaciones</h1>
 

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Botón de volver -->
+<a href="{{ route('perfil') }}" class="inline-block mb-6 text-blue-500 hover:underline">
+    &larr; Volver
+</a>
+
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
         <h1 class="text-2xl font-semibold mb-6">Gestión de Amigos</h1>
