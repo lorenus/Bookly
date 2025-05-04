@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/amigos/{amigo}/detalle', [AmistadController::class, 'detalleAmigo'])->name('amigos.detalle');
     Route::delete('/amigos/{user}', [AmistadController::class, 'destroy'])->name('amigos.destroy');
     Route::get('/perfil/{user}', [ProfileController::class, 'amigo'])->name('profile.amigo');
+    
     // Libros
     Route::get('/libros/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
