@@ -96,4 +96,12 @@ class User extends Authenticatable
         ->withTimestamps();
         
     }
+
+    public function librosLeidosEsteAnio()
+{
+    return $this->libros()
+        ->wherePivot('estado', 'leido')
+        ->whereYear('libros_usuario.updated_at', now()->year)
+        ->count();
+}
 }

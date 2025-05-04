@@ -41,7 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Libros
     Route::get('/libros/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');
-    Route::post('/libros/{libro}/comprar', [ListaController::class, 'marcarComoComprado'])->name('libros.comprar');
+    Route::post('/libros/{libro}/comprar', [LibroController::class, 'marcarComoComprado'])->name('libros.comprar');
     Route::get('/buscar-libros', [BookSearchController::class, 'search'])->name('books.search');
     Route::post('/libros/add-to-list', [LibroController::class, 'addToList'])->name('libros.add-to-list')->middleware('auth');
 

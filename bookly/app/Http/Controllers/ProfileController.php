@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -31,28 +33,65 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function update(Request $request)
+{
+    $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+    $request->validate([
+        'imgPerfil' => 'nullable|image|max:2048',
+        'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+        'password' => ['nullable', 'confirmed', Password::defaults()],
+        'retoAnual' => 'nullable|integer|min:1|max:100',
+        'lista_a_borrar' => 'nullable|in:leyendo,leido,porLeer,favoritos'
+    ]);
+
+    // Actualizar foto de perfil
+    if ($request->hasFile('imgPerfil')) {
+        // Eliminar foto anterior si existe
+        if ($user->imgPerfil) {
+            Storage::disk('public')->delete($user->imgPerfil);
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        
+        $path = $request->file('imgPerfil')->store('profile-photos', 'public');
+        $user->imgPerfil = $path;
     }
+
+    // Actualizar email
+    if ($user->email !== $request->email) {
+        $user->email = $request->email;
+        $user->email_verified_at = null; // Si usas verificación de email
+    }
+
+    // Actualizar contraseña si se proporcionó
+    if ($request->password) {
+        $user->password = Hash::make($request->password);
+    }
+
+    // Actualizar reto anual
+    $user->retoAnual = $request->retoAnual;
+
+    $user->save();
+
+    // Vaciar lista seleccionada si se especificó
+    if ($request->lista_a_borrar) {
+        $user->libros()
+            ->wherePivot('estado', $request->lista_a_borrar)
+            ->detach();
+    }
+
+    // Forzar recarga de la sesión
+    Auth::login($user);
+
+    // Redirigir con parámetro de cache busting para imágenes
+    return redirect()->route('perfil', ['v' => now()->timestamp])
+        ->with('success', 'Perfil actualizado correctamente');
+}
 
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = $request->user();
 
         Auth::logout();
@@ -62,6 +101,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return redirect('/')->with('success', 'Tu cuenta ha sido eliminada correctamente');
     }
 }
