@@ -7,7 +7,7 @@
 </a>
 
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-6">Notificaciones</h1>
+    <h1>Notificaciones</h1>
 
     <div class="space-y-4">
         @forelse ($notificaciones as $notif)

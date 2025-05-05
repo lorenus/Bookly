@@ -8,8 +8,7 @@
             <div>
                 <!-- Foto de perfil -->
                 <div class="flex-shrink-0">
-                    <img src="{{ $user->imgPerfil ? asset('storage/'.$user->imgPerfil).'?v='.request()->get('v', time()) : asset('images/default-user.jpg') }}"
-                        class="h-16 w-16 rounded-full object-cover">
+                <img src="{{ asset($user->imgPerfil).'?v='.request()->get('v', time()) : asset('storage/profile-photos/default.jpg') }}">
                 </div>
                 <div>
                     <h1 class="text-xl">

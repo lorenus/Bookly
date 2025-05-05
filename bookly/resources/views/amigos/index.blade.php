@@ -15,6 +15,7 @@
             <h2 class="text-xl font-medium mb-4">Solicitar amistad</h2>
             <form method="POST" action="{{ route('amigos.store') }}" class="flex gap-2 mb-4">
                 @csrf
+                <input type="hidden" name="amigo_id" id="amigo-id-input"> <!-- Campo oculto para el ID -->
                 <input
                     type="email"
                     name="email"
@@ -24,28 +25,28 @@
                     class="w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600"
                     x-data
                     x-on:input.debounce.500ms="
-                        if ($event.target.value.includes('@')) {
-                            fetch('/verificar-email?email=' + encodeURIComponent($event.target.value))
-                                .then(response => response.json())
-                                .then(data => {
-                                    const resultado = document.getElementById('resultado-busqueda');
-                                    if (data.existe) {
-                                        resultado.innerHTML = `
-                                            <div class='mt-2 p-2 bg-green-100 dark:bg-green-900 rounded'>
-                                                Usuario encontrado: ${data.usuario.name}
-                                                <input type='hidden' name='amigo_id' value='${data.usuario.id}'>
-                                            </div>
-                                        `;
-                                    } else {
-                                        resultado.innerHTML = `
-                                            <div class='mt-2 p-2 bg-red-100 dark:bg-red-900 rounded'>
-                                                No se encontró ningún usuario con ese email
-                                            </div>
-                                        `;
-                                    }
-                                });
+            if ($event.target.value.includes('@')) {
+                fetch('/verificar-email?email=' + encodeURIComponent($event.target.value))
+                    .then(response => response.json())
+                    .then(data => {
+                        const resultado = document.getElementById('resultado-busqueda');
+                        if (data.existe) {
+                            resultado.innerHTML = `
+                                <div class='mt-2 p-2 bg-green-100 dark:bg-green-900 rounded'>
+                                    Usuario encontrado: ${data.usuario.name}
+                                </div>
+                            `;
+                            document.getElementById('amigo-id-input').value = data.usuario.id; // Actualiza el campo oculto
+                        } else {
+                            resultado.innerHTML = `
+                                <div class='mt-2 p-2 bg-red-100 dark:bg-red-900 rounded'>
+                                    No se encontró ningún usuario con ese email
+                                </div>
+                            `;
+                            document.getElementById('amigo-id-input').value = ''; // Limpia el campo
                         }
-                    ">
+                    });
+            }">
                 <button
                     type="submit"
                     class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 whitespace-nowrap">
@@ -84,7 +85,7 @@
                     <div class="flex items-center space-x-3">
                         <!-- Avatar -->
                         <div class="flex-shrink-0">
-                            <img src="{{ $amigo->imgPerfil ? asset('storage/'.$amigo->imgPerfil) : asset('images/default-user.jpg') }}"
+                            <img src="{{ asset('storage/'.$amigo->imgPerfil) }}"
                                 class="h-10 w-10 rounded-full object-cover">
                         </div>
 
@@ -135,30 +136,30 @@
 <script>
     // Función para mostrar detalles del amigo
     function mostrarDetalleAmigo(amigoId) {
-    fetch(`/amigos/${amigoId}/detalle`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('No autorizado');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const detalleDiv = document.getElementById('detalle-amigo');
-            document.getElementById('detalle-imagen').src = data.imgPerfil 
-                ? `/storage/${data.imgPerfil}`
-                : '/images/default-user.jpg';
-            document.getElementById('detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
-            document.getElementById('detalle-email').textContent = data.email;
-            document.getElementById('detalle-reto').textContent = `${data.retoAnual || '0'} libros`;
-            document.getElementById('detalle-enlace').href = `/perfil/${data.id}`;
-            
-            detalleDiv.classList.remove('hidden');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('No se pudo cargar la información del amigo');
-        });
-}
+        fetch(`/amigos/${amigoId}/detalle`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No autorizado');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const detalleDiv = document.getElementById('detalle-amigo');
+                document.getElementById('detalle-imagen').src = data.imgPerfil ?
+                    `/storage/${data.imgPerfil}` :
+                    '/images/default-user.jpg';
+                document.getElementById('detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
+                document.getElementById('detalle-email').textContent = data.email;
+                document.getElementById('detalle-reto').textContent = `${data.retoAnual || '0'} libros`;
+                document.getElementById('detalle-enlace').href = `/perfil/${data.id}`;
+
+                detalleDiv.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('No se pudo cargar la información del amigo');
+            });
+    }
 
     // Cerrar detalles al hacer click fuera
     document.addEventListener('click', function(event) {

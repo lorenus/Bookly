@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -38,7 +40,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/amigos/{amigo}/detalle', [AmistadController::class, 'detalleAmigo'])->name('amigos.detalle');
     Route::delete('/amigos/{user}', [AmistadController::class, 'destroy'])->name('amigos.destroy');
     Route::get('/perfil/{user}', [ProfileController::class, 'amigo'])->name('profile.amigo');
-    
+    Route::get('/verificar-email', [AmistadController::class, 'verificarEmail']);
+
     // Libros
     Route::get('/libros/{id}', [LibroController::class, 'show'])->name('libro.show');
     Route::get('/logros', [LibroController::class, 'logros'])->name('logros');

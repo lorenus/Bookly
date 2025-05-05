@@ -36,28 +36,39 @@ class AmistadController extends Controller
     ]);
 }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'amigo_id' => 'required|exists:users,id|not_in:' . Auth::id()
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'amigo_id' => 'required|exists:users,id|not_in:' . Auth::id()
+    ]);
 
-        // Verificar si ya existe solicitud pendiente
-        $solicitudExistente = Notificacion::where('emisor_id', Auth::id())
-            ->where('receptor_id', $request->amigo_id)
-            ->where('tipo', Notificacion::TIPO_AMISTAD)
-            ->where('estado', Notificacion::ESTADO_PENDIENTE)
-            ->exists();
+    // Verificar si ya existe solicitud pendiente
+    $solicitudExistente = Amistad::where(function($query) use ($request) {
+            $query->where('user_id', Auth::id())
+                  ->where('amigo_id', $request->amigo_id);
+        })
+        ->orWhere(function($query) use ($request) {
+            $query->where('user_id', $request->amigo_id)
+                  ->where('amigo_id', Auth::id());
+        })
+        ->exists();
 
-        if ($solicitudExistente) {
-            return back()->with('error', 'Ya has enviado una solicitud a este usuario');
-        }
-
-        // Crear notificación de amistad
-        Notificacion::crearSolicitudAmistad(Auth::id(), $request->amigo_id);
-
-        return back()->with('success', 'Solicitud de amistad enviada');
+    if ($solicitudExistente) {
+        return back()->with('error', 'Ya existe una solicitud con este usuario');
     }
+
+    // Crear nueva solicitud
+    Amistad::create([
+        'user_id' => Auth::id(),
+        'amigo_id' => $request->amigo_id,
+        'estado' => 'pendiente'
+    ]);
+
+    // Opcional: Crear también la notificación
+    Notificacion::crearSolicitudAmistad(Auth::id(), $request->amigo_id);
+
+    return back()->with('success', 'Solicitud de amistad enviada');
+}
 
     public function destroy(User $user)
     {
@@ -114,4 +125,22 @@ class AmistadController extends Controller
         'retoAnual' => $amigo->retoAnual
     ]);
 }
+
+public function verificarEmail(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email'
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+    
+    return response()->json([
+        'existe' => $user !== null,
+        'usuario' => $user ? [
+            'id' => $user->id,
+            'name' => $user->name
+        ] : null
+    ]);
+}
+
 }

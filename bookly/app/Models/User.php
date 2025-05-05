@@ -8,6 +8,7 @@ use App\Models\Amistad;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -92,16 +93,22 @@ class User extends Authenticatable
     public function libros()
     {
         return $this->belongsToMany(Libro::class, 'libros_usuario')
-        ->withPivot(['estado', 'comprado', 'valoracion'])
-        ->withTimestamps();
-        
+            ->withPivot(['estado', 'comprado', 'valoracion'])
+            ->withTimestamps();
     }
 
     public function librosLeidosEsteAnio()
-{
-    return $this->libros()
-        ->wherePivot('estado', 'leido')
-        ->whereYear('libros_usuario.updated_at', now()->year)
-        ->count();
-}
+    {
+        return $this->libros()
+            ->wherePivot('estado', 'leido')
+            ->whereYear('libros_usuario.updated_at', now()->year)
+            ->count();
+    }
+
+    public function getImgPerfilAttribute()
+    {
+        return $this->profile_photo_path
+            ? Storage::url($this->profile_photo_path)
+            : asset('storage/profile-photos/default.jpg');
+    }
 }
