@@ -15,14 +15,13 @@
                 <div class="flex items-start">
                     <img 
                         src="{{ $notif->remitente->foto_perfil ?? asset('images/default-user.jpg') }}" 
-                        class="w-10 h-10 rounded-full mr-3"
                         alt="{{ $notif->remitente->name }}"
                     >
                     <div class="flex-1">
                         <div class="flex justify-between">
                             <h3 class="font-semibold">{{ $notif->remitente->name }}</h3>
                             <span class="text-sm text-gray-500">
-                                {{ $notif->created_at->diffForHumans() }}
+                            {{ $notif->created_at->format('d/m/Y') }}
                             </span>
                         </div>
                         <p class="mt-1">{{ $notif->contenido }}</p>
