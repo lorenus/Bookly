@@ -93,8 +93,7 @@ class User extends Authenticatable
     public function libros()
     {
         return $this->belongsToMany(Libro::class, 'libros_usuario')
-            ->withPivot(['estado', 'comprado', 'valoracion'])
-            ->withTimestamps();
+            ->withPivot(['estado', 'comprado', 'valoracion']);
     }
 
     public function librosLeidosEsteAnio()
@@ -110,5 +109,13 @@ class User extends Authenticatable
         return $this->profile_photo_path
             ? Storage::url($this->profile_photo_path)
             : asset('storage/profile-photos/default.jpg');
+    }
+
+    
+    public function logros()
+    {
+        return $this->belongsToMany(Logro::class)
+            ->withPivot('progreso', 'completado', 'completado_en')
+            ->withTimestamps();
     }
 }

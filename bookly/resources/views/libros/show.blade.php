@@ -2,20 +2,20 @@
 
 @section('content')
 @if(session('success'))
-    <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">
-        {{ session('success') }}
-    </div>
+<div class="mb-4 p-2 bg-green-100 text-green-700 rounded">
+    {{ session('success') }}
+</div>
 @endif
 
 @if(session('error'))
-    <div class="mb-4 p-2 bg-red-100 text-red-700 rounded">
-        {{ session('error') }}
-    </div>
+<div class="mb-4 p-2 bg-red-100 text-red-700 rounded">
+    {{ session('error') }}
+</div>
 @endif
 
 <div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+    <div>
+        <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <!-- Botón de volver -->
                 <a href="{{ url()->previous() }}" class="inline-block mb-6 text-blue-500 hover:underline">
@@ -157,10 +157,61 @@
 
                             <!-- Botón para prestar libro -->
                             <div class="pt-4">
-                                <a href="{{ route('prestamos.crear', ['libro_id' => $book['id']]) }}" 
-                                   class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                                <a href="{{ route('prestamos.crear', ['libro_id' => $book['id']]) }}"
+                                    class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
                                     Prestar libro
                                 </a>
+                            </div>
+                            <div class="mt-6">
+                                <div x-data="{ open: false }" class="relative">
+                                    <button @click="open = !open"
+                                        class="px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600">
+                                        Recomendar a un amigo
+                                    </button>
+
+                                    <div x-show="open" @click.away="open = false"
+                                        class="absolute z-10 mt-2 w-64 bg-white dark:bg-gray-700 rounded-md shadow-lg p-4">
+                                        <form action="{{ route('libros.recomendar') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                                            <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                                            <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+
+                                            <div class="mb-4">
+                                                <label for="amigo_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                    Seleccionar amigo
+                                                </label>
+                                                <select name="amigo_id" id="amigo_id" required
+                                                    class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white">
+                                                    <option value="">-- Elegir amigo --</option>
+                                                    @foreach(Auth::user()->amigos as $amigo)
+                                                    <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <label for="mensaje" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                                    Mensaje (opcional)
+                                                </label>
+                                                <textarea name="mensaje" id="mensaje" rows="2"
+                                                    class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
+                                                    placeholder="¡Creo que te gustará este libro!"></textarea>
+                                            </div>
+
+                                            <div class="flex justify-end gap-2">
+                                                <button type="button" @click="open = false"
+                                                    class="px-3 py-1 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 rounded">
+                                                    Cancelar
+                                                </button>
+                                                <button type="submit"
+                                                    class="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600">
+                                                    Enviar recomendación
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

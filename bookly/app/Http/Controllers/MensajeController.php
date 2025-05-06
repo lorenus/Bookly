@@ -13,7 +13,7 @@ class MensajeController extends Controller
     public function index()
     {
         $user = User::with('libros')->find(Auth::id());
-        
+
         $notificaciones = $user->notificacionesRecibidas()
             ->with('remitente')
             ->orderBy('created_at', 'desc')
@@ -26,7 +26,7 @@ class MensajeController extends Controller
 
     public function aceptarNotificacion(Notificacion $notificacion)
 {
-    $user = Auth::user();
+    $user = User::with('libros')->find(Auth::id());
 
     // Validar que el receptor es el usuario autenticado
     if ($notificacion->receptor_id !== $user->id) {
@@ -36,32 +36,48 @@ class MensajeController extends Controller
     switch ($notificacion->tipo) {
         case Notificacion::TIPO_AMISTAD:
             // Crear relación de amistad en ambas direcciones
-            Amistad::create([
+            Amistad::firstOrCreate([
                 'user_id' => $notificacion->emisor_id,
-                'amigo_id' => $notificacion->receptor_id,
-                'estado' => 'aceptada'
-            ]);
-            
-            Amistad::create([
+                'amigo_id' => $notificacion->receptor_id
+            ], ['estado' => 'aceptada']);
+
+            Amistad::firstOrCreate([
                 'user_id' => $notificacion->receptor_id,
-                'amigo_id' => $notificacion->emisor_id,
-                'estado' => 'aceptada'
-            ]);
+                'amigo_id' => $notificacion->emisor_id
+            ], ['estado' => 'aceptada']);
             break;
 
         case Notificacion::TIPO_RECOMENDACION:
-            // Añadir libro a la lista "por leer"
+            // Añadir libro a la lista "por leer" si no existe ya
             $libroId = $notificacion->datos['libro_id'];
-            $user = User::with('libros')->find(Auth::id());
-            $user->libros()->attach($libroId, [
-                'estado' => 'porLeer',
-                'comprado' => false
+            
+            // Verificar si el libro existe en la base de datos primero
+            $libro = Libro::find($libroId);
+            
+            if (!$libro) {
+                // Si el libro no existe, crearlo con los datos de la notificación
+                $libro = Libro::create([
+                    'id' => $libroId,
+                    'titulo' => $notificacion->datos['titulo'],
+                    'urlPortada' => $notificacion->datos['portada'] ?? null,
+                    // Añade otros campos necesarios
+                ]);
+            }
+
+            // Usar syncWithoutDetaching para evitar duplicados
+            $user->libros()->syncWithoutDetaching([
+                $libroId => [
+                    'estado' => 'porLeer',
+                    'comprado' => false,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]
             ]);
             break;
     }
 
     $notificacion->marcarComoAceptada();
-    return back()->with('success', 'Acción realizada');
+    return back()->with('success', 'Libro añadido a tu lista de "Por leer"');
 }
 
     public function rechazarNotificacion(Notificacion $notificacion)
