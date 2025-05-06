@@ -9,7 +9,9 @@ class Logro extends Model
     protected $fillable = ['nombre', 'descripcion', 'requisito', 'tipo'];
 
     public function users()
-    {
-        return $this->belongsToMany(User::class)->withPivot('progreso', 'completado', 'completado_en');
-    }
+{
+    return $this->belongsToMany(User::class, 'user_logros') // Especifica el nombre correcto
+                ->withPivot('progreso', 'completado', 'completado_en')
+                ->withTimestamps();
+}
 }

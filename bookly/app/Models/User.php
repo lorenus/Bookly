@@ -113,9 +113,9 @@ class User extends Authenticatable
 
     
     public function logros()
-    {
-        return $this->belongsToMany(Logro::class)
-            ->withPivot('progreso', 'completado', 'completado_en')
-            ->withTimestamps();
-    }
+{
+    return $this->belongsToMany(Logro::class, 'logro_user') 
+        ->withPivot('progreso', 'completado', 'completado_en')
+        ->withTimestamps();
+}
 }

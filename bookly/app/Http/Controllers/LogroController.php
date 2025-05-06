@@ -1,23 +1,19 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Logro;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User; // Asegúrate de importar el modelo User
 
 class LogroController extends Controller
 {
     public function index()
     {
+        // Opción 1 (recomendada):
         $user = Auth::user();
+        $logros = $user->logros; // Usa la propiedad, no el método
         
-        // Obtener todos los logros con su estado para el usuario
-        $logros = Logro::with(['users' => function($query) use ($user) {
-            $query->where('user_id', $user->id);
-        }])->get()->map(function($logro) use ($user) {
-            $logro->pivot = $logro->users->first()?->pivot ?? null;
-            return $logro;
-        });
+        // Opción 2 (si prefieres usar métodos):
+        // $logros = auth()->user()->logros()->get();
         
         return view('logros.index', compact('logros'));
     }

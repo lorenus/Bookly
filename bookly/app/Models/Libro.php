@@ -53,4 +53,12 @@ class Libro extends Model
     {
         return $this->usuarios()->where('user_id', $idUsuario)->exists();
     }
+
+    public function esClasico()
+    {
+        // Libros publicados antes de 1900)
+        if (isset($this->anyo_publicacion)) {
+            return $this->anyo_publicacion < 1900;
+        }
+    }
 }

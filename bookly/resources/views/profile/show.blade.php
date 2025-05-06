@@ -49,7 +49,7 @@
                 <div>
                     <ul class="space-y-4">
                         <li class="transition hover:scale-[1.01]">
-                            <a href="{{ route('logros') }}">
+                            <a href="{{ route('logros.index') }}">
                                 Logros
                             </a>
                         </li>

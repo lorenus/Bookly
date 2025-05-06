@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\LibroLeido;
+use App\Listeners\CheckLogrosListener;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
+        Event::listen(
+            LibroLeido::class,
+            CheckLogrosListener::class
+        );
+
         // Configuración para desarrollo local
         if ($this->app->environment('local')) {
             Http::macro('insecure', function() {
@@ -30,5 +39,8 @@ class AppServiceProvider extends ServiceProvider
                 return Http::this(); // Versión segura para producción
             });
         }
+
     }
+
+    
 }
