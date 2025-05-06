@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 @if(session('success'))
     <div class="mb-4 p-2 bg-green-100 text-green-700 rounded">
         {{ session('success') }}
@@ -15,9 +14,9 @@
 @endif
 
 <div class="py-12">
-    <div>
-        <div>
-            <div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-6">
                 <!-- Botón de volver -->
                 <a href="{{ url()->previous() }}" class="inline-block mb-6 text-blue-500 hover:underline">
                     &larr; Volver
@@ -32,8 +31,8 @@
                             alt="Portada de {{ $book['volumeInfo']['title'] }}"
                             class="w-32 h-48 object-cover rounded mx-auto">
                         @else
-                        <div>
-                            <span>Sin portada</span>
+                        <div class="w-32 h-48 bg-gray-200 flex items-center justify-center rounded mx-auto">
+                            <span class="text-gray-500">Sin portada</span>
                         </div>
                         @endif
                     </div>
@@ -93,59 +92,76 @@
                                 @method('POST')
 
                                 @php
-                                $isComprado = Auth::user()->libros()->where('libro_id', $book['id'])->where('comprado', true)->exists();
+                                $isComprado = Auth::user()->libros()->where('google_id', $book['id'])->where('comprado', true)->exists();
                                 @endphp
 
                                 <input type="checkbox" id="comprado" name="comprado"
-                                    class="rounded text-blue-500" {{ $isComprado ? 'checked' : '' }}>
+                                    class="rounded text-blue-500" {{ $isComprado ? 'checked' : '' }}
+                                    onchange="this.form.submit()">
 
-                                <label for="comprado" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label for="comprado" class="cursor-pointer">
                                     Marcar como comprado
                                 </label>
-
-                                <button type="submit" class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
-                                    Guardar
-                                </button>
                             </form>
 
-                            <!-- Dropdown para añadir a lista -->
-                            <div x-data="{ open: false }" class="relative inline-block">
-                                <button @click="open = !open">
-                                    Añadir a mi lista
-                                </button>
+                            <!-- Botones para añadir a lista -->
+                            <div class="flex flex-wrap gap-2">
+                                <form action="{{ route('libros.add-to-list') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                                    <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                                    <input type="hidden" name="autor" value="{{ implode(', ', $book['volumeInfo']['authors'] ?? []) }}">
+                                    <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                                    <input type="hidden" name="estado" value="leyendo">
+                                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                        Leyendo
+                                    </button>
+                                </form>
 
-                                <div x-show="open" @click.away="open = false" class="absolute z-10 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-md overflow-hidden border border-gray-200 dark:border-gray-700">
-                                    <form action="{{ route('libros.add-to-list') }}" method="POST" class="p-2">
-                                        @csrf
-                                        <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
-                                        <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
-                                        <input type="hidden" name="autor" value="{{ implode(', ', $book['volumeInfo']['authors'] ?? []) }}">
-                                        <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                                <form action="{{ route('libros.add-to-list') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                                    <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                                    <input type="hidden" name="autor" value="{{ implode(', ', $book['volumeInfo']['authors'] ?? []) }}">
+                                    <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                                    <input type="hidden" name="estado" value="leido">
+                                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                                        Leído
+                                    </button>
+                                </form>
 
-                                        <select name="estado" required class="w-full p-2 border rounded dark:bg-gray-700 dark:text-white">
-                                            <option value="">Selecciona lista</option>
-                                            <option value="leyendo">Leyendo Actualmente</option>
-                                            <option value="leido">Mis Últimas Lecturas</option>
-                                            <option value="porLeer">Para Leer</option>
-                                            <option value="favoritos">Favoritos</option>
-                                        </select>
+                                <form action="{{ route('libros.add-to-list') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                                    <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                                    <input type="hidden" name="autor" value="{{ implode(', ', $book['volumeInfo']['authors'] ?? []) }}">
+                                    <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                                    <input type="hidden" name="estado" value="porLeer">
+                                    <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                                        Por leer
+                                    </button>
+                                </form>
 
-                                        <div class="mt-2 flex justify-between">
-                                            <button type="button" @click="open = false" class="px-3 py-1 text-gray-600 dark:text-gray-300">
-                                                Cancelar
-                                            </button>
-                                            <button type="submit" class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
-                                                Guardar
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                                <form action="{{ route('libros.add-to-list') }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                                    <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                                    <input type="hidden" name="autor" value="{{ implode(', ', $book['volumeInfo']['authors'] ?? []) }}">
+                                    <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                                    <input type="hidden" name="estado" value="favoritos">
+                                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+                                        Favoritos
+                                    </button>
+                                </form>
                             </div>
 
                             <!-- Botón para prestar libro -->
-                            <a href="{{ route('prestamos.crear', ['libro_id' => $book['id']]) }}" class="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">
-                                Prestar libro
-                            </a>
+                            <div class="pt-4">
+                                <a href="{{ route('prestamos.crear', ['libro_id' => $book['id']]) }}" 
+                                   class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600">
+                                    Prestar libro
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

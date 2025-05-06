@@ -115,18 +115,19 @@ class LibroController extends Controller
     }
 }
 
-    public function addToList(Request $request)
-    {
-        $request->validate([
-            'libro_id' => 'required|string',
-            'titulo' => 'required|string',
-            'autor' => 'nullable|string',
-            'portada' => 'nullable|url',
-            'estado' => 'required|in:leyendo,leido,porLeer,favoritos'
-        ]);
+public function addToList(Request $request)
+{
+    $request->validate([
+        'libro_id' => 'required|string',
+        'titulo' => 'required|string',
+        'autor' => 'nullable|string',
+        'portada' => 'nullable|url',
+        'estado' => 'required|in:leyendo,leido,porLeer,favoritos'
+    ]);
 
-        $userId = Auth::id();
+    $userId = Auth::id();
 
+    try {
         // Obtener detalles completos del libro de la API si es necesario
         $bookDetails = Http::withoutVerifying()
             ->get("https://www.googleapis.com/books/v1/volumes/{$request->libro_id}")
@@ -145,22 +146,40 @@ class LibroController extends Controller
             ]
         );
 
-        // Añadir a la lista del usuario
-        DB::table('libros_usuario')->updateOrInsert(
-            [
+        // Verificar si el libro ya está en la lista del usuario
+        $existingRecord = DB::table('libros_usuario')
+            ->where('user_id', $userId)
+            ->where('libro_id', $libro->id)
+            ->first();
+
+        if ($existingRecord) {
+            // Actualizar el estado existente
+            DB::table('libros_usuario')
+                ->where('user_id', $userId)
+                ->where('libro_id', $libro->id)
+                ->update([
+                    'estado' => $request->estado,
+                    'valoracion' => $request->estado === 'favoritos' ? 5 : $existingRecord->valoracion,
+                    'updated_at' => now()
+                ]);
+        } else {
+            // Crear nuevo registro
+            DB::table('libros_usuario')->insert([
                 'user_id' => $userId,
-                'libro_id' => $libro->id
-            ],
-            [
+                'libro_id' => $libro->id,
                 'estado' => $request->estado,
                 'valoracion' => $request->estado === 'favoritos' ? 5 : null,
                 'comprado' => false,
+                'created_at' => now(),
                 'updated_at' => now()
-            ]
-        );
+            ]);
+        }
 
-        return back()->with('success', 'Libro añadido a tu lista');
+        return back()->with('success', 'Libro añadido a tu lista correctamente');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Error al añadir el libro a tu lista: ' . $e->getMessage());
     }
+}
 
     // Función auxiliar para extraer ISBN si está en el ID
     private function extractIsbn(array $bookData)

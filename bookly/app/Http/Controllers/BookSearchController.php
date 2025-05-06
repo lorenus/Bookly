@@ -50,7 +50,7 @@ class BookSearchController extends Controller
                 $response = Http::withoutVerifying()
                     ->timeout(15)
                     ->get('https://www.googleapis.com/books/v1/volumes', [
-                        'q' => $query, // Búsqueda más amplia
+                        'q' => $query,
                         'maxResults' => $remainingSlots,
                         'key' => env('GOOGLE_BOOKS_API_KEY')
                     ]);

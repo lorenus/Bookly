@@ -8,7 +8,7 @@
             <div>
                 <!-- Foto de perfil -->
                 <div class="flex-shrink-0">
-                <img src="{{ asset($user->imgPerfil).'?v='.request()->get('v', time()) : asset('storage/profile-photos/default.jpg') }}">
+                <img src="{{ Storage::url($user->imgPerfil) }}?v={{ time() }}"> <!-- Agregando un parámetro para que no se use el cache y se muestre la foto si se ha cambiado-->
                 </div>
                 <div>
                     <h1 class="text-xl">

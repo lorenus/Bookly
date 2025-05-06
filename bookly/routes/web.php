@@ -32,7 +32,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/listas/prestados', [ListaController::class, 'prestados'])->name('listas.prestados');
     Route::get('/listas/{tipoLista}', [ListaController::class, 'show'])->name('listas.show');
 
-
     // Amistad
     Route::get('/amigos', [AmistadController::class, 'index'])->name('amigos');
     Route::post('/amigos', [AmistadController::class, 'store'])->name('amigos.store');

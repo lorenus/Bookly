@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->timestamp('password_verified_at')->nullable();
-            $table->string('imgPerfil')->nullable()->default('default.jpeg');
+            $table->string('imgPerfil')->nullable()->default('profile-photos/default.jpeg');
             $table->integer('retoAnual')->nullable();
             $table->rememberToken();
             $table->timestamps();

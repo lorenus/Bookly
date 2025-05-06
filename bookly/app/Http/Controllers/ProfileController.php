@@ -46,15 +46,14 @@ class ProfileController extends Controller
             'lista_a_borrar' => 'nullable|in:leyendo,leido,porLeer,favoritos'
         ]);
 
-        // Actualizar foto de perfil
         if ($request->hasFile('imgPerfil')) {
-            // Eliminar foto anterior si existe
-            if ($user->imgPerfil) {
+            // Eliminar solo si NO es la imagen por defecto
+            if ($user->imgPerfil !== 'profile-photos/default.jpg') {
                 Storage::disk('public')->delete($user->imgPerfil);
             }
-
-            $path = $request->file('imgPerfil')->store('profile-photos', 'public');
-            $user->imgPerfil = $path;
+        
+            $user->imgPerfil = $request->file('imgPerfil')->store('profile-photos', 'public');
+            $user->save();
         }
 
         // Actualizar email
