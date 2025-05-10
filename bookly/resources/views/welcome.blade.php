@@ -17,6 +17,18 @@
 
 <body class="position-relative" style="overflow-x: hidden;">
 
+    <div class="background-stack z-1">
+        <div class="background-section">
+            <img src="{{ asset('img/fondo.png') }}" alt="Fondo principal" class="bg-image">
+        </div>
+        <div class="background-section">
+            <img src="{{ asset('img/estrelles_rosa.png') }}" alt="Estrellas rosas" class="bg-image">
+        </div>
+        <div class="background-section">
+            <img src="{{ asset('img/estrelles_blau.png') }}" alt="Estrellas azules" class="bg-image">
+        </div>
+    </div>
+
     <div class="position-absolute top-0 start-0">
         <img src="{{ asset('img/paper_rosa.png') }}" alt="Decoración" class="img-fluid">
     </div>
@@ -24,17 +36,16 @@
         <img src="{{ asset('img/estrella_tela.png') }}" alt="Decoración" class="img-fluid">
     </div>
 
+
     <div class="container d-flex flex-column justify-content-center align-items-center position-relative">
 
         <div class="d-flex justify-content-center w-70 mb-4 z-1">
             <img src="{{ asset('img/bookly.png') }}" alt="Logo" class="img-fluid">
         </div>
 
-        <div class="position-absolute fondo-boton">
-            <img src="{{ asset('img/fondo.png') }}" alt="Fondo">
-        </div>
 
-        <div class="d-flex justify-content-center z-1 mb-5">
+
+        <div class="d-flex justify-content-center z-1">
             @if (Auth::check())
             <a href="{{ route('perfil') }}" class="d-flex justify-content-center">
                 <img src="{{ asset('img/boton_entrar.png') }}" alt="Entrar" class="img-fluid">
@@ -46,36 +57,43 @@
             @endif
         </div>
 
-        <div class="d-flex justify-content-center mt-5 pt-5 z-1">
+        <div class="d-flex justify-content-center mt-10 pt-5 z-1 custom-spacing"> <!-- Cambiado mt-5 por mt-10 -->
             <img style="width: 70%;" src="{{ asset('img/que_es.png') }}" alt="Imagen 1" class="img-fluid">
         </div>
+
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
             <img src="{{ asset('img/flecha 1.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
+
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
             <img src="{{ asset('img/pegatina_rosa.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
+
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
             <img src="{{ asset('img/flecha 2.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
+
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
             <img src="{{ asset('img/corcho.png') }}" alt="Imagen 1" class="img-fluid">
         </div>
+
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
             <img src="{{ asset('img/flecha 3.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
-        <div class="d-flex justify-content-center z-1" style="bottom: 20%; margin-left: -10%; margin-top: -10%;">
+
+        <div class="justify-content-center z-1" style="bottom: 20%; margin-left: -10%; margin-top: -5%;">
             <img src="{{ asset('img/etiqueta.png') }}" alt="Etiqueta" class="img-fluid" style="width: 70%;">
         </div>
 
-        <div class="position-absolute z-1" style="right: 2%; bottom: 0;">
+        <div class="position-absolute z-1 d-flex flex-column align-items-center" style="right: 2%; bottom: 0;">
+            <span class="mb-1 fs-2">¡Súbeme!</span>
             <a href="#">
                 <img src="{{ asset('img/cohete.png') }}" alt="Volver arriba" class="img-fluid">
             </a>
         </div>
-    </div> <!-- Cierre del container principal -->
+    </div>
 
-    <!-- Footer fuera del container principal -->
+    <!-- Footer -->
     <div class="footer-container position-relative mt-5">
         <!-- Contenedor de la imagen de fondo -->
         <div class="footer-bg-container">
