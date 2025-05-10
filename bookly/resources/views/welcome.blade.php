@@ -68,13 +68,53 @@
             <img src="{{ asset('img/etiqueta.png') }}" alt="Etiqueta" class="img-fluid" style="width: 70%;">
         </div>
 
-        <div class="footer z-1">
-            <a href="#">Términos y Condiciones</a>
-            <a href="#">Política de Privacidad</a>
-            <a href="#">Contacto</a>
+        <div class="position-absolute z-1" style="right: 2%; bottom: 0;">
+            <a href="#">
+                <img src="{{ asset('img/cohete.png') }}" alt="Volver arriba" class="img-fluid">
+            </a>
+        </div>
+    </div> <!-- Cierre del container principal -->
+
+    <!-- Footer fuera del container principal -->
+    <div class="footer-container position-relative mt-5">
+        <!-- Contenedor de la imagen de fondo -->
+        <div class="footer-bg-container">
+            <img src="{{ asset('img/fondo_footer.png') }}" alt="Fondo footer" class="footer-bg-img w-100 h-auto">
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Contenido del footer superpuesto -->
+        <div class="footer-content position-absolute w-100 h-100 top-0 start-0 d-flex flex-column justify-content-center">
+            <div class="container">
+                <!-- Copyright centrado -->
+                <div class="text-center mb-4">
+                    <p class="text-black m-0">© 2025 Bookly</p>
+                </div>
+
+                <!-- Columnas de enlaces -->
+                <div class="row">
+                    <!-- Columna izquierda -->
+                    <div class="ps-5 col-md-6">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-black text-decoration-none">Cookies</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">Términos y condiciones</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">Política de privacidad</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna derecha -->
+                    <div class="pe-5 col-md-6">
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-black text-decoration-none">Instagram</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">Twitter</a></li>
+                            <li><a href="#" class="text-black text-decoration-none">YouTube</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

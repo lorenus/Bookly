@@ -1,44 +1,76 @@
-    
-        .container {
-            padding-top: 15%;
-        }
+@font-face {
+    font-family: 'Providence Sans';
+    src: url('../fonts/Providence-Sans.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+  }
 
+  body {
+    font-family: 'Providence Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
 
-        .fondo-boton {
-            top: 15%;
-            z-index: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+.container {
+    padding-top: 15%;
+    font-size: x-large;
+}
 
-        .fondo-boton img {
-            width: 100%;
-            /* Para que el fondo ocupe todo el ancho */
-            height: auto;
-            display: block;
-            /* Evita espacio extra debajo de la imagen */
-        }
+.fondo-boton {
+    top: 15%;
+    z-index: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
-        .footer {
+.fondo-boton img {
+    width: 100%;
+    /* Para que el fondo ocupe todo el ancho */
+    height: auto;
+    display: block;
+    /* Evita espacio extra debajo de la imagen */
+}
 
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-image: url(/app/public/img/fondo_footer.png);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 10;
-           
-        }
+/* Estilos para el footer */
+.footer-container {
+    color: black;
+    width: 100%;
+    overflow: hidden;
+}
 
-        .footer a {
-            color: white;
-            text-decoration: none;
-        }
+.footer-bg-container {
+    width: 100%;
+    display: block;
+    line-height: 0; /* Elimina espacio extra debajo de la imagen */
+}
+
+.footer-bg-img {
+    object-fit: cover;
+    min-width: 100%;
+}
+
+.footer-content {
+    z-index: 1;
+    padding: 5% 0; /* Ajusta según necesites */
+}
+
+/* Estilo para los enlaces del footer */
+.footer-container a {
+    color: black !important;
+    transition: opacity 0.3s;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.footer-container a:hover {
+    opacity: 0.8;
+    text-decoration: underline !important;
+}
+
+/* Alineación de columnas */
+.footer-container .col-md-6:first-child {
+    text-align: left;
+}
+
+.footer-container .col-md-6:last-child {
+    text-align: right;
+}
