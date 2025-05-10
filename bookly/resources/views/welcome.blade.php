@@ -7,26 +7,16 @@
 
     <title>Bookly</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Estilo adicional para el fondo */
-        .fondo-boton {
-            left: 0;
-            width: 100vw;
-            /* Ocupa todo el ancho de la pantalla */
-            max-width: 100%;
-        }
-    </style>
+
+    <link href="{{ asset('css/welcome.css') }}" rel="stylesheet">
 </head>
 
-<body class="position-relative" style="overflow-x: hidden;"> <!-- Eliminamos el container del body -->
+<body class="position-relative" style="overflow-x: hidden;">
 
-    <!-- Decoraciones esquinas -->
     <div class="position-absolute top-0 start-0">
         <img src="{{ asset('img/paper_rosa.png') }}" alt="Decoración" class="img-fluid">
     </div>
@@ -34,64 +24,57 @@
         <img src="{{ asset('img/estrella_tela.png') }}" alt="Decoración" class="img-fluid">
     </div>
 
-    <!-- Contenedor principal -->
-    <div class="container d-flex flex-column justify-content-center align-items-center position-relative" style="padding-top: 15%;"> <!-- Añadido padding-top -->
+    <div class="container d-flex flex-column justify-content-center align-items-center position-relative">
 
-        <!-- Logo -->
-        <div class="mb-4 z-1"> <!-- Corregido mtmb-4 a mb-4 -->
+        <div class="d-flex justify-content-center w-70 mb-4 z-1">
             <img src="{{ asset('img/bookly.png') }}" alt="Logo" class="img-fluid">
         </div>
 
-        <!-- Fondo entre logo y botón -->
-        <div class="position-absolute fondo-boton" style="top: 15%; z-index: 0; width: 100vw;">
+        <div class="position-absolute fondo-boton">
             <img src="{{ asset('img/fondo.png') }}" alt="Fondo">
         </div>
 
-        <!-- Botón Entrar -->
-        <div class="boton z-1 mb-5">
+        <div class="d-flex justify-content-center z-1 mb-5">
             @if (Auth::check())
-            <a href="{{ route('perfil') }}">
+            <a href="{{ route('perfil') }}" class="d-flex justify-content-center">
                 <img src="{{ asset('img/boton_entrar.png') }}" alt="Entrar" class="img-fluid">
             </a>
             @else
-            <a href="{{ route('login') }}">
+            <a href="{{ route('login') }}" class="d-flex justify-content-center">
                 <img src="{{ asset('img/boton_entrar.png') }}" alt="Entrar" class="img-fluid">
             </a>
             @endif
         </div>
 
-        <!-- Qué es -->
         <div class="d-flex justify-content-center mt-5 pt-5 z-1">
-            <div>
-                <img src="{{ asset('img/que_es.png') }}" alt="Imagen 1" class="img-fluid">
-            </div>
+            <img style="width: 70%;" src="{{ asset('img/que_es.png') }}" alt="Imagen 1" class="img-fluid">
         </div>
-        <div class="d-flex justify-content-center z-1">
-            <div>
-                <img src="{{ asset('img/flecha 1.png') }}" alt="Imagen 2" class="img-fluid">
-            </div>
+        <div class="d-flex justify-content-center z-1" style="width: 80%;">
+            <img src="{{ asset('img/flecha 1.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
-        <div class="d-flex justify-content-center z-1">
-            <div>
-                <img src="{{ asset('img/pegatina_rosa.png') }}" alt="Imagen 2" class="img-fluid">
-            </div>
+        <div class="d-flex justify-content-center z-1" style="width: 80%;">
+            <img src="{{ asset('img/pegatina_rosa.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
-        <div class="d-flex justify-content-center z-1">
-            <div>
-                <img src="{{ asset('img/flecha 2.png') }}" alt="Imagen 2" class="img-fluid">
-            </div>
+        <div class="d-flex justify-content-center z-1" style="width: 80%;">
+            <img src="{{ asset('img/flecha 2.png') }}" alt="Imagen 2" class="img-fluid">
         </div>
-        <div class="d-flex justify-content-center z-1">
-            <div>
-                <img src="{{ asset('img/corcho.png') }}" alt="Imagen 1" class="img-fluid">
-            </div>
+        <div class="d-flex justify-content-center z-1" style="width: 80%;">
+            <img src="{{ asset('img/corcho.png') }}" alt="Imagen 1" class="img-fluid">
         </div>
-        
-    
+        <div class="d-flex justify-content-center z-1" style="width: 80%;">
+            <img src="{{ asset('img/flecha 3.png') }}" alt="Imagen 2" class="img-fluid">
+        </div>
+        <div class="d-flex justify-content-center z-1" style="bottom: 20%; margin-left: -10%; margin-top: -10%;">
+            <img src="{{ asset('img/etiqueta.png') }}" alt="Etiqueta" class="img-fluid" style="width: 70%;">
+        </div>
 
+        <div class="footer z-1">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Contacto</a>
+        </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
