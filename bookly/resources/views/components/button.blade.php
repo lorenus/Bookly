@@ -3,8 +3,9 @@
     font-family: "Providence Sans"; 
     color:rgb(0, 0, 0); 
     font-size: x-large; 
+    cursor: pointer;
     background-position: center 5px; 
-    background-image: url("/img/boton.png"); 
+    background-image: url("/img/elementos/boton.png"); 
     background-size: contain; 
     background-repeat: no-repeat; 
     width: 180px; 

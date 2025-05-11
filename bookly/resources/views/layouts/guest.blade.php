@@ -19,7 +19,7 @@
 <body style="overflow: hidden;">
 <div class="fixed top-4 left-4 z-50">
         <a href="/">
-            <img src="{{ asset('img/bookly.png') }}" alt="Logo" style="width: 250px;">
+            <img src="{{ asset('img/elementos/bookly.png') }}" alt="Logo" style="width: 250px;">
         </a>
     </div>
 

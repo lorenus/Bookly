@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="login-container">
-        
+
         <div class="paper-background">
             <form method="POST" action="{{ route('login') }}" class="login-form">
                 @csrf
@@ -9,28 +9,24 @@
 
                 <!-- Usuario -->
                 <div class="form-group">
-                    <label for="email" class="input-label">{{ __('Usuario') }}</label>
-                    <div class="input-line">
-                        <input id="email" type="email" name="email" :value="old('email')" required autofocus autocomplete="username">
-                    </div>
+                    <x-input-label for="email" :value="__('Usuario')" />
+                    <x-text-input id="email" class="block w-full" type="text" name="email" :value="old('email')" required autofocus autocomplete="username" />
                     <x-input-error :messages="$errors->get('email')" class="input-error" />
                 </div>
 
                 <!-- Contraseña -->
                 <div class="form-group">
-                    <label for="password" class="input-label">{{ __('Contraseña') }}</label>
-                    <div class="input-line">
-                        <input id="password" type="password" name="password" required autocomplete="current-password">
-                    </div>
+                    <x-input-label for="password" :value="__('Contraseña')" />
+                    <x-text-input id="password" class="block w-full" type="password" name="password" required autocomplete="current-password" />
                     <x-input-error :messages="$errors->get('password')" class="input-error" />
                 </div>
 
                 <!-- Enlace recuperación -->
                 <div class="form-link">
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}">
-                            {{ __('¿No te acuerdas?') }}
-                        </a>
+                    <a href="{{ route('password.request') }}">
+                        {{ __('¿No te acuerdas?') }}
+                    </a>
                     @endif
                 </div>
 

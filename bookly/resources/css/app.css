@@ -26,7 +26,7 @@
 .paper-background {
     text-align: center;
     margin: 10% auto 0; 
-    background-image: url('/public/img/papel_login.png');
+    background-image: url('/public/img/login/papel_login.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -50,30 +50,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.input-label {
-    font-size: x-large;
-    color: #333;
-    margin-bottom: 0.5rem;
-}
-
-.input-line {
-    font-family: "dongle", sans-serif;
-    margin: auto;
-    width: 100%;
-    border-bottom: 1px solid #000;
-}
-
-.input-line input {
-    font-family: "dongle", sans-serif;
-    font-size: 2rem;
-    text-align: center;
-    width: 70%;
-    border: none;
-    background: transparent;
-    outline: none;
-    
 }
 
 .form-link {
@@ -103,16 +79,17 @@
 }
 
 .decoracion-1{
-    background-image: url('/public/img/paper_login.png');
+    background-image: url('/public/img/login/paper_login.png');
     background-size: contain;
     background-repeat: no-repeat;
     width: 100%;
     height: 30%;
     position: fixed;
     bottom: 0;
+    z-index: -5;
 }
 .decoracion-2{
-    background-image: url('/public/img/flor_login.png');
+    background-image: url('/public/img/login/flor_login.png');
     background-size: contain;
     background-repeat: no-repeat;
     width: 100%;
@@ -120,11 +97,72 @@
     position: fixed;
     bottom: 60%;
     left: 10%;
+    z-index: -5;
+}
+
+
+
+/****************** Estilos generales del register *****************/
+.register-container {
+    font-family: "Providence Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.paper-background-register {
+    text-align: center;
+    background-image: url('/public/img/register/fondo_register.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 60%;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+}
+
+.register-form {
+   margin-top: 7%;
+   align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+}
+.decoracion-3 {
+    background-image: url('/public/img/register/paper_register.png'); /* Elimina 'public' de la ruta */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 100%;
+    height: 25%; 
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: -5;
+}
+
+.decoracion-4 {
+    background-image: url('/public/img/register/florSeca_register.png'); /* Elimina 'public' de la ruta */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20%;
+    height: 20%; 
+    position: fixed;
+    left: 5%;
+    bottom: 10%;
+    z-index: -5;
 }
 
 /* Estilos para páginas de autenticación */
 .min-h-screen {
-    background-image: url('/public/img/fondo_login.png'); 
+    background-image: url('/public/img/login/fondo_login.png'); 
     background-size: contain;
     background-position: right;
     background-repeat: no-repeat;
