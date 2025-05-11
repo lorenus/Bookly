@@ -1,5 +1,6 @@
 <x-guest-layout>
     <div class="login-container">
+        
         <div class="paper-background">
             <form method="POST" action="{{ route('login') }}" class="login-form">
                 @csrf
@@ -27,9 +28,9 @@
                 <!-- Enlace recuperación -->
                 <div class="form-link">
                     @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}">
-                        {{ __('¿No te acuerdas?') }}
-                    </a>
+                        <a href="{{ route('password.request') }}">
+                            {{ __('¿No te acuerdas?') }}
+                        </a>
                     @endif
                 </div>
 
@@ -46,5 +47,7 @@
                 </div>
             </form>
         </div>
+        <div class="decoracion-2"></div>
+        <div class="decoracion-1"></div>
     </div>
 </x-guest-layout>

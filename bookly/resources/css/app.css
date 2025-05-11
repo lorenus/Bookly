@@ -16,13 +16,11 @@
 /****************** Estilos generales del login *****************/
 .login-container {
     font-family: "Providence Sans", sans-serif;
-    background-image: url('/public/img/fondo_login.png');
-    background-size: cover;
-    background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 1rem;
+    height: 100vh;
 }
 
 .paper-background {
@@ -102,4 +100,34 @@
 .input-error {
     color: #e53e3e;
     font-size: 0.875rem;
+}
+
+.decoracion-1{
+    background-image: url('/public/img/paper_login.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 30%;
+    position: fixed;
+    bottom: 0;
+}
+.decoracion-2{
+    background-image: url('/public/img/flor_login.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 20%;
+    position: fixed;
+    bottom: 60%;
+    left: 10%;
+}
+
+/* Estilos para páginas de autenticación */
+.min-h-screen {
+    background-image: url('/public/img/fondo_login.png'); 
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin-top: -8%;
 }
