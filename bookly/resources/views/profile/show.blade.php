@@ -4,22 +4,19 @@
     <div class="row g-0">
         <!-- Columna Corcho -->
         <!-- Columna Corcho -->
-        <div class="col-md-6 corcho-container position-relative"> <!-- Añadido position-relative -->
-            <!-- Div superpuesto en borde superior -->
+        <div class="col-md-6 corcho-container position-relative"> 
+            
             <div class="welcome-banner d-flex flex-column align-items-center justify-content-center">
-                <div style="margin-left: 25%; margin-top: -7%; transform: rotate(-9deg);"> <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2></div>
+                <div style="margin-left: 20%; margin-top: -7%; transform: rotate(-9deg);"> <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2></div>
             </div>
 
-            <div class="corcho-content h-100 d-flex flex-column pt-5"> <!-- Añadido pt-5 para espacio del banner -->
-                <!-- Primera fila (dividida en 2 columnas) -->
+            <div class="corcho-content h-100 d-flex flex-column pt-5"> 
+                <!-- Primera fila -->
                 <div class="row g-0 mb-3 flex-grow-1">
                     <!-- Columna izquierda - Polaroid con foto -->
                     <div class="col-md-6 h-100 pe-2">
                         <div class="polaroid-frame h-100 d-flex flex-column align-items-center justify-content-center p-4">
-                            <img src="{{ Auth::user()->imgPerfil ? Storage::url(Auth::user()->imgPerfil) : '/img/default-profile.png' }}"
-                                class="polaroid-image"
-                                alt="Foto de perfil">
-                            <div class="polaroid-caption mt-2">Mi perfil</div>
+                            <img src="{{ Auth::user()->imgPerfil }}" class="polaroid-image" alt="Foto de perfil">
                         </div>
                     </div>
 
@@ -27,12 +24,13 @@
                     <div class="col-md-6 h-100 ps-2">
                         <div class="postits-container h-100 position-relative p-3">
                             <div class="postit-large">
-                                <h3>Mis Logros</h3>
-                                <ul class="achievements-list">
-                                    <li>🥇 Primer libro leído</li>
-                                    <li>📚 10 libros completados</li>
-                                </ul>
+                                <img src="" alt="">
+                                <img src="" alt="">
+                                <a href="{{ route('logros.index') }}" class="postit-small">
+                                Ver mis logros
+                            </a>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -41,7 +39,6 @@
                 <div class="row g-0 flex-grow-1">
                     <div class="col-12 h-100">
                         <div class="paper-note h-100 p-4 d-flex flex-column">
-                            <h3 class="text-center mb-3">Reto Anual</h3>
                             <div class="progress-container mx-auto">
                                 <div class="progress-text text-center mb-2">
                                     {{ auth()->user()->librosLeidosEsteAnio() }} de {{ auth()->user()->retoAnual }} libros leídos

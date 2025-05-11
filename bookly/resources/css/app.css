@@ -243,11 +243,11 @@ body {
 }
 .polaroid-image {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    max-height: 50%;
+    top: 40%;
+    left: 55%;
+    transform: rotate(-7deg) translate(-50%, -50%);
+    width:65%;
+    max-height: 75%;
 }
 
 /* Estilo postits */
@@ -267,7 +267,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: rotate(4deg) translate(-50%, -50%);
     width: 70%;
     text-align: center;
 }
@@ -275,25 +275,19 @@ body {
 .paper-note {
     position: relative;
     background-image: url('/public/img/perfil/papel.png');
-    background-size: cover;
-    margin-top: -48%;
-    max-width: 80%;
-    margin-left: 10%
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: -35%;
+    max-width: 70%;
+    margin-left: 15%
 }
 
-.paper-note h3 {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    text-align: center;
-}
 .progress-container {
+    font-size: x-large;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: rotate(4deg) translate(-50%, -50%);
     width: 80%;
     text-align: center;
 }
