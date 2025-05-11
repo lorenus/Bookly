@@ -15,7 +15,7 @@
     <link href="{{ asset('css/welcome.css') }}" rel="stylesheet">
 </head>
 
-<body class="position-relative" style="overflow-x: hidden;">
+<body class="position-relative" style="overflow-x: hidden; max-height: 45vh;">
 
     <div class="background-stack z-1">
         <div class="background-section">
@@ -24,16 +24,16 @@
         <div class="background-section">
             <img src="{{ asset('img/estrelles_rosa.png') }}" alt="Estrellas rosas" class="bg-image">
         </div>
-        <div class="background-section">
+        <div class="background-section limited-height">
             <img src="{{ asset('img/estrelles_blau.png') }}" alt="Estrellas azules" class="bg-image">
         </div>
     </div>
 
-    <div class="position-absolute top-0 start-0">
-        <img src="{{ asset('img/paper_rosa.png') }}" alt="Decoración" class="img-fluid">
+    <div class="position-absolute top-0 start-0 decorativa">
+        <img src="{{ asset('img/paper_rosa.png') }}" alt="Decoración" class="img-fluid decorativa-img">
     </div>
-    <div class="position-absolute top-0 end-0">
-        <img src="{{ asset('img/estrella_tela.png') }}" alt="Decoración" class="img-fluid">
+    <div class="position-absolute top-0 end-0 decorativa">
+        <img src="{{ asset('img/estrella_tela.png') }}" alt="Decoración" class="img-fluid decorativa-img">
     </div>
 
 

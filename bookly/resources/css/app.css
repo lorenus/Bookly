@@ -1,0 +1,105 @@
+/* resources/css/app.css */
+@font-face {
+    font-family: "Providence Sans";
+    src: url("/public/fonts/Providence-Sans.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Dongle";
+    src: url("/public/fonts/dongle/Dongle-Regular.ttf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+/****************** Estilos generales del login *****************/
+.login-container {
+    font-family: "Providence Sans", sans-serif;
+    background-image: url('/public/img/fondo_login.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.paper-background {
+    text-align: center;
+    margin: 10% auto 0; 
+    background-image: url('/public/img/papel_login.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 0.5rem;
+    width: 60%;
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem;
+    width: 70%;
+    gap: 1rem;
+    align-items: center;
+    padding-left: 6rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-label {
+    font-size: x-large;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.input-line {
+    font-family: "dongle", sans-serif;
+    margin: auto;
+    width: 100%;
+    border-bottom: 1px solid #000;
+}
+
+.input-line input {
+    font-family: "dongle", sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    width: 70%;
+    border: none;
+    background: transparent;
+    outline: none;
+    
+}
+
+.form-link {
+    margin-top: 0.5rem;
+}
+
+.form-link a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: large;
+}
+
+.form-link a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.input-error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+}
