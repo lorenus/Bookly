@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="overflow: hidden;">
     <div class="row g-0">
         <!-- Columna Corcho -->
         <!-- Columna Corcho -->
@@ -55,6 +55,7 @@
         <div class="col-md-6 notebook-container">
             <div class="notebook-content"> <!-- Contenedor para elementos dentro de la libreta -->
                 <div class="search-section">
+                    <x-input-label for="basic-book-search" value="Buscar libros" class="text-lg font-bold mb-2" />
                     <input type="text" id="basic-book-search" placeholder="Buscar libros..." class="w-full p-2 border rounded">
                     <div id="basic-results" class="mt-2 hidden"></div>
                 </div>
