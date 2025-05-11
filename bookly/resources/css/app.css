@@ -190,8 +190,6 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     min-height: 80vh;
-    position: relative;
-    padding: 5% 8%; /* Espacio para el contenido dentro del corcho */
 }
 
 .corcho-content {
@@ -203,6 +201,7 @@ body {
 
 /* Banner superior */
 .welcome-banner {
+    position: relative;
     z-index: 10;
     background-image: url('http://[::1]:5173/public/img/perfil/etiqueta.png');
     background-size: contain;
@@ -210,19 +209,30 @@ body {
     background-position: center;
     width: 450px;
     height: 250px;
-    margin-left: -45%;
-    margin-top: -50%;
+    margin-top: -15%;
+    margin-left: -5%;
+}
+
+.welcome-banner h2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-9deg);
+    width: 100%;
+    text-align: center;
+    margin: 0; 
 }
 
 /* Estilo polaroid */
 .polaroid-frame {
+    position: relative;
     background-image: url('/public/img/perfil/polaroid.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    width: 140%;
-    margin-left: -40%;
-    margin-top: -30%;
+    width: 100%;
+    margin-top: -60%;
+    margin-left: 10%;
 }
 
 .polaroid-image {
@@ -231,27 +241,62 @@ body {
     max-height: 60%;
     object-fit: cover;
 }
-
+.polaroid-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    max-height: 50%;
+}
 
 /* Estilo postits */
 .postits-container {
+    position: relative;
     background-image: url('/public/img/perfil/logros.png');
     background-size: contain;
     background-repeat: no-repeat;
-    width: 130%;
-    height: 100%;
+    margin-top: -25%;
+    margin-left: -5%;
+    max-width: 250px;
+    height: 250px;
+    
 }
 
+.postit-large {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    text-align: center;
+}
 /* Estilo papel reto anual */
 .paper-note {
+    position: relative;
     background-image: url('/public/img/perfil/papel.png');
     background-size: cover;
-    width: 130%;
-    height: 1000px;
-    margin-top: -40%;
+    margin-top: -48%;
+    max-width: 80%;
+    margin-left: 10%
 }
 
-
+.paper-note h3 {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+.progress-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+}
 /* Estilos para la libreta */
 .notebook-container {
     background-image: url('/public/img/perfil/libreta.png');
