@@ -19,7 +19,7 @@
     <header>
         <!-- Logo (izquierda) -->
         <a href="/" class="flex items-center">
-            <img src="{{ asset('img/elementos/bookly.png') }}" alt="Logo" class="h-10" style="width: 250px;">
+            <img src="{{ asset('img/elementos/bookly.png') }}" alt="Logo" class="h-10" style="width: 200px; margin-left: 20px; margin-top: 20px;">
         </a>
     </header>
 

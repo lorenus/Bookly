@@ -15,35 +15,34 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     public function show()
-{
-    $user = User::with('libros')->find(Auth::id());
-    
-    // Obtener libros para cada lista
-    $leyendoActual = $user->libros()
-        ->wherePivot('estado', 'leyendo')
-        ->orderBy('libros_usuario.updated_at', 'desc')
-        ->take(4)
-        ->get();
+    {
+        $user = User::with('libros')->find(Auth::id());
 
-    $ultimasLecturas = $user->libros()
-        ->wherePivot('estado', 'leido')
-        ->orderBy('libros_usuario.updated_at', 'desc')
-        ->take(4)
-        ->get();
+        $leyendoActual = $user->libros()
+            ->wherePivot('estado', 'leyendo')
+            ->orderBy('libros_usuario.updated_at', 'desc')
+            ->take(4)
+            ->get();
 
-    $favoritos = $user->libros()
-        ->wherePivot('valoracion', 5) // Asumo que favoritos son valoración 5
-        ->orderBy('libros_usuario.updated_at', 'desc')
-        ->take(4)
-        ->get();
+        $paraLeer = $user->libros()
+            ->wherePivot('estado', 'porLeer')
+            ->orderBy('libros_usuario.updated_at', 'desc')
+            ->take(4)
+            ->get();
 
-    return view('profile.show', [
-        'user' => $user,
-        'leyendoActual' => $leyendoActual,
-        'ultimasLecturas' => $ultimasLecturas,
-        'favoritos' => $favoritos
-    ]);
-}
+        $ultimasLecturas = $user->libros()
+            ->wherePivot('estado', 'leido')
+            ->orderBy('libros_usuario.updated_at', 'desc')
+            ->take(4)
+            ->get();
+
+        return view('profile.show', [
+            'user' => $user,
+            'leyendoActual' => $leyendoActual,
+            'paraLeer' => $paraLeer,
+            'ultimasLecturas' => $ultimasLecturas
+        ]);
+    }
 
     /**
      * Display the user's profile form.
@@ -75,7 +74,7 @@ class ProfileController extends Controller
             if ($user->imgPerfil !== 'profile-photos/default.jpg') {
                 Storage::disk('public')->delete($user->imgPerfil);
             }
-        
+
             $user->imgPerfil = $request->file('imgPerfil')->store('profile-photos', 'public');
             $user->save();
         }

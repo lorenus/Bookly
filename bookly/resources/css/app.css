@@ -28,8 +28,8 @@ body {
 
 .paper-background {
     text-align: center;
-    margin: 10% auto 0; 
-    background-image: url('/public/img/login/papel_login.png');
+    margin: 10% auto 0;
+    background-image: url("/public/img/login/papel_login.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -81,8 +81,8 @@ body {
     font-size: 0.875rem;
 }
 
-.decoracion-1{
-    background-image: url('/public/img/login/paper_login.png');
+.decoracion-1 {
+    background-image: url("/public/img/login/paper_login.png");
     background-size: contain;
     background-repeat: no-repeat;
     width: 100%;
@@ -91,8 +91,8 @@ body {
     bottom: 0;
     z-index: -5;
 }
-.decoracion-2{
-    background-image: url('/public/img/login/flor_login.png');
+.decoracion-2 {
+    background-image: url("/public/img/login/flor_login.png");
     background-size: contain;
     background-repeat: no-repeat;
     width: 100%;
@@ -102,8 +102,6 @@ body {
     left: 10%;
     z-index: -5;
 }
-
-
 
 /****************** Estilos generales del register *****************/
 .register-container {
@@ -116,7 +114,7 @@ body {
 
 .paper-background-register {
     text-align: center;
-    background-image: url('/public/img/register/fondo_register.png');
+    background-image: url("/public/img/register/fondo_register.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -127,8 +125,8 @@ body {
 }
 
 .register-form {
-   margin-top: 7%;
-   align-items: center;
+    margin-top: 7%;
+    align-items: center;
     display: flex;
     flex-direction: column;
 }
@@ -138,12 +136,12 @@ body {
     font-size: 0.875rem;
 }
 .decoracion-3 {
-    background-image: url('/public/img/register/paper_register.png'); /* Elimina 'public' de la ruta */
+    background-image: url("/public/img/register/paper_register.png"); /* Elimina 'public' de la ruta */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: right;
     width: 100%;
-    height: 25%; 
+    height: 25%;
     position: fixed;
     top: 0;
     right: 0;
@@ -151,12 +149,12 @@ body {
 }
 
 .decoracion-4 {
-    background-image: url('/public/img/register/florSeca_register.png'); /* Elimina 'public' de la ruta */
+    background-image: url("/public/img/register/florSeca_register.png"); /* Elimina 'public' de la ruta */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     width: 20%;
-    height: 20%; 
+    height: 20%;
     position: fixed;
     left: 5%;
     bottom: 10%;
@@ -165,14 +163,13 @@ body {
 
 /* Estilos para páginas de autenticación */
 .min-h-screen {
-    background-image: url('/public/img/login/fondo_login.png'); 
+    background-image: url("/public/img/login/fondo_login.png");
     background-size: contain;
     background-position: right;
     background-repeat: no-repeat;
     height: 100vh;
     margin-top: -8%;
 }
-
 
 /****************** Estilos generales del perfil usuario *****************/
 
@@ -187,7 +184,7 @@ body {
     margin-left: 5%;
     width: 40%;
     height: auto;
-    background-image: url('/public/img/perfil/corcho.png');
+    background-image: url("/public/img/perfil/corcho.png");
     background-size: contain;
     background-repeat: no-repeat;
     min-height: 80vh;
@@ -204,7 +201,7 @@ body {
 .welcome-banner {
     position: relative;
     z-index: 10;
-    background-image: url('http://[::1]:5173/public/img/perfil/etiqueta.png');
+    background-image: url("http://[::1]:5173/public/img/perfil/etiqueta.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -221,13 +218,13 @@ body {
     transform: translate(-50%, -50%) rotate(-9deg);
     width: 100%;
     text-align: center;
-    margin: 0; 
+    margin: 0;
 }
 
 /* Estilo polaroid */
 .polaroid-frame {
     position: relative;
-    background-image: url('/public/img/perfil/polaroid.png');
+    background-image: url("/public/img/perfil/polaroid.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -247,21 +244,20 @@ body {
     top: 40%;
     left: 55%;
     transform: rotate(-7deg) translate(-50%, -50%);
-    width:65%;
+    width: 65%;
     max-height: 75%;
 }
 
 /* Estilo postits */
 .postits-container {
     position: relative;
-    background-image: url('/public/img/perfil/logros.png');
+    background-image: url("/public/img/perfil/logros.png");
     background-size: contain;
     background-repeat: no-repeat;
     margin-top: -25%;
     margin-left: -5%;
     max-width: 250px;
     height: 250px;
-    
 }
 
 .postit-large {
@@ -275,12 +271,12 @@ body {
 /* Estilo papel reto anual */
 .paper-note {
     position: relative;
-    background-image: url('/public/img/perfil/papel.png');
+    background-image: url("/public/img/perfil/papel.png");
     background-size: contain;
     background-repeat: no-repeat;
     margin-top: -35%;
     max-width: 70%;
-    margin-left: 15%
+    margin-left: 15%;
 }
 
 .progress-container {
@@ -295,7 +291,7 @@ body {
 
 /* Estilos para la libreta */
 .notebook-container {
-    background-image: url('/public/img/perfil/libreta.png');
+    background-image: url("/public/img/perfil/libreta.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
     min-height: 80vh;
@@ -307,6 +303,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 1.5rem;
 }
 
 /* Filas generales */
@@ -315,10 +312,17 @@ body {
     max-height: 22%;
     margin-bottom: 100px;
 }
-
+.notebook-row.list-row {
+    margin-bottom: 1rem; /* Aumenté de mb-4 (1rem) a 2rem */
+}
+.list-row {
+    flex: 1 1 auto;
+    min-height: 150px;
+}
 .search-row {
-    flex: 0.5; 
-    max-height: 10%;
+    flex: 0.5;
+    max-height: 1%;
+    margin-bottom: 1.1rem;
 }
 
 /* Encabezados de lista */
@@ -341,29 +345,26 @@ body {
 
 /* Portadas de libros */
 .book-covers {
-    height: calc(100% - 30px); /* Restamos altura del header */
+    height: calc(100% - 30px);
     padding: 0 5px;
     display: flex;
     justify-content: start;
-    
 }
 
 .book-cover {
-    width: 23%; 
+    width: 23%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #e0e0e0;
     border-radius: 3px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
 .book-cover:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .book-cover img {
@@ -377,7 +378,7 @@ body {
     .notebook-container {
         padding: 10% 8%;
     }
-    
+
     .book-cover {
         width: 22%;
     }
@@ -385,19 +386,22 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .corcho-container, .notebook-container {
+    .corcho-container,
+    .notebook-container {
         min-height: 50vh; /* Altura menor en móvil */
         padding: 15% 10%;
     }
-    
+
     .corcho-container {
         background-size: cover;
     }
-    
+
     .notebook-container {
         background-size: cover;
     }
 }
+
+/********** Buscador mi perfil **************/
 
 #basic-results {
     position: absolute;
@@ -406,7 +410,7 @@ body {
     overflow-y: auto;
     background-color: white;
     border-radius: 0 0 4px 4px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     margin-top: 0;
 }
@@ -439,4 +443,50 @@ body {
 
 #basic-results .p-2 {
     padding: 0.5rem;
+}
+
+/* Portadas genéricas */
+/* ESTILOS UNIFICADOS PARA PORTADAS */
+.book-cover-container {
+    width: 100px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.book-cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+/* Cuando la imagen es la portada por defecto */
+.book-cover-image[src*="portada_default.png"] {
+    min-width: 150px;
+    margin-left: -27%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+/* Texto superpuesto */
+.book-title-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white !important;
+    padding: 5px;
+    font-size: 15px;
+    text-align: center;
+    z-index: 2;
+}
+
+/* Efecto hover para todas las portadas */
+.book-cover:hover .book-cover-image {
+    transform: scale(1.03);
 }

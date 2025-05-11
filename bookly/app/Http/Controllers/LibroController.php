@@ -119,7 +119,7 @@ class LibroController extends Controller
 
     public function addToList(Request $request)
     {
-        $user = Auth::user(); // Mejor forma de obtener el usuario actual
+        $user = Auth::user(); 
 
         $request->validate([
             'libro_id' => 'required|string',
@@ -272,4 +272,5 @@ class LibroController extends Controller
 
         return back()->with('success', 'Libro recomendado a tu amigo');
     }
+
 }

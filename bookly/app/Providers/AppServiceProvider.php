@@ -6,7 +6,9 @@ use App\Events\LibroLeido;
 use App\Listeners\CheckLogrosListener;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use App\View\Components\BookCover;
 
 class AppServiceProvider extends ServiceProvider
 {

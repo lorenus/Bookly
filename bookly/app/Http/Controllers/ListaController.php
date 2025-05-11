@@ -24,7 +24,6 @@ class ListaController extends Controller
         $estados = [
             'leyendo' => 'leyendo',
             'leido' => 'leido',
-            'favoritos' => 'favoritos',
             'porLeer' => 'porLeer',
         ];
 

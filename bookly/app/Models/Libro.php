@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 
 class Libro extends Model
 {
@@ -60,5 +61,21 @@ class Libro extends Model
         if (isset($this->anyo_publicacion)) {
             return $this->anyo_publicacion < 1900;
         }
+    }
+
+    public function getPortadaSegura()
+    {
+        // 1. Si tiene URL de Google/Amazon
+        if (!empty($this->urlPortada) && filter_var($this->urlPortada, FILTER_VALIDATE_URL)) {
+            return $this->urlPortada; // Usa la URL directamente
+        }
+
+        // 2. Si tiene google_id pero no urlPortada
+        if ($this->google_id) {
+            return "https://covers.openlibrary.org/b/olid/{$this->google_id}-M.jpg";
+        }
+
+        // 3. Fallback a imagen local por defecto
+        return asset('img/elementos/portada_default.png');
     }
 }

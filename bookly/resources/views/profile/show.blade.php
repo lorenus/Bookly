@@ -3,9 +3,7 @@
 <div class="container-fluid" style="overflow: hidden;">
     <div class="row g-0">
         <!-- Columna Corcho -->
-        <!-- Columna Corcho -->
         <div class="col-md-6 corcho-container position-relative">
-
             <div class="welcome-banner d-flex flex-column align-items-center justify-content-center">
                 <div style="margin-left: 20%; margin-top: -7%; transform: rotate(-9deg);">
                     <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2>
@@ -32,7 +30,6 @@
                                     Ver mis logros
                                 </a>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -45,14 +42,12 @@
                                 <div class="progress-text text-center mb-2">
                                     {{ auth()->user()->librosLeidosEsteAnio() }} de {{ auth()->user()->retoAnual }} libros leídos
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!-- Columna Libreta -->
         <div class="col-md-6 notebook-container">
@@ -73,50 +68,83 @@
                     <div class="list-header d-flex justify-content-between align-items-center mb-2">
                         <h3 class="m-0">Leyendo actualmente</h3>
                         <a href="{{ route('listas.show', 'leyendo') }}" class="see-all-link">
-                            <img src="img/elementos/flecha1.png" alt="Ver todos" class="see-all-icon">
+                            <img src="{{ asset('img/elementos/flecha1.png') }}" alt="Ver todos" class="see-all-icon">
                         </a>
                     </div>
                     <div class="book-covers d-flex justify-content-between">
                         @foreach($leyendoActual as $libro)
-                        <a href="{{ route('libro.show', $libro->google_id) }}" class="book-cover">
-                            <img src="{{ $libro->urlPortada ?? '/img/default-book.png' }}"
-                                alt="{{ $libro->titulo }}"
-                                class="img-fluid"
-                                onerror="this.src='/img/default-book.png'">
+                        @php
+                            $portadaUrl = $libro->getPortadaSegura();
+                            $defaultCover = asset('img/elementos/portada_default.png');
+                        @endphp
+                        <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
+                            <div class="book-cover-container">
+                                <img src="{{ $portadaUrl }}"
+                                     alt="{{ $libro->titulo }}"
+                                     class="book-cover-image"
+                                     onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
+                                <div class="book-title-overlay">
+                                    {{ Str::limit($libro->titulo, 30) }}
+                                </div>
+                            </div>
                         </a>
                         @endforeach
                     </div>
                 </div>
 
-                <!-- Fila 3: Últimas lecturas -->
+                <!-- Fila 3: Por leer -->
+                <div class="notebook-row list-row mb-4">
+                    <div class="list-header d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="m-0">Para leer</h3>
+                        <a href="{{ route('listas.show', 'porLeer') }}" class="see-all-link">
+                            <img src="{{ asset('img/elementos/flecha1.png') }}" alt="Ver todos" class="see-all-icon">
+                        </a>
+                    </div>
+                    <div class="book-covers d-flex justify-content-between">
+                        @foreach($paraLeer as $libro)
+                        @php
+                            $portadaUrl = $libro->getPortadaSegura();
+                            $defaultCover = asset('img/elementos/portada_default.png');
+                        @endphp
+                        <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
+                            <div class="book-cover-container">
+                                <img src="{{ $portadaUrl }}"
+                                     alt="{{ $libro->titulo }}"
+                                     class="book-cover-image"
+                                     onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
+                                <div class="book-title-overlay">
+                                    {{ Str::limit($libro->titulo, 30) }}
+                                </div>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Fila 4: Últimas lecturas -->
                 <div class="notebook-row list-row mb-4">
                     <div class="list-header d-flex justify-content-between align-items-center mb-2">
                         <h3 class="m-0">Últimas lecturas</h3>
                         <a href="{{ route('listas.show', 'leido') }}" class="see-all-link">
-                            <img src="img/elementos/flecha1.png" alt="Ver todos" class="see-all-icon">
+                            <img src="{{ asset('img/elementos/flecha1.png') }}" alt="Ver todos" class="see-all-icon">
                         </a>
                     </div>
                     <div class="book-covers d-flex justify-content-between">
                         @foreach($ultimasLecturas as $libro)
-                        <a href="{{ route('libro.show', $libro->id) }}" class="book-cover">
-                            <img src="{{ $libro->portada_url }}" alt="{{ $libro->titulo }}" class="img-fluid">
-                        </a>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Fila 4: Mis favoritos -->
-                <div class="notebook-row list-row">
-                    <div class="list-header d-flex justify-content-between align-items-center mb-2">
-                        <h3 class="m-0">Mis favoritos</h3>
-                        <a href="{{ route('listas.show', 'favoritos') }}" class="see-all-link">
-                            <img src="img/elementos/flecha1.png" alt="Ver todos" class="see-all-icon">
-                        </a>
-                    </div>
-                    <div class="book-covers d-flex justify-content-between">
-                        @foreach($favoritos as $libro)
-                        <a href="{{ route('libro.show', $libro->id) }}" class="book-cover">
-                            <img src="{{ $libro->portada_url }}" alt="{{ $libro->titulo }}" class="img-fluid">
+                        @php
+                            $portadaUrl = $libro->getPortadaSegura();
+                            $defaultCover = asset('img/elementos/portada_default.png');
+                        @endphp
+                        <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
+                            <div class="book-cover-container">
+                                <img src="{{ $portadaUrl }}"
+                                     alt="{{ $libro->titulo }}"
+                                     class="book-cover-image"
+                                     onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
+                                <div class="book-title-overlay">
+                                    {{ Str::limit($libro->titulo, 30) }}
+                                </div>
+                            </div>
                         </a>
                         @endforeach
                     </div>
@@ -147,12 +175,12 @@
                         let html = '';
                         books.forEach(book => {
                             html += `
-                    <div class="p-2 border-b">
-                        <a href="/libros/${book.id}" class="text-blue-600">
-                            ${book.volumeInfo.title}
-                        </a>
-                    </div>
-                `;
+                                <div class="p-2 border-b">
+                                    <a href="/libros/${book.id}" class="text-blue-600">
+                                        ${book.volumeInfo.title}
+                                    </a>
+                                </div>
+                            `;
                         });
 
                         resultsDiv.innerHTML = html;
@@ -165,6 +193,4 @@
                     });
             });
         </script>
-
-
-        @endsection
+@endsection
