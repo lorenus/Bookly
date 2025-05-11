@@ -4,13 +4,15 @@
     <div class="row g-0">
         <!-- Columna Corcho -->
         <!-- Columna Corcho -->
-        <div class="col-md-6 corcho-container position-relative"> 
-            
+        <div class="col-md-6 corcho-container position-relative">
+
             <div class="welcome-banner d-flex flex-column align-items-center justify-content-center">
-                <div style="margin-left: 20%; margin-top: -7%; transform: rotate(-9deg);"> <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2></div>
+                <div style="margin-left: 20%; margin-top: -7%; transform: rotate(-9deg);">
+                    <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2>
+                </div>
             </div>
 
-            <div class="corcho-content h-100 d-flex flex-column pt-5"> 
+            <div class="corcho-content h-100 d-flex flex-column pt-5">
                 <!-- Primera fila -->
                 <div class="row g-0 mb-3 flex-grow-1">
                     <!-- Columna izquierda - Polaroid con foto -->
@@ -27,10 +29,10 @@
                                 <img src="" alt="">
                                 <img src="" alt="">
                                 <a href="{{ route('logros.index') }}" class="postit-small">
-                                Ver mis logros
-                            </a>
+                                    Ver mis logros
+                                </a>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -51,67 +53,118 @@
             </div>
         </div>
 
+
         <!-- Columna Libreta -->
         <div class="col-md-6 notebook-container">
-            <div class="notebook-content"> <!-- Contenedor para elementos dentro de la libreta -->
-                <div class="search-section">
-                    <x-input-label for="basic-book-search" value="Buscar libros" class="text-lg font-bold mb-2" />
-                    <input type="text" id="basic-book-search" placeholder="Buscar libros..." class="w-full p-2 border rounded">
+            <div class="notebook-content h-100 d-flex flex-column">
+                <!-- Fila 1: Búsqueda -->
+                <div class="notebook-row search-row mb-4">
+                    <div class="d-flex align-items-center">
+                        <x-input-label for="basic-book-search" value="Buscar libros" class="text-lg font-bold mb-0 mr-3" />
+                        <div class="flex-grow-1">
+                            <input type="text" id="basic-book-search" placeholder="Buscar libros..." class="w-full p-2 border rounded">
+                        </div>
+                    </div>
                     <div id="basic-results" class="mt-2 hidden"></div>
                 </div>
 
-                <div class="menu-section">
-                    <ul>
-                        <li><a href="{{ route('listas.show', 'leyendo') }}">Leyendo actualmente</a></li>
-                        <li><a href="{{ route('listas.show', 'leido') }}">Últimas lecturas</a></li>
-                        <li><a href="{{ route('listas.show', 'favoritos') }}">Mis favoritos</a></li>
-                    </ul>
+                <!-- Fila 2: Leyendo actualmente -->
+                <div class="notebook-row list-row mb-4">
+                    <div class="list-header d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="m-0">Leyendo actualmente</h3>
+                        <a href="{{ route('listas.show', 'leyendo') }}" class="see-all-link">
+                            <img src="img/elementos/flecha1.png" alt="Ver todos" class="see-all-icon">
+                        </a>
+                    </div>
+                    <div class="book-covers d-flex justify-content-between">
+                        @foreach($leyendoActual as $libro)
+                        <a href="{{ route('libro.show', $libro->google_id) }}" class="book-cover">
+                            <img src="{{ $libro->urlPortada ?? '/img/default-book.png' }}"
+                                alt="{{ $libro->titulo }}"
+                                class="img-fluid"
+                                onerror="this.src='/img/default-book.png'">
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Fila 3: Últimas lecturas -->
+                <div class="notebook-row list-row mb-4">
+                    <div class="list-header d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="m-0">Últimas lecturas</h3>
+                        <a href="{{ route('listas.show', 'leido') }}" class="see-all-link">
+                            <img src="img/elementos/flecha1.png" alt="Ver todos" class="see-all-icon">
+                        </a>
+                    </div>
+                    <div class="book-covers d-flex justify-content-between">
+                        @foreach($ultimasLecturas as $libro)
+                        <a href="{{ route('libro.show', $libro->id) }}" class="book-cover">
+                            <img src="{{ $libro->portada_url }}" alt="{{ $libro->titulo }}" class="img-fluid">
+                        </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Fila 4: Mis favoritos -->
+                <div class="notebook-row list-row">
+                    <div class="list-header d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="m-0">Mis favoritos</h3>
+                        <a href="{{ route('listas.show', 'favoritos') }}" class="see-all-link">
+                            <img src="img/elementos/flecha1.png" alt="Ver todos" class="see-all-icon">
+                        </a>
+                    </div>
+                    <div class="book-covers d-flex justify-content-between">
+                        @foreach($favoritos as $libro)
+                        <a href="{{ route('libro.show', $libro->id) }}" class="book-cover">
+                            <img src="{{ $libro->portada_url }}" alt="{{ $libro->titulo }}" class="img-fluid">
+                        </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<script>
-    document.getElementById('basic-book-search').addEventListener('input', function(e) {
-        const query = e.target.value.trim();
-        const resultsDiv = document.getElementById('basic-results');
 
-        if (query.length < 2) {
-            resultsDiv.innerHTML = '';
-            resultsDiv.classList.add('hidden');
-            return;
-        }
+        <script>
+            document.getElementById('basic-book-search').addEventListener('input', function(e) {
+                const query = e.target.value.trim();
+                const resultsDiv = document.getElementById('basic-results');
 
-        fetch(`/buscar-libros?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(books => {
-                if (!books || books.length === 0) {
-                    resultsDiv.innerHTML = '<p>No se encontraron libros</p>';
-                    resultsDiv.classList.remove('hidden');
+                if (query.length < 2) {
+                    resultsDiv.innerHTML = '';
+                    resultsDiv.classList.add('hidden');
                     return;
                 }
 
-                let html = '';
-                books.forEach(book => {
-                    html += `
+                fetch(`/buscar-libros?query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(books => {
+                        if (!books || books.length === 0) {
+                            resultsDiv.innerHTML = '<p>No se encontraron libros</p>';
+                            resultsDiv.classList.remove('hidden');
+                            return;
+                        }
+
+                        let html = '';
+                        books.forEach(book => {
+                            html += `
                     <div class="p-2 border-b">
                         <a href="/libros/${book.id}" class="text-blue-600">
                             ${book.volumeInfo.title}
                         </a>
                     </div>
                 `;
-                });
+                        });
 
-                resultsDiv.innerHTML = html;
-                resultsDiv.classList.remove('hidden');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                resultsDiv.innerHTML = '<p class="text-red-500">Error al buscar</p>';
-                resultsDiv.classList.remove('hidden');
+                        resultsDiv.innerHTML = html;
+                        resultsDiv.classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        resultsDiv.innerHTML = '<p class="text-red-500">Error al buscar</p>';
+                        resultsDiv.classList.remove('hidden');
+                    });
             });
-    });
-</script>
+        </script>
 
 
-@endsection
+        @endsection

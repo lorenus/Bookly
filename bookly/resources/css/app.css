@@ -293,7 +293,6 @@ body {
     text-align: center;
 }
 
-
 /* Estilos para la libreta */
 .notebook-container {
     background-image: url('/public/img/perfil/libreta.png');
@@ -301,13 +300,87 @@ body {
     background-repeat: no-repeat;
     min-height: 80vh;
     position: relative;
-    padding: 5% 8% 5% 12%; 
+    padding: 5% 8% 5% 12%;
 }
 
 .notebook-content {
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+/* Filas generales */
+.notebook-row {
+    flex: 1;
+    max-height: 22%;
+    margin-bottom: 100px;
+}
+
+.search-row {
+    flex: 0.5; 
+    max-height: 10%;
+}
+
+/* Encabezados de lista */
+.list-header {
+    padding: 0 10px;
+}
+
+.see-all-link {
+    transition: transform 0.3s ease;
+}
+
+.see-all-link:hover {
+    transform: scale(1.1);
+}
+
+.see-all-icon {
+    width: 60px;
+    height: 60px;
+}
+
+/* Portadas de libros */
+.book-covers {
+    height: calc(100% - 30px); /* Restamos altura del header */
+    padding: 0 5px;
+    display: flex;
+    justify-content: start;
+    
+}
+
+.book-cover {
+    width: 23%; 
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.book-cover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.book-cover img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .notebook-container {
+        padding: 10% 8%;
+    }
+    
+    .book-cover {
+        width: 22%;
+    }
 }
 
 /* Responsive */
@@ -326,3 +399,44 @@ body {
     }
 }
 
+#basic-results {
+    position: absolute;
+    width: 60%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    margin-top: 0;
+}
+
+#basic-results div {
+    padding: 10px;
+}
+
+#basic-results div:hover {
+    background-color: #f5f5f5;
+}
+
+#basic-results a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+#basic-results .border-b {
+    border-bottom: 1px solid #eee;
+}
+
+#basic-results .text-blue-600 {
+    color: #3f3f3f;
+}
+
+#basic-results .text-red-500 {
+    color: #ef4444;
+}
+
+#basic-results .p-2 {
+    padding: 0.5rem;
+}

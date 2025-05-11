@@ -15,11 +15,35 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     public function show()
-    {
-        return view('profile.show', [
-            'user' => Auth::user()
-        ]);
-    }
+{
+    $user = User::with('libros')->find(Auth::id());
+    
+    // Obtener libros para cada lista
+    $leyendoActual = $user->libros()
+        ->wherePivot('estado', 'leyendo')
+        ->orderBy('libros_usuario.updated_at', 'desc')
+        ->take(4)
+        ->get();
+
+    $ultimasLecturas = $user->libros()
+        ->wherePivot('estado', 'leido')
+        ->orderBy('libros_usuario.updated_at', 'desc')
+        ->take(4)
+        ->get();
+
+    $favoritos = $user->libros()
+        ->wherePivot('valoracion', 5) // Asumo que favoritos son valoración 5
+        ->orderBy('libros_usuario.updated_at', 'desc')
+        ->take(4)
+        ->get();
+
+    return view('profile.show', [
+        'user' => $user,
+        'leyendoActual' => $leyendoActual,
+        'ultimasLecturas' => $ultimasLecturas,
+        'favoritos' => $favoritos
+    ]);
+}
 
     /**
      * Display the user's profile form.
