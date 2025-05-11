@@ -183,8 +183,11 @@ body {
 
 /* Estilos para el corcho */
 .corcho-container {
+    margin-top: 5%;
+    width: 40%;
+    height: auto;
     background-image: url('/public/img/perfil/corcho.png');
-    background-size: 100% 100%;
+    background-size: contain;
     background-repeat: no-repeat;
     min-height: 80vh;
     position: relative;
@@ -197,6 +200,57 @@ body {
     flex-direction: column;
     justify-content: space-between;
 }
+
+/* Banner superior */
+.welcome-banner {
+    z-index: 10;
+    background-image: url('http://[::1]:5173/public/img/perfil/etiqueta.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 450px;
+    height: 250px;
+    margin-left: -45%;
+    margin-top: -50%;
+}
+
+/* Estilo polaroid */
+.polaroid-frame {
+    background-image: url('/public/img/perfil/polaroid.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 140%;
+    margin-left: -40%;
+    margin-top: -30%;
+}
+
+.polaroid-image {
+    width: 70%;
+    height: auto;
+    max-height: 60%;
+    object-fit: cover;
+}
+
+
+/* Estilo postits */
+.postits-container {
+    background-image: url('/public/img/perfil/logros.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 130%;
+    height: 100%;
+}
+
+/* Estilo papel reto anual */
+.paper-note {
+    background-image: url('/public/img/perfil/papel.png');
+    background-size: cover;
+    width: 130%;
+    height: 1000px;
+    margin-top: -40%;
+}
+
 
 /* Estilos para la libreta */
 .notebook-container {
@@ -254,4 +308,11 @@ body {
     .notebook-container {
         background-size: cover;
     }
+}
+
+.reto_anual{
+    background-image: url('/public/img/perfil/papel.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
 }
