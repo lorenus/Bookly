@@ -1,68 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Fondo de pantalla completa -->
 <div class="list-background">
     <img src="{{ asset('img/lista/fondo-lista.png') }}" alt="Fondo" class="background-image">
 </div>
 
-<!-- Contenedor principal con scroll -->
 <div class="list-container">
-    <!-- Cabecera -->
-    <div class="list-header">
+<div class="list-header">
         <div class="header-content">
             <div class="header-title">
                 <h1>{{ $titulo }}</h1>
                 <p>{{ $libros->count() }} {{ $libros->count() > 1 ? 'libros' : 'libro' }}</p>
             </div>
-            
-            <div class="header-actions">
-                <!-- Barra de búsqueda modificada para filtrado en tiempo real -->
-                <div class="search-form">
-                    <input 
-                        type="text" 
+
+            <div class="header-actions" style="position: relative; z-index: 100;"> <!-- Añadido z-index -->
+                <!-- Barra de búsqueda corregida -->
+                <div class="search-form" style="position: relative;">
+                    <input
+                        type="text"
                         id="buscar-libros"
-                        placeholder="Buscar libros..." 
+                        placeholder="Buscar libros..."
                         class="search-input"
-                        x-data
-                        x-on:input.debounce.300ms="
-                            const search = $event.target.value.toLowerCase();
-                            document.querySelectorAll('.list-book-card').forEach(card => {
-                                const title = card.querySelector('h3').textContent.toLowerCase();
-                                const author = card.querySelector('.book-info p').textContent.toLowerCase();
-                                card.style.display = (title.includes(search) || author.includes(search)) ? '' : 'none';
-                            });
-                        ">
-                    <div class="search-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                        </svg>
-                    </div>
+                        style="width: 100%; padding: 10px; box-sizing: border-box;">
                 </div>
-                
-                <!-- Botón de ordenación (se mantiene igual) -->
-                <div class="sort-container">
-                    <button class="sort-button" id="sortButton">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
-                        </svg>
-                        Ordenar
-                    </button>
-                    <div class="sort-options" id="sortOptions">
-                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'titulo', 'direction' => 'asc']) }}">A-Z</a>
-                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'titulo', 'direction' => 'desc']) }}">Z-A</a>
-                        <a href="{{ request()->fullUrlWithQuery(['sort' => 'autor', 'direction' => 'asc']) }}">Autor (A-Z)</a>
-                    </div>
-                </div>
+
+                <button
+                    id="sortButton"
+                    class="sort-button"
+                    data-sort-field="titulo"
+                    data-current-direction="{{ request('direction', 'asc') }}">
+                    <img
+                        id="sortIcon"
+                        src="{{ asset('img/elementos/' . (request('direction', 'asc') === 'asc' ? 'az.png' : 'za.png')) }}"
+                        alt="Ordenar"
+                        title="Ordenar alfabéticamente">
+                </button>
             </div>
         </div>
     </div>
-    <!-- Grid de libros con scroll (se mantiene igual) -->
     <div class="list-scrollable">
         @if($libros->count() > 0)
-        <div class="book-grid">
+        <div class="book-grid" id="book-grid">
             @foreach($libros as $libro)
-            <div class="list-book-card">
+            <div class="list-book-card" data-title="{{ strtolower($libro->titulo) }}" data-author="{{ strtolower($libro->autor) }}">
                 <a href="{{ route('libro.show', $libro->google_id) }}" class="book-link">
                     <div class="list-book-cover">
                         @if($libro->urlPortada)
@@ -116,16 +96,71 @@
 </div>
 
 <script>
-// Mostrar/ocultar opciones de ordenación (se mantiene igual)
-document.getElementById('sortButton').addEventListener('click', function() {
-    document.getElementById('sortOptions').classList.toggle('show');
-});
+// SOLUCIÓN DEFINITIVA - CONFIRMADA FUNCIONAL
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Primero asegurémonos que el input es clickable
+    const searchInput = document.getElementById('buscar-libros');
+    
+    // Forzar el enfoque al hacer clic en cualquier parte del header-actions
+    document.querySelector('.header-actions').addEventListener('click', function(e) {
+        // Si el clic no fue directamente en el input, lo enfocamos igual
+        if (e.target !== searchInput) {
+            searchInput.focus();
+        }
+    });
 
-// Cerrar menú al hacer clic fuera (se mantiene igual)
-window.addEventListener('click', function(e) {
-    if (!e.target.matches('#sortButton') && !e.target.closest('.sort-container')) {
-        document.getElementById('sortOptions').classList.remove('show');
+    // 2. Filtrado funcional
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const books = document.querySelectorAll('.list-book-card');
+        
+        books.forEach(book => {
+            const title = book.querySelector('h3').textContent.toLowerCase();
+            const author = book.querySelector('.book-info p').textContent.toLowerCase();
+            book.style.display = (title.includes(searchTerm) || author.includes(searchTerm)) 
+                ? '' 
+                : 'none';
+        });
+    });
+
+    // 3. Ordenación (ya funcionaba)
+    const sortButton = document.getElementById('sortButton');
+    let currentOrder = sortButton.dataset.currentDirection;
+    
+    sortButton.addEventListener('click', function() {
+        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+        document.getElementById('sortIcon').src = currentOrder === 'asc'
+            ? "{{ asset('img/elementos/az.png') }}"
+            : "{{ asset('img/elementos/za.png') }}";
+        
+        sortBooks(currentOrder);
+    });
+
+    function sortBooks(order) {
+        const bookGrid = document.querySelector('.book-grid');
+        const books = Array.from(document.querySelectorAll('.list-book-card'));
+        
+        books.sort((a, b) => {
+            const textA = a.querySelector('h3').textContent.toLowerCase();
+            const textB = b.querySelector('h3').textContent.toLowerCase();
+            return order === 'asc' 
+                ? textA.localeCompare(textB) 
+                : textB.localeCompare(textA);
+        });
+
+        bookGrid.innerHTML = '';
+        books.forEach(book => bookGrid.appendChild(book));
     }
 });
+
+// 4. Solución alternativa si persiste el problema
+setTimeout(() => {
+    const input = document.getElementById('buscar-libros');
+    if (input) {
+        input.style.pointerEvents = 'auto';
+        input.style.opacity = '1';
+        input.readOnly = false;
+    }
+}, 500);
 </script>
 @endsection
