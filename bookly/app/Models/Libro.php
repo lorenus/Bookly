@@ -78,4 +78,11 @@ class Libro extends Model
         // 3. Fallback a imagen local por defecto
         return asset('img/elementos/portada_default.png');
     }
+
+    public function estaPrestado()
+{
+    return $this->prestamos()
+               ->whereNull('fecha_limite')
+               ->exists();
+}
 }

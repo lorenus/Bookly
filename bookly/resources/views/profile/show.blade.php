@@ -51,7 +51,7 @@
 
         <!-- Columna Libreta -->
         <div class="col-md-6 notebook-container">
-            <div class="notebook-content h-100 d-flex flex-column">
+            <div class="notebook-content h-100 d-flex flex-column" style="margin-bottom: -10%;">
                 <!-- Fila 1: Búsqueda -->
                 <div class="notebook-row search-row mb-4">
                     <div class="d-flex align-items-center">

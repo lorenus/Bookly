@@ -500,8 +500,6 @@ body {
     transform: scale(1.03);
 }
 
-
-
 /*******************MIS LISTAS*******************/
 .lists-container {
     position: relative;
@@ -583,17 +581,17 @@ body {
     bottom: 0;
     left: 0;
     width: 0;
-    height: 50px; 
-    background-image: url('/public/img/elementos/subrayat.png');
+    height: 50px;
+    background-image: url("/public/img/elementos/subrayat.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left bottom;
-    z-index: -1; 
+    z-index: -1;
 }
 
 .notebook-items a:hover::after {
-    height: 100%; 
-    width: 100%; 
+    height: 100%;
+    width: 100%;
 }
 /* Decoración de papel */
 .paper-decoration {
@@ -608,9 +606,6 @@ body {
     background-position: left bottom;
     z-index: 1;
 }
-
-
-
 
 /*******************MENU*******************/
 /* Contenedor principal */
@@ -693,17 +688,303 @@ body {
     content: "";
     position: absolute;
     bottom: 10px;
-    left: 50%; 
+    left: 50%;
     transform: translateX(-50%);
-    width: 0; 
-    height: 20px; 
-    background-image: url('/public/img/elementos/subrayat.png');
+    width: 0;
+    height: 20px;
+    background-image: url("/public/img/elementos/subrayat.png");
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center bottom; 
+    background-position: center bottom;
     z-index: -1;
 }
 
 .menu-items li a:hover::after {
     width: calc(100% + 20px);
+}
+
+/******************* Lista *****************/
+/* Fondo de pantalla completa */
+.list-background {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 80%;
+    z-index: -1;
+}
+
+.background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Botón volver */
+.volver-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+}
+
+.volver-btn img {
+    width: 40px;
+    height: auto;
+}
+
+/* Contenedor principal */
+.list-container {
+    position: fixed;
+    top: 68%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-width: 1200px;
+    height: 70vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabecera */
+
+.list-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 10px;
+    margin-right: -10px;
+}
+
+/* Grid de libros */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .book-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ------------------------- */
+/* ESTILOS PARA LAS PORTADAS */
+/* ------------------------- */
+
+/* Contenedor de la tarjeta de libro */
+.list-book-card {
+    overflow: hidden;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-link {
+    display: flex; 
+    flex-direction: column; 
+    flex-grow: 1; 
+    text-decoration: none; 
+    color: inherit; 
+}
+
+/* Contenedor de la portada */
+.list-book-cover {
+    position: relative;
+    width: 100%;
+    padding-top: 150%;
+}
+
+/* Imagen de la portada */
+.book-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Placeholder cuando no hay imagen */
+.book-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* Información del libro debajo de la portada */
+.book-info {
+    padding: 12px; 
+    flex-grow: 1;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+}
+
+
+.book-info h3 {
+    font-size: 0.95rem;
+    color: #000000;
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.book-info p {
+    font-size: 0.85rem;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0;
+    text-align: center;
+}
+/* Badge de prestado */
+.book-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #fef3c7;
+    color: #92400e;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+}
+
+/* Información del préstamo */
+.loan-info {
+    padding: 12px;
+    border-top: 1px solid #eee;
+    font-size: 1rem;
+}
+
+.loan-info p {
+    margin-bottom: 0.5rem;
+}
+
+.loan-late {
+    color: #dc2626;
+    font-weight: 500;
+}
+
+/* Botón rosa */
+/* Botón amarillo */
+.return-btn {
+    display: block;
+    width: 100%;
+    margin-top: 0.8rem;
+    padding: 0.5rem 1rem;
+    background-color: #faf17b; /* Amarillo dorado */
+    border: none;
+    border-radius: 25px; /* Más redondeado */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.return-btn:hover {
+    background-color: #ffd445; /* Amarillo más claro */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+
+/* Estilos para la cabecera */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
+
+.header-title {
+    flex: 1;
+    min-width: 200px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Estructura de la cabecera */
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Barra de búsqueda */
+.search-box {
+    position: relative;
+    min-width: 200px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #8B4513;
+    box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8B4513;
+}
+
+/* Botón de ordenación */
+.sort-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.sort-button:hover {
+    background-color: #f5f5f5;
+}
+
+.sort-button img {
+    width: 24px;
+    height: 24px;
 }
