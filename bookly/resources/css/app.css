@@ -592,7 +592,7 @@ body {
 }
 
 .notebook-items a:hover::after {
-    height: 100%; /* Cambia la altura al 100% al hacer hover */
+    height: 100%; 
     width: 100%; 
 }
 /* Decoración de papel */
@@ -607,4 +607,103 @@ body {
     background-repeat: no-repeat;
     background-position: left bottom;
     z-index: 1;
+}
+
+
+
+
+/*******************MENU*******************/
+/* Contenedor principal */
+.menu-container {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Estilos del botón hamburguesa personalizado */
+.hamburger-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 101;
+    transition: transform 0.3s ease;
+}
+
+.hamburger-btn:hover {
+    transform: scale(1.1);
+}
+
+.hamburger-btn img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Menú con imagen de fondo */
+.menu {
+    background-image: url("/public/img/elementos/fondomenu.png");
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    padding: 20px;
+}
+
+.menu.active {
+    right: 0;
+}
+
+.menu-content {
+    text-align: center;
+    margin-left: 17%;
+    margin-top: 20%;
+    padding: 20px;
+    height: calc(100% - 40px);
+}
+
+.menu-items {
+    list-style: none;
+    margin-top: 60px;
+}
+
+.menu-items li {
+    margin-bottom: 25px;
+}
+
+.menu-items li a {
+    display: inline-block;
+    padding: 10px 15px;
+    color: #000000;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.menu-items li a::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 50%; 
+    transform: translateX(-50%);
+    width: 0; 
+    height: 20px; 
+    background-image: url('/public/img/elementos/subrayat.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom; 
+    z-index: -1;
+}
+
+.menu-items li a:hover::after {
+    width: calc(100% + 20px);
 }
