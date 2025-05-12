@@ -1,12 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Botón de volver -->
+    <a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
+        <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
+    </a>
+    
 <div class="list-background">
     <img src="{{ asset('img/lista/fondo-lista.png') }}" alt="Fondo" class="background-image">
 </div>
 
 <div class="list-container">
-<div class="list-header">
+    <div class="list-header">
         <div class="header-content">
             <div class="header-title">
                 <h1>{{ $titulo }}</h1>
@@ -96,71 +101,55 @@
 </div>
 
 <script>
-// SOLUCIÓN DEFINITIVA - CONFIRMADA FUNCIONAL
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Primero asegurémonos que el input es clickable
-    const searchInput = document.getElementById('buscar-libros');
-    
-    // Forzar el enfoque al hacer clic en cualquier parte del header-actions
-    document.querySelector('.header-actions').addEventListener('click', function(e) {
-        // Si el clic no fue directamente en el input, lo enfocamos igual
-        if (e.target !== searchInput) {
-            searchInput.focus();
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('buscar-libros');
+        document.querySelector('.header-actions').addEventListener('click', function(e) {
+            if (e.target !== searchInput) {
+                searchInput.focus();
+            }
+        });
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const books = document.querySelectorAll('.list-book-card');
+
+            books.forEach(book => {
+                const title = book.querySelector('h3').textContent.toLowerCase();
+                const author = book.querySelector('.book-info p').textContent.toLowerCase();
+                book.style.display = (title.includes(searchTerm) || author.includes(searchTerm)) ?
+                    '' :
+                    'none';
+            });
+        });
+
+        const sortButton = document.getElementById('sortButton');
+        let currentOrder = sortButton.dataset.currentDirection;
+
+        sortButton.addEventListener('click', function() {
+            currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+            document.getElementById('sortIcon').src = currentOrder === 'asc' ?
+                "{{ asset('img/elementos/az.png') }}" :
+                "{{ asset('img/elementos/za.png') }}";
+
+            sortBooks(currentOrder);
+        });
+
+        function sortBooks(order) {
+            const bookGrid = document.querySelector('.book-grid');
+            const books = Array.from(document.querySelectorAll('.list-book-card'));
+
+            books.sort((a, b) => {
+                const textA = a.querySelector('h3').textContent.toLowerCase();
+                const textB = b.querySelector('h3').textContent.toLowerCase();
+                return order === 'asc' ?
+                    textA.localeCompare(textB) :
+                    textB.localeCompare(textA);
+            });
+
+            bookGrid.innerHTML = '';
+            books.forEach(book => bookGrid.appendChild(book));
         }
     });
 
-    // 2. Filtrado funcional
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const books = document.querySelectorAll('.list-book-card');
-        
-        books.forEach(book => {
-            const title = book.querySelector('h3').textContent.toLowerCase();
-            const author = book.querySelector('.book-info p').textContent.toLowerCase();
-            book.style.display = (title.includes(searchTerm) || author.includes(searchTerm)) 
-                ? '' 
-                : 'none';
-        });
-    });
-
-    // 3. Ordenación (ya funcionaba)
-    const sortButton = document.getElementById('sortButton');
-    let currentOrder = sortButton.dataset.currentDirection;
-    
-    sortButton.addEventListener('click', function() {
-        currentOrder = currentOrder === 'asc' ? 'desc' : 'asc';
-        document.getElementById('sortIcon').src = currentOrder === 'asc'
-            ? "{{ asset('img/elementos/az.png') }}"
-            : "{{ asset('img/elementos/za.png') }}";
-        
-        sortBooks(currentOrder);
-    });
-
-    function sortBooks(order) {
-        const bookGrid = document.querySelector('.book-grid');
-        const books = Array.from(document.querySelectorAll('.list-book-card'));
-        
-        books.sort((a, b) => {
-            const textA = a.querySelector('h3').textContent.toLowerCase();
-            const textB = b.querySelector('h3').textContent.toLowerCase();
-            return order === 'asc' 
-                ? textA.localeCompare(textB) 
-                : textB.localeCompare(textA);
-        });
-
-        bookGrid.innerHTML = '';
-        books.forEach(book => bookGrid.appendChild(book));
-    }
-});
-
-// 4. Solución alternativa si persiste el problema
-setTimeout(() => {
-    const input = document.getElementById('buscar-libros');
-    if (input) {
-        input.style.pointerEvents = 'auto';
-        input.style.opacity = '1';
-        input.readOnly = false;
-    }
-}, 500);
 </script>
 @endsection

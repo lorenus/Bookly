@@ -521,18 +521,6 @@ body {
     z-index: 1;
 }
 
-/* Botón volver */
-.volver-btn {
-    position: absolute;
-    top: 15%;
-    left: 30px;
-    z-index: 20;
-}
-
-.volver-btn img {
-    width: 50px;
-    height: auto;
-}
 
 /* Contenedor de la libreta */
 .notebook-wrapper {

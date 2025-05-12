@@ -6,7 +6,7 @@
     <div class="flowers-decoration"></div>
     
     <!-- Botón de volver -->
-    <a href="{{ route('perfil') }}" class="volver-btn">
+    <a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
         <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
     </a>
 
