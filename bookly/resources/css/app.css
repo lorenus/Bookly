@@ -171,6 +171,15 @@ body {
     margin-top: -8%;
 }
 
+/* Estilos para páginas de autenticación */
+.min-h-screen-misListas {
+    background-image: url("/public/img/misListas/estrelles_llistes.png");
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    margin-top: -10%;
+}
+
 /****************** Estilos generales del perfil usuario *****************/
 
 /* Estilos generales */
@@ -489,4 +498,99 @@ body {
 /* Efecto hover para todas las portadas */
 .book-cover:hover .book-cover-image {
     transform: scale(1.03);
+}
+
+
+
+/*******************MIS LISTAS*******************/
+.lists-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Flores decorativas */
+.flowers-decoration {
+    position: fixed;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    background-image: url("/public/img/misListas/floretes.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 1;
+}
+
+/* Botón volver */
+.volver-btn {
+    position: absolute;
+    top: 15%;
+    left: 30px;
+    z-index: 20;
+}
+
+.volver-btn img {
+    width: 50px;
+    height: auto;
+}
+
+/* Contenedor de la libreta */
+.notebook-wrapper {
+    margin-top: 10%;
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    z-index: 5;
+}
+
+.notebook {
+    background-image: url("/public/img/misListas/llibreta.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem;
+}
+
+.notebook-items {
+    list-style: none;
+    width: 100%;
+    padding: 0;
+    text-align: center;
+}
+
+.notebook-items li {
+    margin: 1.5rem 0;
+}
+
+.notebook-items a {
+    font-size: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.notebook-items a:hover {
+    transform: translateX(10px);
+    color: #5a67d8;
+}
+
+/* Decoración de papel */
+.paper-decoration {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-image: url("/public/img/misListas/paper.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    z-index: 1;
 }

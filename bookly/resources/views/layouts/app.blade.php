@@ -11,26 +11,24 @@
 
     <!-- Estilos -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @stack('styles') <!-- Aquí se cargarán los estilos del componente -->
+    @stack('styles') 
 </head>
 
 <body class="font-sans antialiased">
-    <!-- Barra superior fija -->
+
     <header class="d-flex justify-content-between align-items-center" style="padding: 20px;">
         <!-- Logo (izquierda) -->
         <a href="{{ route('perfil') }}" class="flex items-center">
             <img src="{{ asset('img/elementos/bookly.png') }}" alt="Logo" class="h-10" style="width: 200px;">
         </a>
-
-        <!-- Componente del menú hamburguesa -->
+        <!-- Componente del menú -->
         <x-hamburguer-menu />
     </header>
 
-    <!-- Contenido principal (con margen para la barra superior) -->
-    <main style="padding-top: 80px;"> <!-- Añade padding para no solapar con el header -->
+    <main>
         @yield('content')
     </main>
 
-    @stack('scripts') <!-- Aquí se cargarán los scripts del componente -->
+    @stack('scripts')
 </body>
 </html>
