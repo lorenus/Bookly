@@ -57,7 +57,7 @@
             @endif
         </div>
 
-        <div class="d-flex justify-content-center mt-10 pt-5 z-1 custom-spacing"> <!-- Cambiado mt-5 por mt-10 -->
+        <div class="d-flex justify-content-center mt-10 pt-5 z-1 custom-spacing"> 
             <img style="width: 70%;" src="{{ asset('img/home/que_es.png') }}" alt="Imagen 1" class="img-fluid">
         </div>
 

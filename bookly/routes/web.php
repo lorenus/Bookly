@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/buscar-libros', [BookSearchController::class, 'search'])->name('books.search');
     Route::post('/libros/add-to-list', [LibroController::class, 'addToList'])->name('libros.add-to-list')->middleware('auth');
     Route::post('/libros/recomendar', [LibroController::class, 'recomendarLibro'])->name('libros.recomendar');
+    
     // Mensajes
     Route::get('/mensajes', [MensajeController::class, 'index'])->name('mensajes.index');
     Route::post('/mensajes/{notificacion}/aceptar', [MensajeController::class, 'aceptarNotificacion'])->name('mensajes.aceptar');
