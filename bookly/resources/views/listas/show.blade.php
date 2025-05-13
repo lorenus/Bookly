@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- Botón de volver -->
-    <a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
-        <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
-    </a>
-    
+<!-- Botón de volver -->
+<a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
+    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
+</a>
+
 <div class="list-background">
     <img src="{{ asset('img/lista/fondo-lista.png') }}" alt="Fondo" class="background-image">
 </div>
@@ -18,8 +18,7 @@
                 <p>{{ $libros->count() }} {{ $libros->count() > 1 ? 'libros' : 'libro' }}</p>
             </div>
 
-            <div class="header-actions" style="position: relative; z-index: 100;"> <!-- Añadido z-index -->
-                <!-- Barra de búsqueda corregida -->
+            <div class="header-actions" style="position: relative; z-index: 100;">
                 <div class="search-form" style="position: relative;">
                     <input
                         type="text"
@@ -150,6 +149,5 @@
             books.forEach(book => bookGrid.appendChild(book));
         }
     });
-
 </script>
 @endsection

@@ -301,11 +301,11 @@ body {
 /* Estilos para la libreta */
 .notebook-container {
     background-image: url("/public/img/perfil/libreta.png");
-    background-size: 100% 100%;
+    background-size: contain;
     background-repeat: no-repeat;
-    min-height: 80vh;
+    max-height: 85vh;
     position: relative;
-    padding: 5% 8% 5% 12%;
+    padding: 5% 10% 5% 11%;
 }
 
 .notebook-content {
@@ -354,7 +354,7 @@ body {
 
 /* Portadas de libros */
 .book-covers {
-    height: calc(100% - 30px);
+    height: 80%;
     padding: 0 5px;
     display: flex;
     justify-content: start;
@@ -457,8 +457,8 @@ body {
 /* Portadas genéricas */
 /* ESTILOS UNIFICADOS PARA PORTADAS */
 .book-cover-container {
-    width: 100px;
-    height: 150px;
+    width: 80px;
+    height: 120px;
     position: relative;
     overflow: hidden;
     border-radius: 4px;
@@ -475,10 +475,9 @@ body {
 
 /* Cuando la imagen es la portada por defecto */
 .book-cover-image[src*="portada_default.png"] {
-    min-width: 150px;
+    min-width: 120px;
     margin-left: -27%;
     object-fit: contain;
-    padding: 10px;
 }
 
 /* Texto superpuesto */
@@ -961,4 +960,66 @@ body {
 .sort-button img {
     width: 24px;
     height: 24px;
+}
+
+
+
+/********************* PRESTAR ***********************/
+.prestar-paper-background {
+    background-image: url("http://[::1]:5173/public/img/prestar/llibreta-prestar.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 70%;
+    height: 80%;
+    position: fixed;
+    bottom: 0;
+    padding: 2rem 4rem; /* Ajusta según necesites */
+    display: flex;
+    align-items: center;
+}
+
+.prestar-container {
+    background-image: url("/public/img/prestar/estrelles-prestar.png");
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 2rem;
+}
+
+.lapiz{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 15%;
+    height:50%;
+    background-image: url("/public/img/prestar/lapiz-prestar.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -5;
+}
+
+.form-prestar{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem;
+    width: 70%;
+    gap: 1rem;
+    align-items: center;
+    padding-left: 6rem;
+}
+
+.portada-prestar{
+    border: 1px solid #000000;
+    width: 150px;
+    height:220px;
+
+    object-fit: cover;
+}
+
+.fila-prestar{
+   margin-left: 15%;
 }
