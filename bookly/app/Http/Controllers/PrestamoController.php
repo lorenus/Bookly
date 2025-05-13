@@ -13,35 +13,38 @@ use App\Models\User;
 class PrestamoController extends Controller
 {
     public function create()
-    {
-        $user = User::with('libros')->find(Auth::id());
+{
+    $user = User::with('libros')->find(Auth::id());
+    
+    // Obtener libros disponibles para prestar
+    $librosDisponibles = $user->libros()
+        ->wherePivot('comprado', true)
+        ->whereDoesntHave('prestamos', function($query) use ($user) {
+            $query->where('devuelto', false)
+                  ->where('propietario_id', $user->id); 
+        })
+        ->get();
 
-        $librosDisponibles = $user->libros()
-            ->wherePivot('comprado', true)
-            ->whereDoesntHave('prestamos', function($query) use ($user) {
-                $query->where('devuelto', false)
-                      ->where('propietario_id', $user->id); 
+    // Obtener amigos sin duplicados y con nombre completo
+    $amigos = User::where(function($query) use ($user) {
+            $query->whereHas('amistadesComoUsuario', function($q) use ($user) {
+                $q->where('amigo_id', $user->id)
+                  ->where('estado', 'aceptada');
             })
-            ->get();
-
-        $amigos = Amistad::where(function($query) use ($user) {
-                $query->where('user_id', $user->id)
-                    ->orWhere('amigo_id', $user->id);
-            })
-            ->where('estado', 'aceptada')
-            ->with(['usuario', 'amigo'])
-            ->get()
-            ->map(function($amistad) use ($user) {
-                return $amistad->user_id == $user->id 
-                    ? $amistad->amigo 
-                    : $amistad->usuario;
+            ->orWhereHas('amistadesComoAmigo', function($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->where('estado', 'aceptada');
             });
+        })
+        ->select('id', 'name', 'apellidos') 
+        ->distinct()
+        ->get();
 
-        return view('libros.prestar', [
-            'librosDisponibles' => $librosDisponibles,
-            'amigos' => $amigos
-        ]);
-    }
+    return view('libros.prestar', [
+        'librosDisponibles' => $librosDisponibles,
+        'amigos' => $amigos
+    ]);
+}
 
     public function store(Request $request)
     {

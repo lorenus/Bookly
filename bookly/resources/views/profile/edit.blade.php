@@ -1,113 +1,174 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900 dark:text-gray-100">
-                <h1 class="text-2xl font-bold mb-6">Editar Perfil</h1>
+<!-- Botón de volver -->
+<a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
+    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
+</a>
 
-                <!-- Formulario de actualización -->
-                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
-                    @csrf
-                    @method('PATCH')
-
-                    <!-- Foto de perfil -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Foto de perfil</label>
-                        <div class="flex items-center space-x-4">
-                            <img src="{{ Auth::user()->imgPerfil ? asset('storage/'.Auth::user()->imgPerfil) : asset('images/default-user.jpg') }}" 
-                                 alt="Foto de perfil" 
-                                 class="h-16 w-16 rounded-full object-cover">
-                            <input type="file" name="imgPerfil" 
-                                   class="block w-full text-sm text-gray-500
-                                   file:mr-4 file:py-2 file:px-4
-                                   file:rounded-md file:border-0
-                                   file:text-sm file:font-semibold
-                                   file:bg-blue-50 file:text-blue-700
-                                   hover:file:bg-blue-100">
-                        </div>
-                        @error('imgPerfil')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Contraseña -->
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nueva contraseña (dejar en blanco para no cambiar)</label>
-                        <input type="password" name="password" id="password" 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                        @error('password')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Confirmar contraseña -->
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirmar nueva contraseña</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                    </div>
-
-                    <!-- Reto anual -->
-                    <div>
-                        <label for="retoAnual" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Reto anual de lectura (número de libros)</label>
-                        <input type="number" name="retoAnual" id="retoAnual" 
-                               value="{{ old('retoAnual', Auth::user()->retoAnual ?? 12) }}"
-                               min="1" max="100"
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                        @error('retoAnual')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Borrar lista -->
-                    <div>
-                        <label for="lista_a_borrar" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Vaciar lista</label>
-                        <select name="lista_a_borrar" id="lista_a_borrar"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600">
-                            <option value="">Selecciona una lista para vaciar</option>
-                            <option value="leyendo">Leyendo Actualmente</option>
-                            <option value="leido">Mis Últimas Lecturas</option>
-                            <option value="porLeer">Para Leer</option>
-                            <option value="favoritos">Favoritos</option>
-                        </select>
-                        @error('lista_a_borrar')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Botones -->
-                    <div class="flex justify-between pt-6">
-                        <button type="submit" 
-                                class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-                            Guardar cambios
-                        </button>
-
-                        <!-- Eliminar cuenta -->
-                        <button type="button" 
-                                onclick="confirmarEliminacion()"
-                                class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
-                            Eliminar cuenta
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Formulario oculto para eliminar cuenta -->
-                <form id="deleteAccountForm" method="POST" action="{{ route('profile.destroy') }}" class="hidden">
-                    @csrf
-                    @method('DELETE')
-                </form>
+<div class="editar-container">
+    <div class="editar-paper-background">
+        <div class="contenido-edit">
+            <div class="text-center pt-3 mb-5">
+                <h3>Editar Perfil</h3>
             </div>
+
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
+
+                <div class="row align-items-center mb-3">
+                    <!-- Columna 1 - Icono -->
+                    <div class="col-auto d-flex flex-column justify-content-center">
+                        <img src="{{ asset('img/editarPerfil/imagen.png') }}" alt="Icono foto" class="img-fluid" style="width: 75px;">
+                    </div>
+
+                    <!-- Columna 2 - Label e Input -->
+                    <div class="col">
+                        <div class="row align-items-center mb-1">
+                            <div class="col-md-4">
+                                <label class="form-label mb-0">Foto de perfil</label>
+                            </div>
+                            <div class="col-md-8">
+                                <!-- Contenedor del input file personalizado -->
+                                <div class="file-select-wrapper">
+                                    <button type="button" class="btn-file-select">
+                                        Seleccionar archivo
+                                    </button>
+                                    <input type="file" name="imgPerfil" id="imgPerfil" class="file-select-input">
+                                </div>
+
+                                <!-- Mostrar nombre del archivo truncado -->
+                                <div id="fileNameDisplay" class="small text-muted mt-2 text-truncate" style="max-width: 250px;"></div>
+
+                                @error('imgPerfil')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contraseña -->
+                <div class="row align-items-center mb-3">
+                    <!-- Columna 1 - Icono -->
+                    <div class="col-auto d-flex flex-column justify-content-center">
+                        <img src="{{ asset('img/editarPerfil/contrasenya.png') }}" alt="Icono contraseña" class="img-fluid" style="width: 75px;">
+                    </div>
+
+                    <!-- Columna 2 - Contraseña y confirmación -->
+                    <div class="col">
+                        <div class="row">
+                            <!-- Nueva contraseña -->
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="password" class="form-label mb-0">Nueva contraseña</label>
+                                    <input type="password" name="password" id="password" class="form-control">
+                                    @error('password')
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Confirmar contraseña -->
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label for="password_confirmation" class="form-label mb-0">Confirmar contraseña</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reto anual -->
+                <div class="row align-items-center mb-3">
+                    <!-- Columna 1 - Icono -->
+                    <div class="col-auto d-flex flex-column justify-content-center" style="height: 80px;">
+                        <img src="{{ asset('img/editarPerfil/libro.png') }}" alt="Icono reto" class="img-fluid" style="width: 75px;">
+                    </div>
+
+                    <!-- Columna 2 - Label e Input -->
+                    <div class="col">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-4">
+                                <label for="retoAnual" class="form-label mb-0">Reto anual</label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="number" name="retoAnual" id="retoAnual"
+                                    value="{{ old('retoAnual', Auth::user()->retoAnual ?? 12) }}"
+                                    min="1" max="1000" class="form-control">
+                                @error('retoAnual')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Borrar lista -->
+                <div class="row align-items-center mb-4">
+                    <!-- Columna 1 - Icono -->
+                    <div class="col-auto d-flex flex-column justify-content-center" style="height: 80px;">
+                        <img src="{{ asset('img/editarPerfil/borrarLista.png') }}" alt="Icono borrar" class="img-fluid" style="width: 75px;">
+                    </div>
+
+                    <!-- Columna 2 - Label e Select -->
+                    <div class="col">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-md-4">
+                                <label for="lista_a_borrar" class="form-label mb-0">Vaciar lista</label>
+                            </div>
+                            <div class="col-md-8">
+                                <select name="lista_a_borrar" id="lista_a_borrar" class="form-select">
+                                    <option value="">Selecciona...</option>
+                                    <option value="leyendo">Leyendo Actualmente</option>
+                                    <option value="leido">Mis Últimas Lecturas</option>
+                                    <option value="porLeer">Para Leer</option>
+                                    <option value="favoritos">Favoritos</option>
+                                </select>
+                                @error('lista_a_borrar')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="d-flex flex-column align-items-start pt-3" style="gap: 15px;">
+                    <button type="submit" class="btn btn-outline-primary px-4">
+                        Guardar cambios
+                    </button>
+
+                    <button type="button" onclick="confirmarEliminacion()" class="btn btn-outline-danger px-4">
+                        Eliminar cuenta
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+<div class="flor-editar"></div>
+
 <script>
-function confirmarEliminacion() {
-    if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
-        document.getElementById('deleteAccountForm').submit();
+    function confirmarEliminacion() {
+        if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+            document.getElementById('deleteAccountForm').submit();
+        }
     }
-}
+
+    function strLimit(text, limit = 100, end = '...') {
+        if (!text) return '';
+        if (text.length <= limit) return text;
+
+        return text.substring(0, limit) + end;
+    }
+
+    // Uso con el input file
+    document.getElementById('imgPerfil').addEventListener('change', function(e) {
+        const fileName = this.files[0]?.name || 'Ningún archivo seleccionado';
+        document.getElementById('fileNameDisplay').textContent = strLimit(fileName, 20);
+    });
 </script>
-@endsection

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
+@endphp
 <!-- Botón de volver -->
 <a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
     <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
@@ -12,7 +15,9 @@
         <div class="fila-prestar row mt-5 gx-5 align-items-center justify-content-center">
             <h3 class="text-2xl text-center">Prestar Libro</h3>
             <div class="col-3">
-                <div class="portada-prestar"></div>
+                <div class="portada-prestar">
+                    <img id="portada-libro" src="" alt="Portada del libro" style="width: 150px; height: 220px; object-fit: cover; border: 1px solid #000; display: none;">
+                </div>
             </div>
             <div class="col-9">
 
@@ -24,15 +29,15 @@
                     Ir a mi biblioteca
                 </a>
                 @else
-                <form action="{{ route('prestamos.guardar') }}" method="POST" class="max-w-md">
+                <form action="{{ route('prestamos.guardar') }}" method="POST" class="max-w-md mx-auto" data-old-libro="{{ old('libro_id') }}">
                     @csrf
 
                     <div class="mb-4">
                         <label for="libro_id" class="block text-gray-700 mb-2">Libro:</label>
-                        <select name="libro_id" id="libro_id" class="w-full px-3 py-2 border rounded" required>
-                            <option value="">Selecciona un libro</option>
+                        <select name="libro_id" id="libro_id" class="w-full px-3 py-2 border rounded select2" required>
+                            <option value="">Buscar libro...</option>
                             @foreach($librosDisponibles as $libro)
-                            <option value="{{ $libro->id }}">
+                            <option value="{{ $libro->id }}" data-portada="{{ $libro->urlPortada ?? asset('img/default-book.png') }}">
                                 {{ $libro->titulo }} ({{ $libro->autor }})
                             </option>
                             @endforeach
@@ -41,10 +46,12 @@
 
                     <div class="mb-4">
                         <label for="amigo_id" class="block text-gray-700 mb-2">Amigo:</label>
-                        <select name="amigo_id" id="amigo_id" class="w-full px-3 py-2 border rounded" required>
-                            <option value="">Selecciona un amigo</option>
+                        <select name="amigo_id" id="amigo_id" class="w-full px-3 py-2 border rounded select2" required>
+                            <option value="">Buscar amigo...</option>
                             @foreach($amigos as $amigo)
-                            <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
+                            <option value="{{ $amigo->id }}">
+                                {{ $amigo->name }} {{ $amigo->lastname }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -56,10 +63,11 @@
                             min="{{ now()->addDay()->format('Y-m-d') }}"
                             required>
                     </div>
-
-                    <x-button type="submit" class="px-6 py-3">
-                        {{ __('Prestar') }}
-                    </x-button>
+                    <div class="text-center">
+                        <x-button type="submit">
+                            {{ __('Prestar') }}
+                        </x-button>
+                    </div>
                 </form>
                 @endif
             </div>
@@ -68,7 +76,49 @@
 
     <div class="lapiz"></div>
 </div>
-<div class="container mx-auto px-4 py-8">
 
-</div>
+
+<script>
+    $(document).ready(function() {
+        // Inicializar Select2
+        $('.select2').select2({
+            language: {
+                inputTooShort: function() {
+                    return "Escribe para buscar...";
+                },
+                noResults: function() {
+                    return "No se encontraron coincidencias";
+                }
+            },
+            placeholder: "Buscar...",
+            allowClear: true,
+            width: '100%',
+            minimumInputLength: 1,
+            allowClear: false
+        });
+
+
+        // Manejar cambio de libro
+        $('#libro_id').on('change', function() {
+            var portadaUrl = $(this).find(':selected').data('portada');
+            var imgElement = $('#portada-libro');
+
+            if (portadaUrl) {
+                imgElement.attr('src', portadaUrl).show();
+            } else {
+                imgElement.hide();
+            }
+        });
+
+        // Cargar libro seleccionado anteriormente (si existe)
+        var oldLibroId = "{{ $oldLibroId ?? '' }}"; // Usamos la variable PHP con valor por defecto
+        if (oldLibroId && oldLibroId !== '') {
+            var portadaUrl = $('#libro_id option[value="' + oldLibroId + '"]').data('portada');
+            if (portadaUrl) {
+                $('#portada-libro').attr('src', portadaUrl).show();
+            }
+            $('#libro_id').val(oldLibroId).trigger('change');
+        }
+    });
+</script>
 @endsection
