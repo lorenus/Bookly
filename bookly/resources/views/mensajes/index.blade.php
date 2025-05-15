@@ -20,13 +20,13 @@
             <div class="mb-3 border-0">
                 <div class="cuerpo-mensaje">
                     <div class="d-flex">
-                        <img src="{{ $notif->remitente->foto_perfil ?? asset('images/default-user.jpg') }}"
+                        <img src="{{ $notif->remitente->imgPerfil ?? asset('images/default-user.jpg') }}"
                             alt="{{ $notif->remitente->name }}"
                             class="rounded-circle me-3"
                             width="50"
                             height="50"
                             style="object-fit: cover;">
-
+                           
                         <div class="flex-grow-1">
                             <div class="d-flex justify-content-between align-items-start">
                                 <h5 class="card-title mb-1">{{ $notif->remitente->name }}</h5>
