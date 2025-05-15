@@ -41,7 +41,7 @@ class ProfileController extends Controller
             'leyendoActual' => $leyendoActual,
             'paraLeer' => $paraLeer,
             'ultimasLecturas' => $ultimasLecturas
-        ]);
+        ])->with('success', 'Perfil actualizado correctamente');
     }
 
     /**
@@ -63,50 +63,45 @@ class ProfileController extends Controller
 
         $request->validate([
             'imgPerfil' => 'nullable|image|max:2048',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => ['nullable', 'confirmed', Password::defaults()],
             'retoAnual' => 'nullable|integer|min:1|max:100',
             'lista_a_borrar' => 'nullable|in:leyendo,leido,porLeer,favoritos'
         ]);
 
+        // Procesar imagen de perfil
         if ($request->hasFile('imgPerfil')) {
-            // Eliminar solo si NO es la imagen por defecto
-            if ($user->imgPerfil !== 'profile-photos/default.jpg') {
-                Storage::disk('public')->delete($user->imgPerfil);
+            try {
+                // Eliminar imagen anterior si existe y no es la predeterminada
+                if ($user->imgPerfil && $user->imgPerfil !== 'profile-photos/default.jpg') {
+                    Storage::disk('public')->delete($user->imgPerfil);
+                }
+
+                // Guardar nueva imagen
+                $path = $request->file('imgPerfil')->store('profile-photos', 'public');
+                $user->imgPerfil = $path;
+            } catch (\Exception $e) {
+                return back()->with('error', 'Error al guardar la imagen: ' . $e->getMessage());
             }
-
-            $user->imgPerfil = $request->file('imgPerfil')->store('profile-photos', 'public');
-            $user->save();
         }
 
-        // Actualizar email
-        if ($user->email !== $request->email) {
-            $user->email = $request->email;
-            $user->email_verified_at = null; // Si usas verificación de email
-        }
-
-        // Actualizar contraseña si se proporcionó
+        // Actualizar otros campos
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
 
-        // Actualizar reto anual
-        $user->retoAnual = $request->retoAnual;
+        if ($request->has('retoAnual')) {
+            $user->retoAnual = $request->retoAnual;
+        }
 
         $user->save();
 
-        // Vaciar lista seleccionada si se especificó
+        // Vaciar lista si se especificó
         if ($request->lista_a_borrar) {
-            $user->libros()
-                ->wherePivot('estado', $request->lista_a_borrar)
-                ->detach();
+            $user->libros()->wherePivot('estado', $request->lista_a_borrar)->detach();
         }
 
-        // Forzar recarga de la sesión
-        Auth::login($user);
-
-        // Redirigir con parámetro de cache busting para imágenes
-        return redirect()->route('perfil', ['v' => now()->timestamp])
+        // Forzar actualización de caché con timestamp
+        return redirect()->route('perfil', ['v' => time()])
             ->with('success', 'Perfil actualizado correctamente');
     }
 

@@ -12,7 +12,15 @@
             <div class="text-center pt-3 mb-5">
                 <h3>Editar Perfil</h3>
             </div>
-
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')

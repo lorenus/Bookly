@@ -16,9 +16,15 @@
                     <!-- Columna izquierda - Polaroid con foto -->
                     <div class="col-md-6 h-100 pe-2">
                         <div class="polaroid-frame h-100 d-flex flex-column align-items-center justify-content-center p-4">
+                            @php
+                            $imagenPerfil = Auth::user()->imgPerfil
+                            ? asset('storage/' . Auth::user()->imgPerfil)
+                            : asset('img/default-profile.jpg');
+                            @endphp
                             <img src="{{ Auth::user()->imgPerfil }}" class="polaroid-image" alt="Foto de perfil">
                         </div>
                     </div>
+
 
                     <!-- Columna derecha - Postits con logros -->
                     <div class="col-md-6 h-100 ps-2">
@@ -148,7 +154,7 @@
                                     alt="{{ $libro->titulo }}"
                                     class="book-cover-image"
                                     onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
-                                    @if($isDefaultCover)
+                                @if($isDefaultCover)
                                 <div class="book-title-overlay">
                                     {{ Str::limit($libro->titulo, 30) }}
                                 </div>
