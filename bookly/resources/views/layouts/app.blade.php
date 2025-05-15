@@ -17,27 +17,25 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 
-     <!-- jQuery (necesario para Select2) -->
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+    <!-- jQuery (necesario para Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
 
-    <header class="d-flex justify-content-between align-items-center" style="padding: 20px;">
-        <!-- Logo (izquierda) -->
-        <a href="{{ route('perfil') }}" class="flex items-center">
-            <img src="{{ asset('img/elementos/bookly.png') }}" alt="Logo" class="h-10" style="width: 200px;">
+<header style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+        <a href="{{ route('perfil') }}" class="volver-btn" style="position: absolute; top: 20px; left: 40px; z-index: 10;">
+            <img src="{{ asset('img/elementos/bookly.png') }}" alt="Volver" style="width: 200px;">
         </a>
-        <!-- Componente del menú -->
-        <x-hamburguer-menu />
+        <x-hamburguer-menu/>
     </header>
 
-    <main>
-        @yield('content')
+    <main style="padding-top: 80px;"> @yield('content')
     </main>
+
 
     @stack('scripts')
 </body>
