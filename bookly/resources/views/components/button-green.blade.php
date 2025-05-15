@@ -5,7 +5,7 @@
     font-size: x-large; 
     cursor: pointer;
     background-position: center 5px; 
-    background-image: url("/img/elementos/btn_verde.png"); 
+    background-image: url("/img/elementos/btn-verde.png"); 
     background-size: contain; 
     background-repeat: no-repeat; 
     width: 180px; 
