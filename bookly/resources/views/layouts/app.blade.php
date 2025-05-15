@@ -26,11 +26,26 @@
 
 <body class="font-sans antialiased">
 
-<header style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+    <header style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
         <a href="{{ route('perfil') }}" class="volver-btn" style="position: absolute; top: 20px; left: 40px; z-index: 10;">
             <img src="{{ asset('img/elementos/bookly.png') }}" alt="Volver" style="width: 200px;">
         </a>
-        <x-hamburguer-menu/>
+        @auth
+        <div style="position: absolute; top: 15px; right: 50px; display: flex; align-items: center; gap: 15px;">
+            @auth
+            @php
+            $unreadCount = auth()->user()->notificacionesNoLeidas()->count();
+            @endphp
+            @if($unreadCount > 0)
+            <span class="notification-badge">
+                <img src="{{ asset('img/elementos/notificacio.png') }}" alt="Notificaciones" style="width: 25px;">
+            </span>
+            @endif
+            @endauth
+            <x-hamburguer-menu :unreadCount="auth()->user()->notificacionesNoLeidas()->count()" />
+
+        </div>
+        @endauth
     </header>
 
     <main style="padding-top: 80px;"> @yield('content')
