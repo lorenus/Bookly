@@ -68,10 +68,9 @@ class ProfileController extends Controller
             'lista_a_borrar' => 'nullable|in:leyendo,leido,porLeer,favoritos'
         ]);
 
-        // Procesar imagen de perfil
         if ($request->hasFile('imgPerfil')) {
             try {
-                // Eliminar imagen anterior si existe y no es la predeterminada
+                
                 if ($user->imgPerfil && $user->imgPerfil !== 'profile-photos/default.jpg') {
                     Storage::disk('public')->delete($user->imgPerfil);
                 }
@@ -84,7 +83,6 @@ class ProfileController extends Controller
             }
         }
 
-        // Actualizar otros campos
         if ($request->password) {
             $user->password = Hash::make($request->password);
         }
@@ -95,7 +93,6 @@ class ProfileController extends Controller
 
         $user->save();
 
-        // Vaciar lista si se especificó
         if ($request->lista_a_borrar) {
             $user->libros()->wherePivot('estado', $request->lista_a_borrar)->detach();
         }

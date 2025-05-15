@@ -54,7 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mensajes', [MensajeController::class, 'index'])->name('mensajes.index');
     Route::post('/mensajes/{notificacion}/aceptar', [MensajeController::class, 'aceptarNotificacion'])->name('mensajes.aceptar');
     Route::post('/mensajes/{notificacion}/rechazar', [MensajeController::class, 'rechazarNotificacion'])->name('mensajes.rechazar');
-    
+    Route::delete('/mensajes/{notificacion}', [MensajeController::class, 'eliminarNotificacion'])->name('mensajes.eliminar');
+
     // Préstamos
     Route::get('/prestamos', [PrestamoController::class, 'create'])->name('prestamos.crear');
     Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.guardar');
