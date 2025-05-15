@@ -16,6 +16,10 @@
 body {
     font-family: "Providence sans", sans-serif;
 }
+
+.volver{
+    width: 80px;
+}
 /****************** Estilos generales del login *****************/
 .login-container {
     font-family: "Providence Sans", sans-serif;
@@ -766,7 +770,7 @@ body {
 /* ------------------------- */
 
 /* Contenedor de la tarjeta de libro */
-.list-book-card {
+.list-book {
     overflow: hidden;
     transition: transform 0.3s;
     display: flex;
@@ -1142,4 +1146,26 @@ input[type="file"]::-moz-focus-inner {
     display: block;
     margin-top: 8px;
     font-size: 0.875em;
+}
+
+
+
+/******************* MENSAJES *******************/
+/* Contenedor principal */
+.mensajes-container {
+    min-height: 100vh;
+    background-image: url("/public/img/mensajes/libreta-mensajes.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+    max-width:90%;
+    padding: 2rem;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .mensajes-paper {
+        width: 95% !important;
+        height: 90vh !important;
+    }
 }
