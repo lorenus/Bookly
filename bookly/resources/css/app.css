@@ -1203,4 +1203,15 @@ input[type="file"]::-moz-focus-inner {
         width: 95% !important;
         height: 90vh !important;
     }
+
+
+/******************* AMIGOS *******************/
+    .border-bottom-2 {
+        border-bottom-width: 2px !important;
+    }
+
+    .input-ancho-completo {
+        width: 100% !important;
+    }
+
 }

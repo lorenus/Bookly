@@ -34,7 +34,7 @@
 
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <h5 class="card-title mb-1">{{ $notif->remitente->name }}</h5>
+                                    <h5 class="mb-1">{{ $notif->remitente->name }}</h5>
 
                                     <small class="text-muted">{{ $notif->created_at->format('d/m/Y') }}</small>
                                 </div>
@@ -46,7 +46,7 @@
                                     </small>
                                     @endunless
                                 </div>
-                                <p class="card-text text-muted mb-2">{{ $notif->contenido }}</p>
+                                <p class="text-muted mb-2">{{ $notif->contenido }}</p>
 
                                 <div class="d-flex justify-content-between align-items-center mt-2 position-relative">
                                     <!-- Espacio izquierdo vacío para balancear -->

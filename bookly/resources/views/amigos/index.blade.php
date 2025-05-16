@@ -2,132 +2,206 @@
 
 @section('content')
 <!-- Botón de volver -->
-<a href="{{ route('perfil') }}" class="inline-block mb-6 text-blue-500 hover:underline">
-    &larr; Volver
+<a href="{{ route('perfil') }}" class="position-fixed" style="top: 100px; left: 40px; z-index: 1000;">
+    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
 
-<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-    <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6">
-        <h1 class="text-2xl font-semibold mb-6">Gestión de Amigos</h1>
+<div class="amigos-container container-fluid d-flex justify-content-center align-items-end position-relative" style="min-height: 100vh;">
+    <!-- Imagen de fondo -->
+    <div class="position-absolute bottom-0 start-0 w-100 text-center" style="z-index: 1;">
+        <img src="{{ asset('img/amigos/libreta-amigos.png') }}" alt="Fondo" class="img-fluid mx-auto" style="max-height: 90vh;">
+    </div>
 
-        <!-- Sección 1: Buscar y solicitar amistad -->
-        <div class="mb-8">
-            <h2 class="text-xl font-medium mb-4">Solicitar amistad</h2>
-            <form method="POST" action="{{ route('amigos.store') }}" class="flex gap-2 mb-4">
-                @csrf
-                <input type="hidden" name="amigo_id" id="amigo-id-input"> <!-- Campo oculto para el ID -->
-                <input
-                    type="email"
-                    name="email"
-                    id="buscar-email"
-                    placeholder="Introduce el email del usuario"
-                    required
-                    class="w-full rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600"
-                    x-data
-                    x-on:input.debounce.500ms="
-            if ($event.target.value.includes('@')) {
-                fetch('/verificar-email?email=' + encodeURIComponent($event.target.value))
-                    .then(response => response.json())
-                    .then(data => {
-                        const resultado = document.getElementById('resultado-busqueda');
-                        if (data.existe) {
-                            resultado.innerHTML = `
-                                <div class='mt-2 p-2 bg-green-100 dark:bg-green-900 rounded'>
-                                    Usuario encontrado: ${data.usuario.name}
-                                </div>
-                            `;
-                            document.getElementById('amigo-id-input').value = data.usuario.id; // Actualiza el campo oculto
-                        } else {
-                            resultado.innerHTML = `
-                                <div class='mt-2 p-2 bg-red-100 dark:bg-red-900 rounded'>
-                                    No se encontró ningún usuario con ese email
-                                </div>
-                            `;
-                            document.getElementById('amigo-id-input').value = ''; // Limpia el campo
-                        }
-                    });
-            }">
-                <button
-                    type="submit"
-                    class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 whitespace-nowrap">
-                    Enviar solicitud
-                </button>
-            </form>
-            <div id="resultado-busqueda"></div>
-        </div>
+    <!-- Contenido principal -->
+    <div class="position-relative" style="width: 62%; min-height: 67vh; z-index: 2; margin-bottom: 5vh;">
+        <div class="row g-4">
+            <!-- Columna izquierda - Formularios -->
+            <div class="col-md-6">
+                <!-- Sección 1: Buscar y solicitar amistad -->
+                <div class="mb-4">
+                    <div>
+                        <h4>Solicitar amistad:</h4>
+                        <form method="POST" action="{{ route('amigos.store') }}" class="mb-4">
+                            @csrf
+                            <input type="hidden" name="amigo_id" id="amigo-id-input">
 
-        <!-- Sección 2: Lista de amigos con buscador -->
-        <div class="mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-medium">Mis Amigos ({{ $amigos->count() }})</h2>
-                <input
-                    type="text"
-                    placeholder="Buscar entre mis amigos..."
-                    class="rounded-md border-gray-300 shadow-sm w-64 dark:bg-gray-700 dark:border-gray-600"
-                    x-data
-                    x-on:input.debounce.300ms="
+                            <!-- Input para el email -->
+                            <div class="mb-5">
+                                <div class="w-100"> <!-- Contenedor padre al 100% -->
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="buscar-email"
+                                        placeholder="Introduce el email del usuario"
+                                        required
+                                        class="form-control border-0 px-0 bg-transparent w-100"
+                                        style="min-width: 100%;"
+                                        x-data
+                                        x-on:input.debounce.500ms='
+                                            const email = $event.target.value;
+                                            const resultadoDiv = document.getElementById("resultado-busqueda");
+                                            
+                                            if (email.includes("@")) {
+                                                resultadoDiv.innerHTML = "<div class=\"text-muted mt-2\">Buscando usuario...</div>";
+                                                
+                                                fetch("/verificar-email?email=" + encodeURIComponent(email))
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        if (data.existe) {
+                                                            resultadoDiv.innerHTML = `
+                                                                <div class="mt-2 p-3 bg-light rounded border">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img src="${data.usuario.imgPerfil ? "/storage/"+data.usuario.imgPerfil : "/images/default-user.jpg"}" 
+                                                                            class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
+                                                                        <div>
+                                                                            <h5 class="mb-0">${data.usuario.name} ${data.usuario.apellidos || ""}</h5>
+                                                                            <small class="text-muted">${email}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            `;
+                                                            document.getElementById("amigo-id-input").value = data.usuario.id;
+                                                            document.getElementById("btn-enviar-solicitud").disabled = false;
+                                                        } else {
+                                                            resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-danger\">No se encontró ningún usuario con ese email</div>";
+                                                            document.getElementById("amigo-id-input").value = "";
+                                                            document.getElementById("btn-enviar-solicitud").disabled = true;
+                                                        }
+                                                    })
+                                                    .catch(error => {
+                                                        resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-danger\">Error al buscar el usuario</div>";
+                                                        console.error("Error:", error);
+                                                        document.getElementById("btn-enviar-solicitud").disabled = true;
+                                                    });
+                                            } else if (email.length > 0) {
+                                                resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-warning\">Por favor, introduce un email válido</div>";
+                                                document.getElementById("btn-enviar-solicitud").disabled = true;
+                                            } else {
+                                                resultadoDiv.innerHTML = "";
+                                                document.getElementById("btn-enviar-solicitud").disabled = true;
+                                            }
+                                        '>
+                                </div>
+                            </div>
+
+                            <!-- Resultado de la búsqueda -->
+                            <div id="resultado-busqueda" class="mb-3"></div>
+                            <div class="d-flex gap-2 justify-content-center mb-5">
+                                <x-button type="submit" class="px-6 py-3">
+                                    {{ __('Enviar') }}
+                                </x-button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sección 2: Lista de amigos con buscador -->
+                <div class="mt-5">
+                    <div>
+                        <!-- Título y buscador en columna -->
+                        <div class="mt-5 mb-4">
+                            <h4>Mis Amigos ({{ $amigos->count() }})</h4>
+                            <div class="w-100"> 
+                                <input
+                                    type="text"
+                                    placeholder="Buscar entre mis amigos..."
+                                    class="form-control border-0 px-0 bg-transparent w-100"
+                                    style="min-width: 100%; border-bottom: 2px solid #dee2e6;"
+                                    x-data
+                                    x-on:input.debounce.300ms="
                         const search = $event.target.value.toLowerCase();
                         document.querySelectorAll('.amigo-item').forEach(item => {
                             const name = item.dataset.nombre.toLowerCase();
                             const email = item.dataset.email.toLowerCase();
                             item.style.display = (name.includes(search) || email.includes(search)) ? '' : 'none';
-                        })
-                    ">
-            </div>
-
-            @if($amigos->count() > 0)
-            <div class="border rounded-lg max-h-96 overflow-y-auto">
-                @foreach($amigos as $amigo)
-                <div class="amigo-item border-b p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition cursor-pointer"
-                    data-nombre="{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}"
-                    data-email="{{ $amigo->email }}"
-                    onclick="mostrarDetalleAmigo('{{ $amigo->id }}')">
-                    <div class="flex items-center space-x-3">
-                        <!-- Avatar -->
-                        <div class="flex-shrink-0">
-                            <img src="{{ asset('storage/'.$amigo->imgPerfil) }}"
-                                class="h-10 w-10 rounded-full object-cover">
+                        })">
+                            </div>
                         </div>
 
-                        <!-- Información básica -->
-                        <div>
-                            <h3 class="font-medium">{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h3>
-                            <p class="text-sm text-gray-500">{{ $amigo->email }}</p>
+                        @if($amigos->count() > 0)
+                        <!-- Lista de amigos con scroll -->
+                        <div style="height: 50%px; overflow-y: auto;"> <!-- Alto fijo y scroll -->
+                            @foreach($amigos as $amigo)
+                            <div class="amigo-item p-3 hover-bg-light transition cursor-pointer"
+                                data-nombre="{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}"
+                                data-email="{{ $amigo->email }}"
+                                onclick="mostrarDetalleAmigo('{{ $amigo->id }}')">
+                                <div class="d-flex align-items-center gap-3">
+                                    <!-- Avatar -->
+                                    <div>
+                                        <img src="{{ asset('storage/'.$amigo->imgPerfil) }}"
+                                            class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                    </div>
+
+                                    <!-- Solo nombre (sin email) -->
+                                    <div>
+                                        <h5 class="font-medium mb-0">{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        @else
+                        <p class="text-muted py-4">No tienes amigos aún. ¡Agrega algunos para compartir lecturas!</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha - Detalles del amigo -->
+            <div class="col-md-6">
+                <div class="h-100">
+                    <div class="d-flex flex-column align-items-center">
+                        <!-- Fila 1: Foto de perfil del amigo seleccionado -->
+                        <div id="detalle-imagen-container" class="mb-4 text-center" style="display: none;">
+                            <img id="detalle-imagen"
+                                src=""
+                                class="rounded-circle mb-2"
+                                width="120"
+                                height="120">
+                            <h3 id="detalle-nombre" class="h4 mb-1"></h3>
+                            <p id="detalle-email" class="text-muted small"></p>
+                        </div>
+
+                        <!-- Fila 2: Dos imágenes mías -->
+                        <div class="row mb-4 w-100">
+                            <div class="col-6 text-center">
+                                <img src="{{ asset('img/amigos/polaroid-amigos.png') }}"
+                                    alt="Tu imagen 1"
+                                    style="max-height: 150px;">
+                            </div>
+                            <div class="col-6 text-center">
+                                <img src="{{ asset('img/amigos/flor-amigos.png') }}"
+                                    alt="Tu imagen 2"
+                                    style="max-height: 150px;">
+                            </div>
+                        </div>
+
+                        <!-- Fila 3: Logros del amigo -->
+                        <div id="detalle-logros" class="mb-4 w-100 text-center" style="display: none;">
+                            <h4 class="h5 mb-3">Logros</h4>
+                            <div class="d-flex justify-content-center flex-wrap gap-2" id="logros-container">
+                                <!-- Los logros se cargarán aquí dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Fila 4: Reto anual -->
+                        <div id="detalle-reto-container" class="mb-4 w-100 text-center" style="display: none;">
+                            <h4 class="h5 mb-2">Reto Anual</h4>
+                            <div class="progress" style="height: 25px;">
+                                <div id="reto-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
+                            </div>
+                            <p id="detalle-reto-texto" class="mt-2 mb-0"></p>
+                        </div>
+
+                        <!-- Fila 5: Botón para ver perfil -->
+                        <div id="detalle-boton-container" class="mt-auto w-100 text-center" style="display: none;">
+                            <a id="detalle-enlace" href="#" class="btn btn-primary w-100">
+                                Ver perfil completo
+                            </a>
                         </div>
                     </div>
                 </div>
-                @endforeach
-            </div>
-            @else
-            <p class="text-gray-500 py-4">No tienes amigos aún. ¡Agrega algunos para compartir lecturas!</p>
-            @endif
-        </div>
-
-        <!-- Sección 3: Detalles del amigo seleccionado -->
-        <div id="detalle-amigo" class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 hidden">
-            <div class="flex flex-col items-center text-center">
-                <!-- Imagen de perfil -->
-                <img id="detalle-imagen"
-                    src=""
-                    class="h-24 w-24 rounded-full object-cover mb-4">
-
-                <!-- Nombre -->
-                <h2 id="detalle-nombre" class="text-xl font-semibold mb-1"></h2>
-
-                <!-- Email -->
-                <p id="detalle-email" class="text-gray-600 dark:text-gray-300 mb-2"></p>
-
-                <!-- Reto anual -->
-                <div class="mb-4">
-                    <span class="font-medium">Reto anual:</span>
-                    <span id="detalle-reto" class="text-blue-600 dark:text-blue-300"></span>
-                </div>
-
-                <!-- Enlace al perfil -->
-                <a id="detalle-enlace" href="#"
-                    class="px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600">
-                    Ver perfil completo
-                </a>
             </div>
         </div>
     </div>
@@ -144,31 +218,47 @@
                 return response.json();
             })
             .then(data => {
-                const detalleDiv = document.getElementById('detalle-amigo');
-                document.getElementById('detalle-imagen').src = data.imgPerfil ?
-                    `/storage/${data.imgPerfil}` :
-                    '/images/default-user.jpg';
+                // Mostrar contenedores
+                document.getElementById('detalle-imagen-container').style.display = 'block';
+                document.getElementById('detalle-logros').style.display = 'block';
+                document.getElementById('detalle-reto-container').style.display = 'block';
+                document.getElementById('detalle-boton-container').style.display = 'block';
+
+                // Actualizar datos
+                const imgPerfil = data.imgPerfil ? `/storage/${data.imgPerfil}` : '/images/default-user.jpg';
+                document.getElementById('detalle-imagen').src = imgPerfil;
                 document.getElementById('detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
                 document.getElementById('detalle-email').textContent = data.email;
-                document.getElementById('detalle-reto').textContent = `${data.retoAnual || '0'} libros`;
-                document.getElementById('detalle-enlace').href = `/perfil/${data.id}`;
 
-                detalleDiv.classList.remove('hidden');
+                // Actualizar reto anual
+                const retoAnual = data.retoAnual || 0;
+                const librosLeidos = data.librosLeidosAnual || 0;
+                const porcentaje = retoAnual > 0 ? Math.min(100, Math.round((librosLeidos / retoAnual) * 100)) : 0;
+                document.getElementById('reto-progress').style.width = `${porcentaje}%`;
+                document.getElementById('detalle-reto-texto').textContent =
+                    `${librosLeidos} de ${retoAnual} libros (${porcentaje}%)`;
+
+                // Actualizar logros
+                const logrosContainer = document.getElementById('logros-container');
+                logrosContainer.innerHTML = '';
+                if (data.logros && data.logros.length > 0) {
+                    data.logros.forEach(logro => {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge bg-secondary';
+                        badge.textContent = logro;
+                        logrosContainer.appendChild(badge);
+                    });
+                } else {
+                    logrosContainer.innerHTML = '<p class="text-muted">No hay logros aún</p>';
+                }
+
+                // Actualizar enlace al perfil
+                document.getElementById('detalle-enlace').href = `/perfil/${data.id}`;
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('No se pudo cargar la información del amigo');
             });
     }
-
-    // Cerrar detalles al hacer click fuera
-    document.addEventListener('click', function(event) {
-        const detalleDiv = document.getElementById('detalle-amigo');
-        if (!detalleDiv.contains(event.target) &&
-            !event.target.closest('.amigo-item') &&
-            detalleDiv.style.display !== 'none') {
-            detalleDiv.classList.add('hidden');
-        }
-    });
 </script>
+
 @endsection
