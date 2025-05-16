@@ -4,45 +4,94 @@ namespace App\Listeners;
 
 use App\Events\LibroLeido;
 use App\Models\Logro;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class CheckLogrosListener
 {
     public function handle(LibroLeido $event)
-{
-    Log::info('CheckLogrosListener ejecutado', [
-        'user' => $event->user->id,
-        'libro' => $event->libro->id
-    ]);
+    {
+        $user = $event->user;
+        $now = now();
 
-    try {
-        // 1. Verifica conexión básica
-        $logrosCount = Logro::count();
-        Log::info("Total logros en BD: $logrosCount");
+        // Logros por cantidad total
+        $totalLibros = $user->librosLeidos()->count();
+        $this->checkLogrosCantidad($user, $totalLibros);
 
-        // 2. Registra logro básico
-        $logro = Logro::where('tipo', 'libros_leidos')->first();
+        // Logro: Ráfaga Lectora (3 libros en 7 días)
+        $librosUltimaSemana = $user->librosLeidos()
+            ->where('created_at', '>=', $now->subDays(7))
+            ->count();
+        if ($librosUltimaSemana >= 3) {
+            $this->asignarLogro($user, 'rafaga_lectora');
+        }
+
+        // Logro: Compromiso Semanal (1 libro/semana ×4 semanas)
+        $this->checkCompromisoSemanal($user, $now);
+
+        // Logro: Inicio Motivado (leer en enero)
+        if ($now->month == 1) {
+            $this->asignarLogro($user, 'inicio_motivado');
+        }
+
+        // Logro: Reto Completado
+        if ($user->reto_anual && $totalLibros >= $user->reto_anual) {
+            $this->asignarLogro($user, 'reto_completado');
+        }
+    }
+
+    private function checkLogrosCantidad($user, $cantidad)
+    {
+        $logros = [
+            1 => 'primeros_pasos',
+            5 => 'lector_novato',
+            15 => 'lector_avanzado',
+            30 => 'devorador_libros'
+        ];
+
+        foreach ($logros as $limite => $codigo) {
+            if ($cantidad >= $limite) {
+                $this->asignarLogro($user, $codigo);
+            }
+        }
+    }
+
+    private function checkCompromisoSemanal($user, $now)
+    {
+        $semanasConsecutivas = 0;
+        $fecha = $now->copy();
         
-        if ($logro) {
-            $event->user->logros()->syncWithoutDetaching([
-                $logro->id => [
+        for ($i = 0; $i < 4; $i++) {
+            if ($user->librosLeidos()
+                ->whereBetween('created_at', [$fecha->copy()->startOfWeek(), $fecha->copy()->endOfWeek()])
+                ->exists()) {
+                $semanasConsecutivas++;
+            } else {
+                break;
+            }
+            $fecha->subWeek();
+        }
+        
+        if ($semanasConsecutivas >= 4) {
+            $this->asignarLogro($user, 'compromiso_semanal');
+        }
+    }
+
+    private function asignarLogro($user, $codigoLogro)
+    {
+        try {
+            $logro = Logro::where('codigo', $codigoLogro)->first();
+            
+            if ($logro && !$user->logros()->where('logro_id', $logro->id)->exists()) {
+                $user->logros()->attach($logro->id, [
                     'progreso' => 1,
                     'completado' => true,
                     'completado_en' => now()
-                ]
-            ]);
-            Log::info("Logro asignado: $logro->id");
+                ]);
+                
+                Log::info("Logro asignado: {$logro->nombre} al usuario {$user->id}");
+            }
+        } catch (\Exception $e) {
+            Log::error("Error asignando logro: " . $e->getMessage());
         }
-
-        // 3. Verificación en BD
-        $userLogros = DB::table('logro_user')
-                      ->where('user_id', $event->user->id)
-                      ->get();
-        Log::info("Logros del usuario:", $userLogros->toArray());
-
-    } catch (\Exception $e) {
-        Log::error("Error en CheckLogrosListener: ".$e->getMessage());
     }
-}
 }

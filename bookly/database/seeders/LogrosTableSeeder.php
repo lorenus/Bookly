@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Logro;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class LogrosTableSeeder extends Seeder
@@ -22,15 +21,44 @@ class LogrosTableSeeder extends Seeder
                 'tipo' => 'libros_leidos'
             ],
             [
-                'nombre' => 'Amante de los clásicos',
-                'requisito' => 3,
-                'tipo' => 'clasicos_leidos'
+                'nombre' => 'Lector avanzado',
+                'requisito' => 15,
+                'tipo' => 'libros_leidos'
             ],
-
+            [
+                'nombre' => 'Devorador de libros',
+                'requisito' => 30,
+                'tipo' => 'libros_leidos'
+            ],
+            [
+                'nombre' => 'Ráfaga lectora',
+                'requisito' => 3,
+                'tipo' => 'libros_semana'
+            ],
+            [
+                'nombre' => 'Compromiso semanal',
+                'requisito' => 4,
+                'tipo' => 'semanas_consecutivas'
+            ],
+            [
+                'nombre' => 'Inicio motivado',
+                'requisito' => 1,
+                'tipo' => 'lectura_enero'
+            ],
+            [
+                'nombre' => 'Reto completado',
+                'requisito' => 1,
+                'tipo' => 'reto_anual'
+            ]
         ];
 
         foreach ($logros as $logro) {
-            Logro::firstOrCreate($logro);
+            Logro::firstOrCreate(
+                ['nombre' => $logro['nombre']],
+                $logro
+            );
         }
+
+        $this->command->info('Logros básicos creados exitosamente!');
     }
 }

@@ -1,4 +1,5 @@
 /* resources/css/app.css */
+
 @font-face {
     font-family: "Providence Sans";
     src: url("/public/fonts/Providence-Sans.otf") format("opentype");
@@ -1204,14 +1205,99 @@ input[type="file"]::-moz-focus-inner {
         height: 90vh !important;
     }
 
-
-/******************* AMIGOS *******************/
-    .border-bottom-2 {
-        border-bottom-width: 2px !important;
-    }
-
-    .input-ancho-completo {
-        width: 100% !important;
-    }
-
 }
+/******************* LOGROS *******************/
+
+   /******************* LOGROS *******************/
+.logros-container {
+    background-image: url("/public/img/logros/corcho.png"); /* Quité /public/ de la ruta */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    max-width: 70vw; /* Ajusta este valor según necesites */
+    margin: 0 auto;
+    padding: 40px; /* Espacio interior para que el grid no toque los bordes */
+    aspect-ratio: 1/1; /* Mantiene relación cuadrada (ajusta según tu imagen) */
+    position: relative;
+    align-content: center;
+}
+
+.logros-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px; /* Reducido para caber mejor */
+    width: 80%; /* Ocupa solo el 80% del contenedor */
+    margin: 0 auto; /* Centrado */
+    position: relative;
+    z-index: 1;
+}
+
+/* Resto de tus estilos permanecen igual */
+.logro-item {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+    .logro-item:hover {
+        transform: scale(1.05);
+    }
+
+    .logro-postit {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .logro-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70%;
+        height: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logro-imagen {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .logro-bloqueado {
+        font-size: 2rem;
+        color: rgba(0,0,0,0.5);
+    }
+
+    /* Estilos para el modal */
+    .modal-logro {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        width: 90%;
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-size: 1.5rem;}

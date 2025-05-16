@@ -17,7 +17,7 @@
         <div class="row g-4">
             <!-- Columna izquierda - Formularios -->
             <div class="col-md-6">
-                <!-- Sección 1: Buscar y solicitar amistad -->
+                <!-- Sección 1: Buscar y solicitar amistad - Código corregido -->
                 <div class="mb-4">
                     <div>
                         <h4>Solicitar amistad:</h4>
@@ -26,8 +26,8 @@
                             <input type="hidden" name="amigo_id" id="amigo-id-input">
 
                             <!-- Input para el email -->
-                            <div class="mb-5">
-                                <div class="w-100"> <!-- Contenedor padre al 100% -->
+                            <div>
+                                <div class="w-100">
                                     <input
                                         type="email"
                                         name="email"
@@ -35,21 +35,26 @@
                                         placeholder="Introduce el email del usuario"
                                         required
                                         class="form-control border-0 px-0 bg-transparent w-100"
-                                        style="min-width: 100%;"
+                                        style="min-width: 100%; border-bottom: 2px solid #dee2e6;"
                                         x-data
                                         x-on:input.debounce.500ms='
                                             const email = $event.target.value;
                                             const resultadoDiv = document.getElementById("resultado-busqueda");
+                                            const btnEnviar = document.getElementById("btn-enviar-solicitud");
                                             
                                             if (email.includes("@")) {
                                                 resultadoDiv.innerHTML = "<div class=\"text-muted mt-2\">Buscando usuario...</div>";
+                                                btnEnviar.disabled = true;
                                                 
-                                                fetch("/verificar-email?email=" + encodeURIComponent(email))
-                                                    .then(response => response.json())
+                                                fetch(`/verificar-email?email=${encodeURIComponent(email)}`)
+                                                    .then(response => {
+                                                        if (!response.ok) throw new Error("Error en la respuesta");
+                                                        return response.json();
+                                                    })
                                                     .then(data => {
                                                         if (data.existe) {
                                                             resultadoDiv.innerHTML = `
-                                                                <div class="mt-2 p-3 bg-light rounded border">
+                                                                <div class="ms-5 p-3">
                                                                     <div class="d-flex align-items-center">
                                                                         <img src="${data.usuario.imgPerfil ? "/storage/"+data.usuario.imgPerfil : "/images/default-user.jpg"}" 
                                                                             class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
@@ -61,24 +66,24 @@
                                                                 </div>
                                                             `;
                                                             document.getElementById("amigo-id-input").value = data.usuario.id;
-                                                            document.getElementById("btn-enviar-solicitud").disabled = false;
+                                                            btnEnviar.disabled = false;
                                                         } else {
                                                             resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-danger\">No se encontró ningún usuario con ese email</div>";
                                                             document.getElementById("amigo-id-input").value = "";
-                                                            document.getElementById("btn-enviar-solicitud").disabled = true;
+                                                            btnEnviar.disabled = true;
                                                         }
                                                     })
                                                     .catch(error => {
-                                                        resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-danger\">Error al buscar el usuario</div>";
-                                                        console.error("Error:", error);
-                                                        document.getElementById("btn-enviar-solicitud").disabled = true;
+                                                        console.error("Error en la búsqueda:", error);
+                                                        resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-danger\">Error al conectar con el servidor</div>";
+                                                        btnEnviar.disabled = true;
                                                     });
                                             } else if (email.length > 0) {
                                                 resultadoDiv.innerHTML = "<div class=\"mt-2 p-2 text-warning\">Por favor, introduce un email válido</div>";
-                                                document.getElementById("btn-enviar-solicitud").disabled = true;
+                                                btnEnviar.disabled = true;
                                             } else {
                                                 resultadoDiv.innerHTML = "";
-                                                document.getElementById("btn-enviar-solicitud").disabled = true;
+                                                btnEnviar.disabled = true;
                                             }
                                         '>
                                 </div>
@@ -87,7 +92,7 @@
                             <!-- Resultado de la búsqueda -->
                             <div id="resultado-busqueda" class="mb-3"></div>
                             <div class="d-flex gap-2 justify-content-center mb-5">
-                                <x-button type="submit" class="px-6 py-3">
+                                <x-button type="submit" class="px-6 py-3" id="btn-enviar-solicitud" disabled>
                                     {{ __('Enviar') }}
                                 </x-button>
                             </div>
@@ -97,11 +102,11 @@
 
                 <!-- Sección 2: Lista de amigos con buscador -->
                 <div class="mt-5">
-                    <div>
+                    <div class="mis-amigos" style="margin-top: 85px;">
                         <!-- Título y buscador en columna -->
                         <div class="mt-5 mb-4">
                             <h4>Mis Amigos ({{ $amigos->count() }})</h4>
-                            <div class="w-100"> 
+                            <div class="w-100">
                                 <input
                                     type="text"
                                     placeholder="Buscar entre mis amigos..."
@@ -129,11 +134,9 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <!-- Avatar -->
                                     <div>
-                                        <img src="{{ asset('storage/'.$amigo->imgPerfil) }}"
+                                        <img src="{{ asset($amigo->imgPerfil) }}"
                                             class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     </div>
-
-                                    <!-- Solo nombre (sin email) -->
                                     <div>
                                         <h5 class="font-medium mb-0">{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h5>
                                     </div>
@@ -149,54 +152,47 @@
             </div>
 
             <!-- Columna derecha - Detalles del amigo -->
-            <div class="col-md-6">
-                <div class="h-100">
+            <div class="col-md-6 ps-5">
+                <div class="h-100 ps-5">
                     <div class="d-flex flex-column align-items-center">
-                        <!-- Fila 1: Foto de perfil del amigo seleccionado -->
-                        <div id="detalle-imagen-container" class="mb-4 text-center" style="display: none;">
-                            <img id="detalle-imagen"
-                                src=""
-                                class="rounded-circle mb-2"
-                                width="120"
-                                height="120">
-                            <h3 id="detalle-nombre" class="h4 mb-1"></h3>
-                            <p id="detalle-email" class="text-muted small"></p>
-                        </div>
+                        <!-- Fila 1: Contenedor de imágenes superpuestas -->
+                        <div class="mb-4 position-relative" style="width: 100%; height: 200px;">
+                            <!-- Imagen del usuario (polaroid) -->
+                            <div id="detalle-imagen-container" class="text-center" style="display: none; position: absolute; top: 35px; left: 33%; transform: translateX(-50%)rotate(-6deg); z-index: 2; width: 150px;">
+                                <img id="detalle-imagen"
+                                    src=""
+                                    style="object-fit: cover; width: 180px; height: 190px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                                <h3 id="detalle-nombre" class="h5 text-center ms-4 mb-5 mt-2"></h3>
+                            </div>
 
-                        <!-- Fila 2: Dos imágenes mías -->
-                        <div class="row mb-4 w-100">
-                            <div class="col-6 text-center">
+                            <!-- Imagen 1 (polaroid) -->
+                            <div class="position-absolute" style="top: 0; left: 35%; transform: translateX(-50%); z-index: 1;">
                                 <img src="{{ asset('img/amigos/polaroid-amigos.png') }}"
-                                    alt="Tu imagen 1"
-                                    style="max-height: 150px;">
+                                    alt="Marco polaroid"
+                                    style="max-height: 300px;">
                             </div>
-                            <div class="col-6 text-center">
+
+                            <!-- Imagen 2 (flor) - Con z-index menor -->
+                            <div class="position-absolute" style="top: 75px; right: -85px; z-index: 0;">
                                 <img src="{{ asset('img/amigos/flor-amigos.png') }}"
-                                    alt="Tu imagen 2"
-                                    style="max-height: 150px;">
+                                    alt="Decoración flor"
+                                    style="max-height: 450px;">
                             </div>
                         </div>
 
-                        <!-- Fila 3: Logros del amigo -->
-                        <div id="detalle-logros" class="mb-4 w-100 text-center" style="display: none;">
-                            <h4 class="h5 mb-3">Logros</h4>
-                            <div class="d-flex justify-content-center flex-wrap gap-2" id="logros-container">
-                                <!-- Los logros se cargarán aquí dinámicamente -->
-                            </div>
+                        <!-- Resto del contenido -->
+                        <div id="detalle-logros" class="mt-5 mb-4 w-100 text-center" style="display: none; margin-top: 25px">
+                            <h4 class="h5 mt-4 mb-3">Logros</h4>
+                            <div class="d-flex justify-content-center flex-wrap gap-2" id="logros-container"></div>
                         </div>
 
-                        <!-- Fila 4: Reto anual -->
                         <div id="detalle-reto-container" class="mb-4 w-100 text-center" style="display: none;">
                             <h4 class="h5 mb-2">Reto Anual</h4>
-                            <div class="progress" style="height: 25px;">
-                                <div id="reto-progress" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
-                            </div>
                             <p id="detalle-reto-texto" class="mt-2 mb-0"></p>
                         </div>
 
-                        <!-- Fila 5: Botón para ver perfil -->
-                        <div id="detalle-boton-container" class="mt-auto w-100 text-center" style="display: none;">
-                            <a id="detalle-enlace" href="#" class="btn btn-primary w-100">
+                        <div id="detalle-boton-container" class="mt-auto pt-2 h-100 w-50 text-center" style="background-image: url('img/elementos/btn-verde.png'); display: none;">
+                            <a id="detalle-enlace" href="#" class="w-100" style=" text-decoration: none; color: black">
                                 Ver perfil completo
                             </a>
                         </div>
@@ -210,6 +206,10 @@
 <script>
     // Función para mostrar detalles del amigo
     function mostrarDetalleAmigo(amigoId) {
+        // Limpiar contenedores antes de cargar nuevos datos
+        document.getElementById('detalle-imagen').src = '';
+        document.getElementById('logros-container').innerHTML = '';
+        
         fetch(`/amigos/${amigoId}/detalle`)
             .then(response => {
                 if (!response.ok) {
@@ -225,16 +225,21 @@
                 document.getElementById('detalle-boton-container').style.display = 'block';
 
                 // Actualizar datos
-                const imgPerfil = data.imgPerfil ? `/storage/${data.imgPerfil}` : '/images/default-user.jpg';
-                document.getElementById('detalle-imagen').src = imgPerfil;
+                const imgElement = document.getElementById('detalle-imagen');
+                const imgPerfil = data.imgPerfil ? `${data.imgPerfil}` : '/images/default-user.jpg';
+                
+                // Forzar imagen por defecto si hay error al cargar
+                imgElement.src = imgPerfil;
+                imgElement.onerror = function() {
+                    this.src = '/images/default-user.jpg';
+                };
+                
                 document.getElementById('detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
-                document.getElementById('detalle-email').textContent = data.email;
 
                 // Actualizar reto anual
                 const retoAnual = data.retoAnual || 0;
                 const librosLeidos = data.librosLeidosAnual || 0;
                 const porcentaje = retoAnual > 0 ? Math.min(100, Math.round((librosLeidos / retoAnual) * 100)) : 0;
-                document.getElementById('reto-progress').style.width = `${porcentaje}%`;
                 document.getElementById('detalle-reto-texto').textContent =
                     `${librosLeidos} de ${retoAnual} libros (${porcentaje}%)`;
 
