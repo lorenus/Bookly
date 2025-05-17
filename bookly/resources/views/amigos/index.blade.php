@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <!-- Botón de volver -->
 <a href="{{ route('perfil') }}" class="position-fixed" style="top: 100px; left: 40px; z-index: 1000;">
@@ -56,8 +55,8 @@
                                                             resultadoDiv.innerHTML = `
                                                                 <div class="ms-5 p-3">
                                                                     <div class="d-flex align-items-center">
-                                                                        <img src="${data.usuario.imgPerfil ? "/storage/"+data.usuario.imgPerfil : "/images/default-user.jpg"}" 
-                                                                            class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
+                                                                        <img src="${data.usuario.imgPerfil ? "/storage/"+data.usuario.imgPerfil : "/images/default-user.jpg"}"
+                                                                            class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;" alt="Foto de perfil">
                                                                         <div>
                                                                             <h5 class="mb-0">${data.usuario.name} ${data.usuario.apellidos || ""}</h5>
                                                                             <small class="text-muted">${email}</small>
@@ -135,7 +134,7 @@
                                     <!-- Avatar -->
                                     <div>
                                         <img src="{{ asset($amigo->imgPerfil) }}"
-                                            class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                            alt="Foto de perfil" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     </div>
                                     <div>
                                         <h5 class="font-medium mb-0">{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h5>
@@ -159,9 +158,10 @@
                         <div class="mb-4 position-relative" style="width: 100%; height: 200px;">
                             <!-- Imagen del usuario (polaroid) -->
                             <div id="detalle-imagen-container" class="text-center" style="display: none; position: absolute; top: 35px; left: 33%; transform: translateX(-50%)rotate(-6deg); z-index: 2; width: 150px;">
-                                <img id="detalle-imagen"
+                                <img id="detalle-imagen" alt="Foto de perfil"
                                     src=""
                                     style="object-fit: cover; width: 180px; height: 190px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                               
                                 <h3 id="detalle-nombre" class="h5 text-center ms-4 mb-5 mt-2"></h3>
                             </div>
 
@@ -251,10 +251,10 @@
                         const logroDiv = document.createElement('div');
                         logroDiv.className = 'logro-miniatura';
                         logroDiv.innerHTML = `
-                        <img src="{{ asset('') }}${logro.imagen}" 
+                        <img src="{{ asset('') }}${logro.imagen}"
                              alt="${logro.nombre}"
                              class="img-fluid rounded"
-                             data-bs-toggle="tooltip" 
+                             data-bs-toggle="tooltip"
                              title="${logro.nombre} - ${logro.fecha}">
                     `;
                         logrosContainer.appendChild(logroDiv);

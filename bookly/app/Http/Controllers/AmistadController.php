@@ -22,8 +22,8 @@ class AmistadController extends Controller
         })
         ->get()
         ->map(function($amistad) use ($user) {
-            return $amistad->user_id == $user->id 
-                ? $amistad->amigo_id 
+            return $amistad->user_id == $user->id
+                ? $amistad->amigo_id
                 : $amistad->user_id;
         })
         ->unique();
@@ -138,5 +138,4 @@ public function verificarEmail(Request $request)
         ] : null
     ]);
 }
-
 }

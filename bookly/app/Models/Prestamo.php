@@ -14,7 +14,7 @@ class Prestamo extends Model
         'receptor_id',
         'fecha_limite',
         'devuelto'
-    ]; 
+    ];
 
     protected $casts = ['fecha_limite' => 'datetime'];
 
@@ -49,10 +49,4 @@ class Prestamo extends Model
     public function marcarDevuelto(){
         $this->update(['devuelto' => true ]);
     }
-
-    // public function enviarRecordatorio(){
-    //     if ($this->estaRetrasado()) {
-    //         $this->prestatario->notify(new PrestamoRetrasado($this));
-    //     }
-    // }
 }
