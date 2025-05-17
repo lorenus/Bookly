@@ -1221,16 +1221,17 @@ input[type="file"]::-moz-focus-inner {
     aspect-ratio: 1/1; /* Mantiene relación cuadrada (ajusta según tu imagen) */
     position: relative;
     align-content: center;
+    ;
 }
 
 .logros-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px; /* Reducido para caber mejor */
-    width: 80%; /* Ocupa solo el 80% del contenedor */
-    margin: 0 auto; /* Centrado */
+    width: 90%; 
+    margin: 0 auto; 
     position: relative;
     z-index: 1;
+    margin-top: 5%;
 }
 
 /* Resto de tus estilos permanecen igual */
