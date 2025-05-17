@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.App')
 
 @section('content')
 <!-- Botón de volver -->
@@ -29,31 +29,65 @@
 
             <!-- Valoración promedio -->
             <div class="rating-container">
-                <div class="stars">
-                    @php
-                    $rating = $book['volumeInfo']['averageRating'] ?? 0;
-                    $fullStars = floor($rating);
-                    $hasHalfStar = $rating - $fullStars >= 0.5;
-                    $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0);
-                    @endphp
+                <!-- Valoración de Bookly -->
+                @php
+                $valoracionBookly = DB::table('libros_usuario')
+                ->join('libros', 'libros_usuario.libro_id', '=', 'libros.id')
+                ->where('libros.google_id', $book['id'])
+                ->whereNotNull('libros_usuario.valoracion')
+                ->avg('libros_usuario.valoracion');
 
-                    @for($i = 0; $i < $fullStars; $i++)
-                        <span class="star full">★</span>
-                        @endfor
+                $countBookly = DB::table('libros_usuario')
+                ->join('libros', 'libros_usuario.libro_id', '=', 'libros.id')
+                ->where('libros.google_id', $book['id'])
+                ->whereNotNull('libros_usuario.valoracion')
+                ->count();
+                @endphp
 
-                        @if($hasHalfStar)
-                        <span class="star half">★</span>
-                        @endif
+                @if(!is_null($valoracionBookly))
+                <div class="Bookly-rating">
+                    <div class="stars mb-1">
+                        @php
+                        $ratingBookly = round($valoracionBookly, 1);
+                        $fullStarsBookly = floor($ratingBookly);
+                        $hasHalfStarBookly = $ratingBookly - $fullStarsBookly >= 0.5;
+                        $emptyStarsBookly = 5 - $fullStarsBookly - ($hasHalfStarBookly ? 1 : 0);
+                        @endphp
 
-                        @for($i = 0; $i < $emptyStars; $i++)
-                            <span class="star empty">★</span>
+                        @for($i = 0; $i < $fullStarsBookly; $i++)
+                            <span class="star full">★</span>
                             @endfor
-                </div>
-                <div class="rating-text">
-                    {{ number_format($rating, 2) }} según {{ $book['volumeInfo']['ratingsCount'] ?? 0 }} valoraciones
-                </div>
-            </div>
 
+                            @if($hasHalfStarBookly)
+                            <span class="star half">★</span>
+                            @endif
+
+                            @for($i = 0; $i < $emptyStarsBookly; $i++)
+                                <span class="star empty">★</span>
+                                @endfor
+                    </div>
+                    <div class="rating-text Bookly-rating-text">
+                        {{ number_format($ratingBookly, 1) }} ({{ $countBookly }} valoraciones en Bookly)
+                    </div>
+                </div>
+                @else
+                <div class="no-rating-text">
+                    Sé el primero en valorar este libro
+                </div>
+                @endif
+
+                <!-- Valoración de Google Books -->
+                @php
+                $ratingGoogle = $book['volumeInfo']['averageRating'] ?? null;
+                $countGoogle = $book['volumeInfo']['ratingsCount'] ?? 0;
+                @endphp
+
+                @if(!is_null($ratingGoogle))
+                <div class="google-rating-text mt-2">
+                    Valoración en Google: {{ number_format($ratingGoogle, 1) }} ({{ $countGoogle }} valoraciones)
+                </div>
+                @endif
+            </div>
             <!-- Datos del libro -->
             <div class="book-details mt-3">
                 <h1 class="book-title">{{ $book['volumeInfo']['title'] ?? 'Título desconocido' }}</h1>
