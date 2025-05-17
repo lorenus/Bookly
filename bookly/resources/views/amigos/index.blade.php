@@ -180,10 +180,9 @@
                             </div>
                         </div>
 
-                        <!-- Resto del contenido -->
                         <div id="detalle-logros" class="mt-5 mb-4 w-100 text-center" style="display: none; margin-top: 25px">
-                            <h4 class="h5 mt-4 mb-3">Logros</h4>
-                            <div class="d-flex justify-content-center flex-wrap gap-2" id="logros-container"></div>
+                            <h4 class="h5 mt-4 mb-3">Últimos Logros</h4>
+                            <div class="d-flex justify-content-center gap-3" id="logros-amigo-container"></div>
                         </div>
 
                         <div id="detalle-reto-container" class="mb-4 w-100 text-center" style="display: none;">
@@ -204,12 +203,11 @@
 </div>
 
 <script>
-    // Función para mostrar detalles del amigo
     function mostrarDetalleAmigo(amigoId) {
         // Limpiar contenedores antes de cargar nuevos datos
         document.getElementById('detalle-imagen').src = '';
-        document.getElementById('logros-container').innerHTML = '';
-        
+        document.getElementById('logros-amigo-container').innerHTML = '';
+
         fetch(`/amigos/${amigoId}/detalle`)
             .then(response => {
                 if (!response.ok) {
@@ -224,16 +222,14 @@
                 document.getElementById('detalle-reto-container').style.display = 'block';
                 document.getElementById('detalle-boton-container').style.display = 'block';
 
-                // Actualizar datos
+                // Actualizar datos básicos
                 const imgElement = document.getElementById('detalle-imagen');
                 const imgPerfil = data.imgPerfil ? `${data.imgPerfil}` : '/images/default-user.jpg';
-                
-                // Forzar imagen por defecto si hay error al cargar
                 imgElement.src = imgPerfil;
                 imgElement.onerror = function() {
                     this.src = '/images/default-user.jpg';
                 };
-                
+
                 document.getElementById('detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
 
                 // Actualizar reto anual
@@ -244,17 +240,25 @@
                     `${librosLeidos} de ${retoAnual} libros (${porcentaje}%)`;
 
                 // Actualizar logros
-                const logrosContainer = document.getElementById('logros-container');
-                logrosContainer.innerHTML = '';
+                const logrosContainer = document.getElementById('logros-amigo-container');
                 if (data.logros && data.logros.length > 0) {
                     data.logros.forEach(logro => {
-                        const badge = document.createElement('span');
-                        badge.className = 'badge bg-secondary';
-                        badge.textContent = logro;
-                        logrosContainer.appendChild(badge);
+                        const logroDiv = document.createElement('div');
+                        logroDiv.className = 'logro-miniatura';
+                        logroDiv.innerHTML = `
+                        <img src="{{ asset('') }}${logro.imagen}" 
+                             alt="${logro.nombre}"
+                             class="img-fluid rounded"
+                             data-bs-toggle="tooltip" 
+                             title="${logro.nombre} - ${logro.fecha}">
+                    `;
+                        logrosContainer.appendChild(logroDiv);
                     });
+
+                    // Inicializar tooltips
+                    $('[data-bs-toggle="tooltip"]').tooltip();
                 } else {
-                    logrosContainer.innerHTML = '<p class="text-muted">No hay logros aún</p>';
+                    logrosContainer.innerHTML = '<p class="text-muted">Este usuario no tiene logros aún</p>';
                 }
 
                 // Actualizar enlace al perfil
@@ -264,6 +268,6 @@
                 console.error('Error:', error);
             });
     }
+    
 </script>
-
 @endsection

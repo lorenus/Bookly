@@ -97,32 +97,28 @@ public function store(Request $request)
         return back()->with('success', 'Amistad eliminada correctamente');
     }
 
-    public function detalleAmigo(User $amigo)
+    public function detalleAmigo($amigoId)
 {
-    $user = Auth::user();
-    
-    $esAmigo = Amistad::where('estado', 'aceptada')
-        ->where(function($query) use ($user, $amigo) {
-            $query->where('user_id', $user->id)
-                ->where('amigo_id', $amigo->id);
-        })
-        ->orWhere(function($query) use ($user, $amigo) {
-            $query->where('user_id', $amigo->id)
-                ->where('amigo_id', $user->id);
-        })
-        ->exists();
-
-    if (!$esAmigo) {
-        abort(403, 'No tienes permiso para ver este perfil');
-    }
+    $amigo = User::with(['logros' => function($query) {
+        $query->orderBy('logro_user.completado_en', 'desc')
+              ->take(3);
+    }])->findOrFail($amigoId);
 
     return response()->json([
         'id' => $amigo->id,
         'name' => $amigo->name,
         'apellidos' => $amigo->apellidos,
-        'email' => $amigo->email,
         'imgPerfil' => $amigo->imgPerfil,
-        'retoAnual' => $amigo->retoAnual
+        'retoAnual' => $amigo->reto_anual,
+        'librosLeidosAnual' => $amigo->libros_leidos_anual,
+        'logros' => $amigo->logros->map(function($logro) {
+            return [
+                'id' => $logro->id,
+                'nombre' => $logro->nombre,
+                'imagen' => 'logros/logro'.$logro->id.'.png',
+                'fecha' => $logro->pivot->completado_en->format('d/m/Y')
+            ];
+        })
     ]);
 }
 
