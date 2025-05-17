@@ -422,34 +422,6 @@ body {
     object-fit: contain;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .notebook-container {
-        padding: 10% 8%;
-    }
-
-    .book-cover {
-        width: 22%;
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .corcho-container,
-    .notebook-container {
-        min-height: 50vh; /* Altura menor en móvil */
-        padding: 15% 10%;
-    }
-
-    .corcho-container {
-        background-size: cover;
-    }
-
-    .notebook-container {
-        background-size: cover;
-    }
-}
-
 /********** Buscador mi perfil **************/
 
 #basic-results {
@@ -820,18 +792,6 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-}
-
-@media (min-width: 768px) {
-    .book-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (min-width: 992px) {
-    .book-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
 }
 
 /* ------------------------- */
@@ -1223,13 +1183,6 @@ input[type="file"]::-moz-focus-inner {
     padding: 2rem;
 }
 
-/* Ajustes para pantallas pequeñas */
-@media (max-width: 768px) {
-    .mensajes-paper {
-        width: 95% !important;
-        height: 90vh !important;
-    }
-}
 /******************* LOGROS *******************/
 
 .logros-container {
@@ -1405,7 +1358,7 @@ input[type="file"]::-moz-focus-inner {
     color: #ddd;
 }
 
-.rating-text {
+.google-rating-text {
     font-size: 0.9rem;
     color: #666;
 }
