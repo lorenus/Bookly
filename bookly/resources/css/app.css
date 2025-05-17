@@ -1352,18 +1352,18 @@ input[type="file"]::-moz-focus-inner {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/img/fichaLibro/libreta-ficha.png');
-    background-size: cover;
+    background-image: url('/public/img/fichaLibro/libreta-ficha.png');
+    background-size: contain;
     background-position: center;
-    opacity: 0.1;
+    background-repeat: no-repeat;
     z-index: -1;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
 }
 
 .libreta-content {
     display: flex;
-    min-height: 80vh;
+    max-height: 80vh;
+    margin-left: 6%;
+    margin-right: 8%;
 }
 
 .libreta-page {
@@ -1371,13 +1371,8 @@ input[type="file"]::-moz-focus-inner {
     padding: 2rem;
 }
 
-.left-page {
-    border-right: 1px solid #ddd;
-}
-
 .portada-container {
     text-align: center;
-    margin-bottom: 2rem;
 }
 
 .portada-img {
@@ -1389,7 +1384,6 @@ input[type="file"]::-moz-focus-inner {
     width: 200px;
     height: 300px;
     margin: 0 auto;
-    background: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1398,13 +1392,11 @@ input[type="file"]::-moz-focus-inner {
 
 .rating-container {
     text-align: center;
-    margin: 1.5rem 0;
 }
 
 .stars {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #ffc107;
-    margin-bottom: 0.5rem;
 }
 
 .star {
@@ -1431,7 +1423,6 @@ input[type="file"]::-moz-focus-inner {
 
 .separator {
     height: 1px;
-    background: #ddd;
     margin: 1.5rem 0;
 }
 
@@ -1450,14 +1441,6 @@ input[type="file"]::-moz-focus-inner {
     color: #555;
 }
 
-.book-management {
-    margin-top: 2rem;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
 .action-buttons {
     margin-top: 2rem;
 }
@@ -1470,7 +1453,6 @@ input[type="file"]::-moz-focus-inner {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     color: #333;
-    border-bottom: 1px solid #ddd;
     padding-bottom: 0.5rem;
 }
 
