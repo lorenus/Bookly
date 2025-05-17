@@ -47,14 +47,16 @@
 
             @php
             if($logro->users->isNotEmpty() && isset($logro->users[0]->pivot->completado_en)) {
-            try {
-            $fecha = is_object($logro->users[0]->pivot->completado_en)
-            ? $logro->users[0]->pivot->completado_en
-            : new DateTime($logro->users[0]->pivot->completado_en);
-            $estado = 'Desbloqueado: ' . $fecha->format('d/m/Y');
-            } catch (Exception $e) {
-            $estado = 'Desbloqueado (fecha no disponible)';
-            }
+                try {
+                    $fecha = is_object($logro->users[0]->pivot->completado_en)
+                    ? $logro->users[0]->pivot->completado_en
+                    : new DateTime($logro->users[0]->pivot->completado_en);
+                    $estado = 'Desbloqueado: ' . $fecha->format('d/m/Y');
+                } catch (Exception $e) {
+                    $estado = 'Desbloqueado (fecha no disponible)';
+                }   
+            } else {
+                $estado = 'No desbloqueado aún';    
             }
             @endphp
 
