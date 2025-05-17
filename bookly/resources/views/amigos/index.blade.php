@@ -190,10 +190,15 @@
                             <p id="detalle-reto-texto" class="mt-2 mb-0"></p>
                         </div>
 
-                        <div id="detalle-boton-container" class="mt-auto pt-2 h-100 w-50 text-center" style="background-image: url('img/elementos/btn-verde.png'); display: none;">
-                            <a id="detalle-enlace" href="#" class="w-100" style=" text-decoration: none; color: black">
-                                Ver perfil completo
-                            </a>
+
+                        <div id="detalle-boton-container" class="mt-auto pt-2 h-100 w-50 text-center" style="display: none;">
+                            <form action="{{ route('amigos.destroy', $amigo->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <x-button type="submit" class="px-6 py-3" id="btn-enviar-solicitud">
+                                    {{ __('Borrar amistad') }}
+                                </x-button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -268,6 +273,5 @@
                 console.error('Error:', error);
             });
     }
-    
 </script>
 @endsection
