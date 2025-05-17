@@ -50,7 +50,7 @@
                             @endfor
                 </div>
                 <div class="rating-text">
-                    {{ number_format($rating, 2) }} según {{ $book['volumeInfo']['ratingsCount'] ?? 0 }} reseñas
+                    {{ number_format($rating, 2) }} según {{ $book['volumeInfo']['ratingsCount'] ?? 0 }} valoraciones
                 </div>
             </div>
 
@@ -101,8 +101,8 @@
                         <form action="{{ route('libros.comprar', $book['id']) }}" method="POST" class="w-100">
                             @csrf
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="comprado" id="comprado"
-                                    {{ Auth::user()->libros()->where('google_id', $book['id'])->wherePivot('comprado', true)->exists() ? 'checked' : '' }}
+                                <input type="checkbox" name="comprado"
+                                    {{ Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists() ? 'checked' : '' }}
                                     onchange="this.form.submit()">
                                 <label class="form-check-label" for="comprado">
                                     ¡Lo tengo!
@@ -127,7 +127,8 @@
                         </div>
                     </div>
 
-                    <!-- Columna para Prestar -->
+                    <!-- Columna para Prestar (solo visible si el libro está comprado) -->
+                    @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
                     <div class="col-md-6 col-sm-6 mb-2">
                         <div class="form-group">
                             <label>Prestar a:</label>
@@ -139,30 +140,37 @@
                             </select>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
         <!-- Página derecha -->
-        <div class="libreta-page right-page">
-            <h2 class="sinopsis-title">Sinopsis</h2>
-            <div class="sinopsis-content">
-                {{ $book['volumeInfo']['description'] ?? 'No hay sinopsis disponible.' }}
+        <div class="libreta-page right-page ms-5" style="height: 80vh; margin-left: 5%; display: flex; flex-direction: column;">
+            <h2 class="sinopsis-title mb-3">Sinopsis</h2>
+
+            <!-- Contenedor de sinopsis con scroll -->
+            <div class="sinopsis-content flex-grow-1" style="overflow-y: auto; margin-bottom: 20px;">
+                {!! $book['volumeInfo']['description'] ?? 'No hay sinopsis disponible.' !!}
             </div>
 
             <!-- Sección para valoración del usuario (si ha leído el libro) -->
             @if(Auth::user()->haLeidoLibro($book['id']))
-            <div class="user-rating">
-                <h3>Tu valoración</h3>
+            <div class="user-rating mt-auto">
+                <h5 class="text-center mb-3">Tu valoración</h5>
                 <form action="{{ route('libros.rate', $book['id']) }}" method="POST">
                     @csrf
-                    <div class="rating-stars">
+                    <div class="rating-stars text-center mb-3">
                         @for($i = 5; $i >= 1; $i--)
                         <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}"
                             {{ Auth::user()->getValoracionLibro($book['id']) == $i ? 'checked' : '' }}>
                         <label for="star{{ $i }}">★</label>
                         @endfor
                     </div>
-                    <button type="submit" class="btn-rate">Guardar valoración</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn-rate">
+                            Guardar valoración
+                        </button>
+                    </div>
                 </form>
             </div>
             @endif

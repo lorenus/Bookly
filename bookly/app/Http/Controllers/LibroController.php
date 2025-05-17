@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Amistad;
 use App\Models\Libro;
 use App\Models\Notificacion;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -75,51 +76,33 @@ class LibroController extends Controller
     }
 
     public function marcarComoComprado(Request $request, $googleId)
-    {
-        try {
-            $userId = Auth::id();
-            $comprado = $request->has('comprado');
+{
+    try {
+        $user = User::with('libros')->find(Auth::id());
+        $comprado = $request->has('comprado');
 
-            // Buscar el libro local por google_id
-            $libro = Libro::where('google_id', $googleId)->first();
+        // Buscar el libro local por google_id
+        $libro = Libro::where('google_id', $googleId)->firstOrFail();
 
-            if (!$libro) {
-                // Si no existe, crearlo primero
-                $response = Http::get("https://www.googleapis.com/books/v1/volumes/{$googleId}");
-                $bookData = $response->json();
+        // Sincronizar la relación
+        $user->libros()->syncWithoutDetaching([
+            $libro->id => [
+                'comprado' => $comprado,
+                'updated_at' => now()
+            ]
+        ]);
 
-                $libro = Libro::create([
-                    'google_id' => $googleId,
-                    'titulo' => $bookData['volumeInfo']['title'] ?? 'Sin título',
-                    'autor' => implode(', ', $bookData['volumeInfo']['authors'] ?? []),
-                    // ... otros campos necesarios
-                ]);
-            }
-
-            // Ahora usa el ID local
-            DB::table('libros_usuario')->updateOrInsert(
-                [
-                    'user_id' => $userId,
-                    'libro_id' => $libro->id
-                ],
-                [
-                    'comprado' => $comprado,
-                    'estado' => 'porLeer',
-                    'updated_at' => now()
-                ]
-            );
-
-            return back()->with('success', $comprado
-                ? 'Libro marcado como comprado'
-                : 'Libro marcado como no comprado');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
-        }
+        return back()->with('success', $comprado
+            ? 'Libro marcado como comprado'
+            : 'Libro marcado como no comprado');
+    } catch (\Exception $e) {
+        return back()->with('error', 'Error: ' . $e->getMessage());
     }
+}
 
     public function addToList(Request $request)
     {
-        $user = Auth::user(); 
+        $user = Auth::user();
 
         $request->validate([
             'libro_id' => 'required|string',
@@ -273,4 +256,18 @@ class LibroController extends Controller
         return back()->with('success', 'Libro recomendado a tu amigo');
     }
 
+    public function rate($libroId, Request $request)
+    {
+        $user = User::with('libros')->find(Auth::id());
+        $libro = Libro::where('google_id', $libroId)->firstOrFail();
+
+        $user->libros()->syncWithoutDetaching([
+            $libro->id => [
+                'valoracion' => $request->rating,
+                'estado' => 'leido' // Asegurarse que está marcado como leído
+            ]
+        ]);
+
+        return back()->with('success', 'Valoración guardada correctamente');
+    }
 }

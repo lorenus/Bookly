@@ -4,7 +4,7 @@
     @disabled($disabled) 
     {{ $attributes->merge([
         'style' => 'display: block; 
-                  font-family: "dongle";
+                  font-family: "Providence", sans-serif;
                   color:rgb(0, 0, 0);
                   width: 100%; 
                   border: none; 

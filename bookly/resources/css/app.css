@@ -7,13 +7,6 @@
     font-style: normal;
 }
 
-@font-face {
-    font-family: "Dongle";
-    src: url("/public/fonts/dongle/Dongle-Regular.ttf") format("opentype");
-    font-weight: 400;
-    font-style: normal;
-}
-
 body {
     font-family: "Providence sans", sans-serif;
 }
@@ -306,7 +299,7 @@ body {
     text-align: center;
 }
 
-.postit-large a{
+.postit-large a {
     text-decoration: none;
     color: #000000;
     transition: transform 0.3s;
@@ -344,8 +337,6 @@ body {
     bottom: -34px;
     right: 33px;
 }
-
-
 
 /* Estilos para la libreta */
 .notebook-container {
@@ -1335,8 +1326,6 @@ input[type="file"]::-moz-focus-inner {
     font-size: 1.5rem;
 }
 
-
-
 /*******************FICHA LIBRO *******************/
 .libreta-container {
     position: relative;
@@ -1352,7 +1341,7 @@ input[type="file"]::-moz-focus-inner {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/public/img/fichaLibro/libreta-ficha.png');
+    background-image: url("/public/img/fichaLibro/libreta-ficha.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -1377,7 +1366,7 @@ input[type="file"]::-moz-focus-inner {
 
 .portada-img {
     max-height: 300px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .portada-placeholder {
@@ -1387,7 +1376,7 @@ input[type="file"]::-moz-focus-inner {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .rating-container {
@@ -1405,7 +1394,7 @@ input[type="file"]::-moz-focus-inner {
 }
 
 .star.half::before {
-    content: '★';
+    content: "★";
     position: absolute;
     left: 0;
     width: 50%;
@@ -1436,7 +1425,9 @@ input[type="file"]::-moz-focus-inner {
     color: #333;
 }
 
-.book-author, .book-date, .book-publisher {
+.book-author,
+.book-date,
+.book-publisher {
     margin: 0.5rem 0;
     color: #555;
 }
@@ -1478,7 +1469,7 @@ input[type="file"]::-moz-focus-inner {
 }
 
 .rating-stars label {
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: #ddd;
     cursor: pointer;
 }
@@ -1490,13 +1481,13 @@ input[type="file"]::-moz-focus-inner {
 }
 
 .btn-rate {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background: #4CAF50;
-    color: white;
+    background-image: url("/public/img/elementos/btn-verde.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 10px 25px;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    background-color: transparent;
 }
 
 .checkbox-label {

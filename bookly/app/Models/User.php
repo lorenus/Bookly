@@ -94,7 +94,7 @@ class User extends Authenticatable
     public function libros()
     {
         return $this->belongsToMany(Libro::class, 'libros_usuario')
-            ->withPivot(['estado', 'comprado', 'valoracion', 'google_id']);
+            ->withPivot(['estado', 'comprado', 'valoracion']);
     }
 
     public function librosLeidosEsteAnio()
@@ -168,31 +168,30 @@ class User extends Authenticatable
     }
 
 
-    public function tieneLibroEnLista($bookId, $listType)
-    {
-        return $this->libros()
-            ->where('google_id', $bookId) // Ahora no hay ambigüedad
-            ->wherePivot('estado', $listType)
-            ->exists();
-    }
+    // En App\Models\User.php
 
-    public function haLeidoLibro($bookId)
-    {
-        return $this->libros()
-            ->where('google_id', $bookId)
-            ->wherePivot('estado', 'leido')
-            ->exists();
-    }
+public function tieneLibroEnLista($bookId, $listType)
+{
+    return $this->libros()
+        ->where('libros.google_id', $bookId) // Especificamos la tabla
+        ->wherePivot('estado', $listType)
+        ->exists();
+}
 
-    /**
-     * Obtiene la valoración del usuario para un libro específico
-     */
-    public function getValoracionLibro($bookId)
-    {
-        $libro = $this->libros()
-            ->where('google_id', $bookId)
-            ->first();
+public function haLeidoLibro($bookId)
+{
+    return $this->libros()
+        ->where('libros.google_id', $bookId) // Especificamos la tabla
+        ->wherePivot('estado', 'leido')
+        ->exists();
+}
 
-        return $libro ? $libro->pivot->valoracion : null;
-    }
+public function getValoracionLibro($bookId)
+{
+    $libro = $this->libros()
+        ->where('libros.google_id', $bookId) // Especificamos la tabla
+        ->first();
+
+    return $libro ? $libro->pivot->valoracion : null;
+}
 }
