@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Route;
 
 class Libro extends Model
 {
@@ -80,9 +79,9 @@ class Libro extends Model
     }
 
     public function estaPrestado()
-{
-    return $this->prestamos()
-               ->whereNull('fecha_limite')
-               ->exists();
-}
+    {
+        return $this->prestamos()
+            ->whereNull('fecha_limite')
+            ->exists();
+    }
 }

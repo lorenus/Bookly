@@ -10,7 +10,7 @@
                 <!-- Usuario -->
                 <div class="form-group">
                     <x-input-label for="email" :value="__('Usuario')" />
-                    <x-text-input id="email" class="block w-full" type="text" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                    <x-text-input id="email" class="block w-full" type="text" name="email" :value="old('email')" required autofocus autocomplete="email"/>
                     <x-input-error :messages="$errors->get('email')" class="input-error" />
                 </div>
 

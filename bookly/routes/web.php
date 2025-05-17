@@ -11,9 +11,6 @@ use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-
-
-
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -66,4 +63,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/logros', [LogroController::class, 'index'])->name('logros.index');
 });
 
-require __DIR__ . '/auth.php';
+require_once __DIR__ . '/auth.php';

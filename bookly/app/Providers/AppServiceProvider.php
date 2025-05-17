@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
+
         Event::listen(
             LibroLeido::class,
             CheckLogrosListener::class
@@ -33,16 +33,13 @@ class AppServiceProvider extends ServiceProvider
 
         // Configuración para desarrollo local
         if ($this->app->environment('local')) {
-            Http::macro('insecure', function() {
+            Http::macro('insecure', function () {
                 return Http::withoutVerifying();
             });
         } else {
-            Http::macro('insecure', function() {
+            Http::macro('insecure', function () {
                 return Http::this(); // Versión segura para producción
             });
         }
-
     }
-
-    
 }

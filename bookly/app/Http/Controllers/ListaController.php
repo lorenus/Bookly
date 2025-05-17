@@ -80,14 +80,14 @@ class ListaController extends Controller
             ->with(['prestamos' => function ($query) use ($user) {
                 $query->where('propietario_id', $user->id)
                     ->where('devuelto', false)
-                    ->with('receptor'); 
+                    ->with('receptor');
             }])
             ->get();
 
         return view('listas.show', [
             'libros' => $librosPrestados,
             'titulo' => 'Libros Prestados',
-            'mostrarInfoPrestamo' => true 
+            'mostrarInfoPrestamo' => true
         ]);
     }
 }

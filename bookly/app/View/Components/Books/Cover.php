@@ -1,4 +1,5 @@
 <?php
+
 namespace App\View\Components\Books;
 
 use Illuminate\View\Component;

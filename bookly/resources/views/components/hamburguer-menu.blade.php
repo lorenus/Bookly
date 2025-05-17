@@ -22,7 +22,6 @@
                 <li><a href="{{ $item['url'] }}">{{ $item['text'] }}</a></li>
                 @endforeach
 
-                <!-- Añade el logout como formulario separado -->
                 <li>
                     <form method="POST" action="{{ route('logout') }}" id="logout-form" class="menu-item-form">
                         @csrf

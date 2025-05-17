@@ -76,13 +76,19 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-link p-0 border-0 bg-transparent"
                                             onclick="return confirm('¿Estás seguro de querer eliminar esta notificación?')">
-                                            <img src="{{ asset('img/elementos/eliminar.png') }}"
-                                                alt="Eliminar"
-                                                width="40"
-                                                height="auto"
-                                                style="filter: brightness(0.8); transition: filter 0.3s;"
-                                                onmouseover="this.style.filter='brightness(1)'"
-                                                onmouseout="this.style.filter='brightness(0.8)'">
+                                            <button type="submit"
+                                                class="btn btn-link p-0 border-0 bg-transparent"
+                                                onclick="return confirm('¿Estás seguro de querer eliminar esta notificación?')"
+                                                onmouseover="this.querySelector('img').style.filter='brightness(1)'"
+                                                onmouseout="this.querySelector('img').style.filter='brightness(0.8)'"
+                                                onfocus="this.querySelector('img').style.filter='brightness(1)'"
+                                                style="background: none;">
+                                                <img src="{{ asset('img/elementos/eliminar.png') }}"
+                                                    alt="Eliminar"
+                                                    width="40"
+                                                    height="auto"
+                                                    style="filter: brightness(0.8); transition: filter 0.3s;">
+                                            </button>
                                         </button>
                                     </form>
                                 </div>

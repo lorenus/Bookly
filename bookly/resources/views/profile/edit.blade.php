@@ -35,7 +35,7 @@
                     <div class="col">
                         <div class="row align-items-center mb-1">
                             <div class="col-md-4">
-                                <label class="form-label mb-0">Foto de perfil</label>
+                                <label for="imgPerfil" class="form-label mb-0">Foto de perfil</label>
                             </div>
                             <div class="col-md-8">
                                 <!-- Contenedor del input file personalizado -->

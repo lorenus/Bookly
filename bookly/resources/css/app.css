@@ -129,10 +129,6 @@ body {
     flex-direction: column;
 }
 
-.input-error {
-    color: #e53e3e;
-    font-size: 0.875rem;
-}
 .decoracion-3 {
     background-image: url("/public/img/register/paper_register.png"); /* Elimina 'public' de la ruta */
     background-size: contain;
@@ -241,12 +237,8 @@ body {
 }
 
 .polaroid-image {
-    width: 70%;
     height: auto;
-    max-height: 60%;
     object-fit: cover;
-}
-.polaroid-image {
     position: absolute;
     top: 40%;
     left: 55%;

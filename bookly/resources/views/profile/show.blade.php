@@ -102,7 +102,7 @@
                                 <img src="{{ $portadaUrl }}"
                                     alt="{{ $libro->titulo }}"
                                     class="book-cover-image"
-                                    onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
+                                    @if($isDefaultCover) style="background-image: url('{{ $defaultCover }}');" @endif>
                                 @if($isDefaultCover)
                                 <div class="book-title-overlay">
                                     {{ Str::limit($libro->titulo, 30) }}
@@ -133,8 +133,8 @@
                             <div class="book-cover-container">
                                 <img src="{{ $portadaUrl }}"
                                     alt="{{ $libro->titulo }}"
-                                    class="book-cover-image"
-                                    onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
+                                    class="book-cover-image book-cover-fallback"
+                                    data-default-cover="{{ $defaultCover }}">
                                 @if($isDefaultCover)
                                 <div class="book-title-overlay">
                                     {{ Str::limit($libro->titulo, 30) }}
@@ -220,5 +220,17 @@
                         resultsDiv.classList.remove('hidden');
                     });
             });
+
+            // Add fallback for book cover images
+            document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('.book-cover-fallback').forEach(function(img) {
+                    img.addEventListener('error', function() {
+                        if (img.src !== img.dataset.defaultCover) {
+                            img.src = img.dataset.defaultCover;
+                        }
+                    });
+                });
+            });
         </script>
         @endsection
+        

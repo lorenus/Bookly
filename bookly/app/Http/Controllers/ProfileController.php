@@ -77,7 +77,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('imgPerfil')) {
             try {
-                
+
                 if ($user->imgPerfil && $user->imgPerfil !== 'profile-photos/default.jpg') {
                     Storage::disk('public')->delete($user->imgPerfil);
                 }

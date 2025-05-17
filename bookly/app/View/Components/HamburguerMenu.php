@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 class HamburguerMenu extends Component
 {
     public $menuItems;
-    
+
     public function __construct()
     {
         $this->menuItems = [

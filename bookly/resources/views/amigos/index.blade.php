@@ -124,7 +124,7 @@
 
                         @if($amigos->count() > 0)
                         <!-- Lista de amigos con scroll -->
-                        <div style="height: 50%px; overflow-y: auto;"> <!-- Alto fijo y scroll -->
+                        <div style="height: 50%px; overflow-y: auto;">
                             @foreach($amigos as $amigo)
                             <div class="amigo-item p-3 hover-bg-light transition cursor-pointer"
                                 data-nombre="{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}"
@@ -162,7 +162,7 @@
                                     src=""
                                     style="object-fit: cover; width: 180px; height: 190px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                                
-                                <h3 id="detalle-nombre" class="h5 text-center ms-4 mb-5 mt-2"></h3>
+                                <h3 id="detalle-nombre" class="h5 text-center ms-4 mb-5 mt-2" aria-live="polite">Nombre del amigo</h3>
                             </div>
 
                             <!-- Imagen 1 (polaroid) -->

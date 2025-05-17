@@ -33,7 +33,7 @@ class LibroController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
         //
     }
@@ -54,7 +54,7 @@ class LibroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Libro $libro)
+    public function edit()
     {
         //
     }
@@ -62,7 +62,7 @@ class LibroController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Libro $libro)
+    public function update()
     {
         //
     }
@@ -70,7 +70,7 @@ class LibroController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Libro $libro)
+    public function destroy()
     {
         //
     }
@@ -174,29 +174,28 @@ class LibroController extends Controller
     // Función auxiliar para extraer ISBN si está en el ID
     private function extractIsbn(array $bookData)
     {
+        $isbn = null;
+
         // Verifica si existen los identificadores industriales
-        if (!isset($bookData['volumeInfo']['industryIdentifiers'])) {
-            return null;
-        }
-
-        // Busca ISBN en los identificadores
-        foreach ($bookData['volumeInfo']['industryIdentifiers'] as $identifier) {
-            if (
-                isset($identifier['type'], $identifier['identifier']) &&
-                in_array($identifier['type'], ['ISBN_13', 'ISBN_10'])
-            ) {
-                return $identifier['identifier'];
+        if (isset($bookData['volumeInfo']['industryIdentifiers'])) {
+            // Busca ISBN en los identificadores
+            foreach ($bookData['volumeInfo']['industryIdentifiers'] as $identifier) {
+                if (
+                    isset($identifier['type'], $identifier['identifier']) &&
+                    in_array($identifier['type'], ['ISBN_13', 'ISBN_10'])
+                ) {
+                    $isbn = $identifier['identifier'];
+                    break;
+                }
             }
         }
 
-        // Intenta extraer ISBN del ID de Google Books como respaldo
-        if (isset($bookData['id']) && is_string($bookData['id'])) {
-            if (preg_match('/[0-9]{9,13}/', $bookData['id'], $matches)) {
-                return $matches[0];
-            }
+        // Intenta extraer ISBN del ID de Google Books como respaldo si no se encontró antes
+        if ($isbn === null && isset($bookData['id']) && is_string($bookData['id']) && preg_match('/\d{9,13}/', $bookData['id'], $matches)) {
+            $isbn = $matches[0];
         }
 
-        return null;
+        return $isbn;
     }
 
     public function recomendarLibro(Request $request)

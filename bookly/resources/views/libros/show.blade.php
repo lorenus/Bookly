@@ -151,8 +151,8 @@
                     <!-- Columna para Recomendar -->
                     <div class="col-md-6 col-sm-6 mb-2">
                         <div class="form-group">
-                            <label>Recomendar a:</label>
-                            <select class="form-control select2-recomendar">
+                            <label for="recomendar-amigo">Recomendar a:</label>
+                            <select id="recomendar-amigo" class="form-control select2-recomendar">
                                 <option></option>
                                 @foreach(Auth::user()->amigos as $amigo)
                                 <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
@@ -165,8 +165,8 @@
                     @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
                     <div class="col-md-6 col-sm-6 mb-2">
                         <div class="form-group">
-                            <label>Prestar a:</label>
-                            <select class="form-control select2-prestar">
+                            <label for="prestar-amigo">Prestar a:</label>
+                            <select id="prestar-amigo" class="form-control select2-prestar">
                                 <option></option>
                                 @foreach(Auth::user()->amigos as $amigo)
                                 <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>

@@ -4,7 +4,7 @@
 <div class="lists-container relative min-h-screen-misListas overflow-hidden">
     <!-- Fondo decorativo (flores) -->
     <div class="flowers-decoration"></div>
-    
+
     <!-- Botón de volver -->
     <a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
         <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">

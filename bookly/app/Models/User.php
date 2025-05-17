@@ -7,7 +7,6 @@ use App\Models\Amistad;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
@@ -52,7 +51,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
 
     public function prestamosComoPropietario()
     {
@@ -166,31 +164,28 @@ class User extends Authenticatable
             ->where('leida', false);
     }
 
+    public function tieneLibroEnLista($bookId, $listType)
+    {
+        return $this->libros()
+            ->where('libros.google_id', $bookId)
+            ->wherePivot('estado', $listType)
+            ->exists();
+    }
 
-    // En App\Models\User.php
+    public function haLeidoLibro($bookId)
+    {
+        return $this->libros()
+            ->where('libros.google_id', $bookId)
+            ->wherePivot('estado', 'leido')
+            ->exists();
+    }
 
-public function tieneLibroEnLista($bookId, $listType)
-{
-    return $this->libros()
-        ->where('libros.google_id', $bookId) // Especificamos la tabla
-        ->wherePivot('estado', $listType)
-        ->exists();
-}
+    public function getValoracionLibro($bookId)
+    {
+        $libro = $this->libros()
+            ->where('libros.google_id', $bookId)
+            ->first();
 
-public function haLeidoLibro($bookId)
-{
-    return $this->libros()
-        ->where('libros.google_id', $bookId) // Especificamos la tabla
-        ->wherePivot('estado', 'leido')
-        ->exists();
-}
-
-public function getValoracionLibro($bookId)
-{
-    $libro = $this->libros()
-        ->where('libros.google_id', $bookId) // Especificamos la tabla
-        ->first();
-
-    return $libro ? $libro->pivot->valoracion : null;
-}
+        return $libro ? $libro->pivot->valoracion : null;
+    }
 }

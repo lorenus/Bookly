@@ -21,7 +21,7 @@ class PrestamoController extends Controller
         ->wherePivot('comprado', true)
         ->whereDoesntHave('prestamos', function($query) use ($user) {
             $query->where('devuelto', false)
-                  ->where('propietario_id', $user->id); 
+                  ->where('propietario_id', $user->id);
         })
         ->get();
 
@@ -36,7 +36,7 @@ class PrestamoController extends Controller
                   ->where('estado', 'aceptada');
             });
         })
-        ->select('id', 'name', 'apellidos') 
+        ->select('id', 'name', 'apellidos')
         ->distinct()
         ->get();
 
@@ -76,7 +76,7 @@ class PrestamoController extends Controller
         }
     
         // Crear préstamo
-        $prestamo = Prestamo::create([
+        Prestamo::create([
             'libro_id' => $request->libro_id,
             'propietario_id' => Auth::id(),
             'receptor_id' => $request->amigo_id,

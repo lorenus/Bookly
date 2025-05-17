@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use App\Models\User;
@@ -12,8 +13,10 @@ class LogroService
 
         foreach ($logros as $logro) {
             $pivot = $user->logros()->where('logro_id', $logro->id)->first();
-            
-            if ($pivot && $pivot->pivot->completado) continue;
+
+            if ($pivot && $pivot->pivot->completado) {
+                continue;
+            }
 
             $progreso = ($pivot->pivot->progreso ?? 0) + $incremento;
             $completado = $progreso >= $logro->requisito;
@@ -25,16 +28,6 @@ class LogroService
                     'completado_en' => $completado ? now() : null
                 ]
             ]);
-
-            if ($completado) {
-                self::dispatchNotification($user, $logro);
-            }
         }
-    }
-
-    protected static function dispatchNotification(User $user, Logro $logro)
-    {
-        // Aquí puedes implementar notificaciones
-        // Ej: enviar email o notificación en la app
     }
 }

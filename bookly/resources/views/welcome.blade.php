@@ -57,28 +57,28 @@
             @endif
         </div>
 
-        <div class="d-flex justify-content-center mt-10 pt-5 z-1 custom-spacing"> 
-            <img style="width: 70%;" src="{{ asset('img/home/que_es.png') }}" alt="Imagen 1" class="img-fluid">
+        <div class="d-flex justify-content-center mt-10 pt-5 z-1 custom-spacing">
+            <img style="width: 70%;" src="{{ asset('img/home/que_es.png') }}" alt="1" class="img-fluid">
         </div>
 
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
-            <img src="{{ asset('img/home/flecha 1.png') }}" alt="Imagen 2" class="img-fluid">
+            <img src="{{ asset('img/home/flecha 1.png') }}" alt="flecha" class="img-fluid">
         </div>
 
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
-            <img src="{{ asset('img/home/pegatina_rosa.png') }}" alt="Imagen 2" class="img-fluid">
+            <img src="{{ asset('img/home/pegatina_rosa.png') }}" alt="pegatina rosa" class="img-fluid">
         </div>
 
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
-            <img src="{{ asset('img/home/flecha 2.png') }}" alt="Imagen 2" class="img-fluid">
+            <img src="{{ asset('img/home/flecha 2.png') }}" alt="flecha" class="img-fluid">
         </div>
 
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
-            <img src="{{ asset('img/home/corcho.png') }}" alt="Imagen 1" class="img-fluid">
+            <img src="{{ asset('img/home/corcho.png') }}" alt="corcho" class="img-fluid">
         </div>
 
         <div class="d-flex justify-content-center z-1" style="width: 80%;">
-            <img src="{{ asset('img/home/flecha 3.png') }}" alt="Imagen 2" class="img-fluid">
+            <img src="{{ asset('img/home/flecha 3.png') }}" alt="flecha" class="img-fluid">
         </div>
 
         <div class="justify-content-center z-1" style="bottom: 20%; margin-left: -10%; margin-top: -5%;">

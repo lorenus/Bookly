@@ -54,13 +54,17 @@
                     $estado = 'Desbloqueado: ' . $fecha->format('d/m/Y');
                 } catch (Exception $e) {
                     $estado = 'Desbloqueado (fecha no disponible)';
-                }   
+                }
             } else {
-                $estado = 'No desbloqueado aún';    
+                $estado = 'No desbloqueado aún';
             }
             @endphp
 
-            <div class="logro-item" onclick="mostrarModal('{{ addslashes($logro->nombre) }}', '{{ addslashes($descripcion) }}', '{{ addslashes($estado) }}')">
+            <button type="button"
+                    class="logro-item"
+                    onclick="mostrarModal('{{ addslashes($logro->nombre) }}', '{{ addslashes($descripcion) }}', '{{ addslashes($estado) }}')"
+                    style="background: none; border: none; padding: 0;">
+
                 <!-- Mostrar imagen bloqueada o desbloqueada según estado -->
                 @if($logro->users->isNotEmpty())
                 <img src="{{ asset('img/logros/desbloqueado'.$logroNumber.'.png') }}"
@@ -71,7 +75,7 @@
                     alt="Logro bloqueado"
                     class="logro-imagen bloqueado">
                 @endif
-            </div>
+            </button>
             @endforeach
         </div>
     </div>
@@ -80,10 +84,10 @@
 <!-- Modal para mostrar la información -->
 <div id="modalLogro" class="modal-logro">
     <div class="modal-content">
-        <span class="close-modal" onclick="cerrarModal()">
+        <button type="button" class="close-modal" onclick="cerrarModal()" onkeydown="if(event.key==='Enter'||event.key===' '){cerrarModal();}" style="background: none; border: none; padding: 0;">
             <img src="{{ asset('img/elementos/cerrar.png') }}" alt="Cerrar" width="30">
-        </span>
-        <h4 id="modalTitulo"></h4>
+        </button>
+        <h4 id="modalTitulo">Información del logro</h4>
         <p id="modalDescripcion"></p>
         <small id="modalEstado"></small>
     </div>
