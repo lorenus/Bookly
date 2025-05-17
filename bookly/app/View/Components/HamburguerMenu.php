@@ -16,8 +16,7 @@ class HamburguerMenu extends Component
             ['url' => route('amigos'), 'text' => 'Mis amigos'],
             ['url' => route('prestamos.crear'), 'text' => 'Prestar libro'],
             ['url' => route('mensajes.index'), 'text' => 'Mensajes'],
-            ['url' => route('profile.edit'), 'text' => 'Editar perfil'],
-            ['url' => route('logout'), 'text' => 'Cerrar sesión'],
+            ['url' => route('profile.edit'), 'text' => 'Editar perfil']
         ];
     }
 

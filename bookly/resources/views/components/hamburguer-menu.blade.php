@@ -16,10 +16,21 @@
                 </a>
             </div>
             @endif
+
             <ul class="menu-items">
                 @foreach($menuItems as $item)
                 <li><a href="{{ $item['url'] }}">{{ $item['text'] }}</a></li>
                 @endforeach
+
+                <!-- Añade el logout como formulario separado -->
+                <li>
+                    <form method="POST" action="{{ route('logout') }}" id="logout-form" class="menu-item-form">
+                        @csrf
+                        <x-button type="submit" class="px-6 w-100">
+                            {{ __('Cerrar sesión') }}
+                        </x-button>
+                    </form>
+                </li>
             </ul>
         </div>
     </nav>
