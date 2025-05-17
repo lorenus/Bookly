@@ -30,8 +30,21 @@
                     <div class="col-md-6 h-100 ps-2">
                         <div class="postits-container h-100 position-relative p-3">
                             <div class="postit-large">
-                                <img src="" alt="">
-                                <img src="" alt="">
+                                @if($ultimosLogros->count() > 0)
+                                @foreach($ultimosLogros as $index => $logro)
+                                <div class="logro-miniatura">
+                                    <img src="{{ asset('img/logros/logro'.($logro->id).'.png') }}"
+                                        alt="{{ $logro->nombre }}"
+                                        title="{{ $logro->nombre }}"
+                                        class="img-fluid">
+                                </div>
+                                @endforeach
+                                @else
+                                <div class="no-logros">
+                                    <p>Aún no has desbloqueado logros</p>
+                                </div>
+                                @endif
+
                                 <a href="{{ route('logros.index') }}" class="postit-small">
                                     Ver mis logros
                                 </a>

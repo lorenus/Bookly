@@ -36,11 +36,18 @@ class ProfileController extends Controller
             ->take(4)
             ->get();
 
+        $ultimosLogros = $user->logros()
+            ->withPivot('completado_en')
+            ->orderBy('logro_user.completado_en', 'desc')
+            ->take(3)
+            ->get();
+
         return view('profile.show', [
             'user' => $user,
             'leyendoActual' => $leyendoActual,
             'paraLeer' => $paraLeer,
-            'ultimasLecturas' => $ultimasLecturas
+            'ultimasLecturas' => $ultimasLecturas,
+            'ultimosLogros' => $ultimosLogros
         ])->with('success', 'Perfil actualizado correctamente');
     }
 
