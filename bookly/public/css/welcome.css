@@ -20,10 +20,13 @@ body {
     padding-top: 15%;
     font-size: x-large;
     z-index: 2;
+    position: relative;
+    background-color: transparent;
 }
 
+
 .decorativa{
-    width: clamp(200px, 15vw, 600px); /* Mínimo 100px, ideal 15% del viewport, máximo 200px */
+    width: clamp(200px, 15vw, 600px);
     z-index: 3; 
 }
 .custom-spacing{
@@ -39,24 +42,27 @@ body {
 
 .fondo-boton img {
     width: 100%;
-    /* Para que el fondo ocupe todo el ancho */
     height: auto;
     display: block;
-    /* Evita espacio extra debajo de la imagen */
 }
 
 /* Estilos para el footer */
 .footer-container {
     color: black;
-    width: 100%;
     overflow: hidden;
     z-index: 3;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 }
 
 .footer-bg-container {
-    width: 100%;
     display: block;
-    line-height: 0; /* Elimina espacio extra debajo de la imagen */
+    width: 100%;
+    line-height: 0;
 }
 
 .footer-bg-img {
@@ -66,7 +72,7 @@ body {
 
 .footer-content {
     z-index: 1;
-    padding: 5% 0; /* Ajusta según necesites */
+    padding: 5% 0;
 }
 
 /* Estilo para los enlaces del footer */
@@ -91,22 +97,7 @@ body {
     text-align: right;
 }
 
-/* Ajustes específicos para el footer existente */
-.footer-container {
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-}
-
-.footer-bg-container {
-    width: 100%;
-    line-height: 0;
-}
 /* ESTILOS PARA LOS FONDOS */
-/* Contenedor principal de fondos */
 .background-stack {
     position: absolute;
     width: 100%;
@@ -120,38 +111,7 @@ body {
     width: 100%;
     position: relative;
     overflow: hidden;
-    background-color: white; /* Color del margen */
-}
-
-/* Imágenes de fondo - Comportamiento responsive */
-.bg-image {
-    display: block;
-    margin: 0 auto;
-    
-    /* Para pantallas GRANDES (márgenes fijos) */
-    @media (min-width: 1200px) {
-        width: 80%;
-        max-width: 1400px;
-        height: auto;
-        object-fit: contain;
-    }
-    
-    /* Para pantallas MEDIANAS (adaptación progresiva) */
-    @media (max-width: 1199px) and (min-width: 768px) {
-        width: 90%;
-        height: auto;
-    }
-    
-    /* Para pantallas PEQUEÑAS (adaptación completa) */
-    @media (max-width: 767px) {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-}
-
-/* Altura de las secciones */
-.background-section {
+    background-color: white;
     height: 100vh;
     min-height: 600px;
     
@@ -161,23 +121,41 @@ body {
     }
 }
 
+
+/* Imágenes de fondo - Comportamiento responsive */
+.bg-image {
+    display: block;
+    margin: 0 auto;
+    
+    @media (min-width: 1200px) {
+        width: 80%;
+        max-width: 1400px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    @media (max-width: 1199px) and (min-width: 768px) {
+        width: 90%;
+        height: auto;
+    }
+    
+    @media (max-width: 767px) {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
 /* Última sección especial para el footer */
 .background-section:last-child {
-    padding-bottom: 150px; /* Espacio para el footer */
+    padding-bottom: 150px;
     
     @media (max-width: 767px) {
         padding-bottom: 100px;
     }
 }
 
-/* AJUSTES PARA EL CONTENIDO PRINCIPAL */
-.container {
-    position: relative;
-    z-index: 2; /* Delante de los fondos */
-    background-color: transparent;
-}
-
 /* ELEMENTOS DECORATIVOS */
 .position-absolute {
-    z-index: 3; /* Encima del contenido principal */
+    z-index: 3;
 }
