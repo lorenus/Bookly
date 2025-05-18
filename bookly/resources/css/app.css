@@ -1211,6 +1211,8 @@ input[type="file"]::-moz-focus-inner {
     aspect-ratio: 1/1;
     position: relative;
     align-content: center;
+    max-height: 80vh;
+    margin-top: 5%;
 }
 
 .logros-grid {
@@ -1340,6 +1342,7 @@ input[type="file"]::-moz-focus-inner {
         min-width: 100%;
         padding-top: 20%;
         padding-bottom: 20%;
+        max-height: 100vh;
     }
 }
 
