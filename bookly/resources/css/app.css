@@ -102,7 +102,7 @@ body {
 }
 
 /***************** MOVIL Y TABLET *****************/
-@media (max-width: 991.98px) {
+@media (max-width: 992px) {
     .paper-background {
         background-image: url("/public/img/login/fondo-login-vertical.png");
         background-size: contain;
@@ -550,7 +550,8 @@ body {
     transform: scale(1.03);
 }
 
-@media (max-width: 991.98px) {
+/* TABLET */
+@media (max-width: 992px) {
     .corcho-container,
     .notebook-container {
         min-height: auto !important;
@@ -571,8 +572,8 @@ body {
         margin-bottom: 1rem;
     }
 }
-
-@media (max-width: 767.98px) {
+/* MOVIL */
+@media (max-width: 768px) {
     .book-cover {
         width: 48% !important;
     }
@@ -843,14 +844,17 @@ body {
 .list-background {
     position: fixed;
     bottom: 0;
-    width: 100%;
-    height: 80%;
+    left: 0;
+    right: 0;
+    height: 80vh;
     z-index: -1;
+    overflow: hidden;
 }
 
 .background-image {
     width: 100%;
     height: 100%;
+    object-position: bottom center;
     object-fit: contain;
 }
 
@@ -874,7 +878,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
-    max-width: 1200px;
+    max-width: 775px;
     height: 70vh;
     padding: 20px;
     display: flex;
@@ -893,7 +897,7 @@ body {
 /* Grid de libros */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding: 20px;
     width: 100%;
@@ -929,7 +933,7 @@ body {
 .book-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .book-placeholder {
@@ -1083,34 +1087,93 @@ body {
     height: 24px;
 }
 
+/* TABLET (768px - 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+    /* Fondo */
+    .list-background {
+        height: 90vh;
+    }
+
+    /* Contenedor principal */
+    .list-container {
+        margin-top: 5%;
+        width: 96%;
+        padding: 0 2%;
+        top: 55%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Área con scroll */
+    .list-scrollable {
+        height: calc(100% - 100px); /* Restamos altura del header */
+        overflow-y: auto;
+        padding-bottom: 30px; /* Espacio extra al final */
+    }
+
+    /* Grid de libros */
+    .book-grid {
+        grid-template-columns: repeat(3, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 15px 5px 30px; /* Más padding inferior */
+    }
+
+    /* Portadas */
+    .list-book-cover {
+        height: 220px; /* Más altura para mejor proporción */
+    }
+
+    /* Información del libro */
+    .book-info {
+        min-height: 60px; /* Espacio garantizado */
+        padding: 8px 4px;
+    }
+
+    .book-info h3 {
+        font-size: 0.9rem;
+        line-height: 1.3;
+        height: 2.6em;
+    }
+
+    .book-info p {
+        font-size: 0.8rem;
+        padding-top: 3px;
+    }
+
+    /* Fondo de la imagen */
+    .background-image {
+        object-fit: cover;
+        object-position: bottom;
+    }
+}
+
 /* MOVIL */
-@media (max-width: 767.98px) {
-}
-/* Versión responsive */
-@media (max-width: 1200px) {
-    .book-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    }
-    .list-book-cover {
-        height: 270px;
-    }
-}
-
 @media (max-width: 768px) {
-    .book-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    .list-header {
+        margin-top: 20px;
     }
-    .list-book-cover {
-        height: 225px;
+    .list-background {
+        height: 90vh;
     }
-}
 
-@media (max-width: 480px) {
     .book-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
     }
+
     .list-book-cover {
         height: 180px;
+    }
+
+    .background-image {
+        object-fit: cover;
+        width: 100%;
+    }
+
+    .list-container {
+        height: 90vh;
+        width: 100%;
+        padding: 0 10px;
     }
 }
 
@@ -1290,7 +1353,7 @@ input[type="file"]::file-selector-button {
 }
 
 /* TABLET */
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 768px) and (max-width: 992px) {
     .editar-paper-background {
         width: 80%;
         background-size: contain;
@@ -1358,7 +1421,7 @@ input[type="file"]::file-selector-button {
 }
 
 /* Tablet (md) */
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 768px) and (max-width: 992px) {
     .mensajes-container {
         background-size: cover;
         width: 100%;
@@ -1482,7 +1545,7 @@ input[type="file"]::file-selector-button {
 }
 
 /* TABLET */
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 768px) and (max-width: 992px) {
     .container-logros {
         margin-top: 5%;
         padding: 0;
