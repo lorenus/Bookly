@@ -1187,9 +1187,10 @@ body {
     height: 80%;
     position: fixed;
     bottom: 0;
-    padding: 2rem 4rem; /* Ajusta según necesites */
+    padding: 2rem 4rem;
     display: flex;
     align-items: center;
+    max-width: 1275px;
 }
 
 .prestar-container {
@@ -1258,6 +1259,56 @@ body {
     align-items: center;
     height: 220px;
     margin-bottom: 20px;
+}
+
+/* Tablet (768px - 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+    .prestar-paper-background {
+        width: 70%; /* Más ancho */
+        height: 90%; /* Menos alto */
+        padding: 1.5rem 3rem; /* Padding reducido */
+        background-position: bottom center; /* Alineado al fondo */
+        background-image: url("/public/img/prestar/fondo-prestar-vertical-tablet.png"); 
+        background-size: contain;
+    }
+    .lapiz{
+        display: none;
+    }
+     .fila-prestar{
+        padding-top: 10%;
+        margin-left: 0%;
+        margin-right: 5%;
+        transform: rotate(-1deg);
+    }
+    .columna-prestar1{
+        display: none;
+    }
+}
+
+/* Móvil (hasta 767px) */
+@media (max-width: 767px) {
+    .prestar-paper-background {
+        background-size: cover;
+        width: 100%; /* Ocupa todo el ancho */
+        height: 100%; /* Altura reducida */
+        padding: 1rem; /* Padding mínimo */
+        background-position: bottom center;
+        background-image: url("/public/img/prestar/fondo-prestar-vertical.png"); 
+        background-size: contain;
+        
+    }
+    .lapiz{
+        display: none;
+    }
+    .fila-prestar{
+        padding-top: 10%;
+        margin-left: 0%;
+        margin-right: 5%;
+        transform: rotate(-1deg);
+    }
+    .columna-prestar1{
+        display: none;
+    }
 }
 
 /********************* EDITAR ***********************/

@@ -5,21 +5,22 @@
 $oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
 @endphp
 <!-- Botón de volver -->
-<a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
-    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
+<a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
+    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
+
 <div class="prestar-container">
 
     <div class="prestar-paper-background">
 
         <div class="fila-prestar row mt-5 gx-5 align-items-center justify-content-center">
             <h3 class="text-2xl text-center">Prestar Libro</h3>
-            <div class="col-3">
+            <div class="col-3 columna-prestar1">
                 <div class="portada-prestar">
                     <img id="portada-libro" src="" alt="Portada del libro" style="width: 150px; height: 220px; object-fit: cover; border: 1px solid #000; display: none;">
                 </div>
             </div>
-            <div class="col-9">
+            <div class="col-9 columna-prestar2">
 
                 @if($librosDisponibles->isEmpty())
                 <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
