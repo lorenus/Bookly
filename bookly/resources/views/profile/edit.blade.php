@@ -2,14 +2,14 @@
 
 @section('content')
 <!-- Botón de volver -->
-<a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
-    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
+<a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
+    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
 
 <div class="editar-container">
     <div class="editar-paper-background">
         <div class="contenido-edit">
-            <div class="text-center pt-3 mb-5">
+            <div class="text-center pt-3 mb-5 mb-s-2">
                 <h3>Editar Perfil</h3>
             </div>
             @if($errors->any())
@@ -70,7 +70,7 @@
                             <!-- Nueva contraseña -->
                             <div class="col-md-6">
                                 <div class="mb-2">
-                                    <label for="password" class="form-label mb-0">Nueva contraseña</label>
+                                    <label for="password" class="form-label mb-0">Nueva <br> contraseña</label>
                                     <input type="password" name="password" id="password" class="form-control">
                                     @error('password')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -81,7 +81,7 @@
                             <!-- Confirmar contraseña -->
                             <div class="col-md-6">
                                 <div class="mb-2">
-                                    <label for="password_confirmation" class="form-label mb-0">Confirmar contraseña</label>
+                                    <label for="password_confirmation" class="form-label mb-0">Confirmar <br> contraseña</label>
                                     <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
                                 </div>
                             </div>

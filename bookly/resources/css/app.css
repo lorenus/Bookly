@@ -1128,6 +1128,8 @@ body {
     position: fixed;
     bottom: 0;
     padding: 2rem 4rem; /* Ajusta según necesites */
+    min-width: 80vw;
+    min-height: 80vh;
 }
 
 .editar-container {
@@ -1153,9 +1155,9 @@ body {
     z-index: -5;
 }
 
-.contenido-edit {
-    margin-top: 20%;
-    max-width: 80%;
+.contenido-edit {   
+  max-width: 30vw;
+  margin: 10vw auto;
 }
 
 .form-control,
@@ -1173,12 +1175,6 @@ input[type="file"] {
 input[type="file"]::-webkit-file-upload-button,
 input[type="file"]::file-selector-button {
     display: none;
-}
-
-/* Para Firefox */
-input[type="file"]::-moz-focus-inner {
-    border: 0;
-    padding: 0;
 }
 
 /* Estilos para el input file personalizado */
@@ -1213,6 +1209,35 @@ input[type="file"]::-moz-focus-inner {
     font-size: 0.875em;
 }
 
+/* TABLET */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .editar-paper-background {
+        width: 80%;
+        background-size: contain;
+    }
+    .contenido-edit {
+        margin-top: 30%;
+        font-size: large;
+        max-width: 50vw;
+    }
+}
+
+/* MOVIL */
+@media (max-width: 767.98px) {
+    .editar-paper-background {
+        width: 100%;
+        background-size: cover;
+        background-position: bottom;
+        min-width: 450px;
+        height: 90vh;
+    }
+
+     .contenido-edit {
+        margin-top: 15%;
+        font-size: large;
+        min-width: 70vw;
+    }
+}
 /******************* MENSAJES *******************/
 /* Contenedor principal */
 .mensajes-container {
