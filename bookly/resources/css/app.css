@@ -101,9 +101,10 @@ body {
     z-index: -5;
 }
 
+/***************** MOVIL Y TABLET *****************/
 @media (max-width: 991.98px) {
     .paper-background {
-       background-image: url("/public/img/login/fondo-login-vertical.png");
+        background-image: url("/public/img/login/fondo-login-vertical.png");
         background-size: contain;
         background-position: center;
         width: 100%;
@@ -130,7 +131,7 @@ body {
         z-index: 0;
     }
 
-    .login-container{
+    .login-container {
         height: 70vh;
         margin-top: 10%;
     }
@@ -892,15 +893,16 @@ body {
 /* Grid de libros */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 20px;
+    padding: 20px;
+    width: 100%;
 }
 
 /* ------------------------- */
 /* ESTILOS PARA LAS PORTADAS */
 /* ------------------------- */
 
-/* Contenedor de la tarjeta de libro */
 .list-book {
     overflow: hidden;
     transition: transform 0.3s;
@@ -916,24 +918,20 @@ body {
     color: inherit;
 }
 
-/* Contenedor de la portada */
 .list-book-cover {
     position: relative;
     width: 100%;
-    padding-top: 150%;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 4px;
 }
 
-/* Imagen de la portada */
 .book-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
 }
 
-/* Placeholder cuando no hay imagen */
 .book-placeholder {
     position: absolute;
     top: 0;
@@ -945,7 +943,6 @@ body {
     justify-content: center;
 }
 
-/* Información del libro debajo de la portada */
 .book-info {
     padding: 12px;
     flex-grow: 1;
@@ -955,12 +952,9 @@ body {
 }
 
 .book-info h3 {
-    font-size: 0.95rem;
-    color: #000000;
+    font-size: 1rem;
     margin-bottom: 0.3rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: block;
     text-align: center;
 }
 
@@ -973,7 +967,7 @@ body {
     margin-bottom: 0;
     text-align: center;
 }
-/* Badge de prestado */
+
 .book-badge {
     position: absolute;
     top: 8px;
@@ -986,7 +980,6 @@ body {
     font-weight: 500;
 }
 
-/* Información del préstamo */
 .loan-info {
     padding: 12px;
     border-top: 1px solid #eee;
@@ -1088,6 +1081,37 @@ body {
 .sort-button img {
     width: 24px;
     height: 24px;
+}
+
+/* MOVIL */
+@media (max-width: 767.98px) {
+}
+/* Versión responsive */
+@media (max-width: 1200px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    .list-book-cover {
+        height: 270px;
+    }
+}
+
+@media (max-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    .list-book-cover {
+        height: 225px;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    .list-book-cover {
+        height: 180px;
+    }
 }
 
 /********************* PRESTAR ***********************/
