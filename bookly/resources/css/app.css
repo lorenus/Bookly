@@ -14,7 +14,7 @@ body {
 .volver {
     width: 80px;
 }
-/****************** Estilos generales del login *****************/
+/****************** LOGIN *****************/
 .login-container {
     font-family: "Providence Sans", sans-serif;
     display: flex;
@@ -101,7 +101,7 @@ body {
     z-index: -5;
 }
 
-/****************** Estilos generales del register *****************/
+/****************** REGISTRO *****************/
 .register-container {
     font-family: "Providence Sans", sans-serif;
     display: flex;
@@ -155,7 +155,6 @@ body {
     z-index: -5;
 }
 
-/* Estilos para páginas de autenticación */
 .min-h-screen {
     background-image: url("/public/img/login/fondo_login.png");
     background-size: contain;
@@ -165,13 +164,28 @@ body {
     margin-top: -8%;
 }
 
-/* Estilos para páginas de autenticación */
-.min-h-screen-misListas {
-    background-image: url("/public/img/misListas/estrelles_llistes.png");
-    background-size: contain;
-    background-position: right;
-    background-repeat: no-repeat;
-    margin-top: -10%;
+/* MOVIL */
+@media (max-width: 767.98px) {
+    .paper-background-register {
+        height: 100%;
+        width: 100%;
+        background-size: contain;
+        padding: 40%;
+    }
+
+    .min-h-screen {
+        background-size: cover;
+    }
+
+    .decoracion-4 {
+        background-size: contain;
+        background-position: center;
+        width: 50%;
+        height: 100%;
+        margin-bottom: -100%;
+        margin-left: -25%;
+        z-index: 5;
+    }
 }
 
 /****************** Estilos generales del perfil usuario *****************/
@@ -621,6 +635,14 @@ body {
     background-repeat: no-repeat;
     background-position: left bottom;
     z-index: 1;
+}
+
+.min-h-screen-misListas {
+    background-image: url("/public/img/misListas/estrelles_llistes.png");
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    margin-top: -10%;
 }
 
 /* MOVIL */
@@ -1259,7 +1281,7 @@ input[type="file"]::file-selector-button {
     }
     .contenido {
         width: 50%;
-        margin-top: 5%; 
+        margin-top: 5%;
         margin-left: 10%;
         transform: translateY(5%);
     }
