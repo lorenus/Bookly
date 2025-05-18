@@ -101,6 +101,40 @@ body {
     z-index: -5;
 }
 
+@media (max-width: 991.98px) {
+    .paper-background {
+       background-image: url("/public/img/login/fondo-login-vertical.png");
+        background-size: contain;
+        background-position: center;
+        width: 100%;
+        padding-top: 5%;
+        padding-right: 10%;
+        z-index: 5;
+    }
+
+    .decoracion-2 {
+        background-position: center;
+        width: 40%;
+        height: 50%;
+        top: -10%;
+        left: 60%;
+        z-index: 0;
+    }
+
+    .decoracion-1 {
+        background-position: center;
+        width: 100%;
+        height: 50%;
+        bottom: -15%;
+        left: 0;
+        z-index: 0;
+    }
+
+    .login-container{
+        height: 70vh;
+        margin-top: 10%;
+    }
+}
 /****************** REGISTRO *****************/
 .register-container {
     font-family: "Providence Sans", sans-serif;
