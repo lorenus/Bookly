@@ -179,58 +179,58 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<script>
+    document.getElementById('basic-book-search').addEventListener('input', function(e) {
+        const query = e.target.value.trim();
+        const resultsDiv = document.getElementById('basic-results');
 
-        <script>
-            document.getElementById('basic-book-search').addEventListener('input', function(e) {
-                const query = e.target.value.trim();
-                const resultsDiv = document.getElementById('basic-results');
+        if (query.length < 2) {
+            resultsDiv.innerHTML = '';
+            resultsDiv.classList.add('hidden');
+            return;
+        }
 
-                if (query.length < 2) {
-                    resultsDiv.innerHTML = '';
-                    resultsDiv.classList.add('hidden');
+        fetch(`/buscar-libros?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(books => {
+                if (!books || books.length === 0) {
+                    resultsDiv.innerHTML = '<p>No se encontraron libros</p>';
+                    resultsDiv.classList.remove('hidden');
                     return;
                 }
 
-                fetch(`/buscar-libros?query=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
-                    .then(books => {
-                        if (!books || books.length === 0) {
-                            resultsDiv.innerHTML = '<p>No se encontraron libros</p>';
-                            resultsDiv.classList.remove('hidden');
-                            return;
-                        }
-
-                        let html = '';
-                        books.forEach(book => {
-                            html += `
+                let html = '';
+                books.forEach(book => {
+                    html += `
                                 <div class="p-2 border-b">
                                     <a href="/libros/${book.id}" class="text-blue-600">
                                         ${book.volumeInfo.title}
                                     </a>
                                 </div>
                             `;
-                        });
-
-                        resultsDiv.innerHTML = html;
-                        resultsDiv.classList.remove('hidden');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        resultsDiv.innerHTML = '<p class="text-red-500">Error al buscar</p>';
-                        resultsDiv.classList.remove('hidden');
-                    });
-            });
-
-            // Add fallback for book cover images
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('.book-cover-fallback').forEach(function(img) {
-                    img.addEventListener('error', function() {
-                        if (img.src !== img.dataset.defaultCover) {
-                            img.src = img.dataset.defaultCover;
-                        }
-                    });
                 });
+
+                resultsDiv.innerHTML = html;
+                resultsDiv.classList.remove('hidden');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultsDiv.innerHTML = '<p class="text-red-500">Error al buscar</p>';
+                resultsDiv.classList.remove('hidden');
             });
-        </script>
-        @endsection
-        
+    });
+
+    // Add fallback for book cover images
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.book-cover-fallback').forEach(function(img) {
+            img.addEventListener('error', function() {
+                if (img.src !== img.dataset.defaultCover) {
+                    img.src = img.dataset.defaultCover;
+                }
+            });
+        });
+    });
+</script>
+@endsection
