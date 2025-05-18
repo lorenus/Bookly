@@ -2,12 +2,12 @@
 
 @section('content')
 <!-- Botón de volver -->
-<a href="{{ route('perfil') }}" class="position-fixed" style="top: 100px; left: 40px; z-index: 1000;">
+<a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
     <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
 
-<div class="mensajes-container container-fluid d-flex justify-content-center align-items-end">
-    <div class="rounded-4 shadow-sm" style="width: 70%; height: 70vh; margin-left: 15%;">
+<div class="mensajes-container container-fluid d-flex justify-content-center align-items-end position-relative" style="min-height: 100vh;">
+    <div class="contenido rounded-4">
         <div class="h-100 d-flex flex-column p-4">
             <!-- Header -->
             <div class="mensajes-header text-center py-3">
