@@ -2,13 +2,18 @@
 
 @section('content')
 <!-- Botón de volver -->
-<a href="{{ route('perfil') }}" class="position-fixed" style="top: 100px; left: 40px; z-index: 1000;">
+<a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
     <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
 
-<div class="container px-4 py-8 mx-auto">
-    <!-- Contenedor principal -->
-    <div class="logros-container">
+<div class="container-fluid container-lg">
+    <!-- Contenedor principal con fondo de corcho -->
+    <div class="logros-container position-relative">
+        <!-- Fondo de corcho responsivo -->
+        <div class="corcho-background"></div>
+        <div class="titulo-logros text-center">
+            <img src="{{ asset('img/logros/titol.png') }}" alt="">
+        </div>
         <!-- Grid de logros -->
         <div class="logros-grid">
             @foreach($logros as $index => $logro)

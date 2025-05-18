@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid" style="overflow: hidden;">
+<div class="container-fluid px-0" style="overflow: hidden; max-width: 1600px; margin: 0 auto;">
     <div class="row g-0" style="overflow: hidden;">
         <!-- Columna Corcho -->
-        <div class="col-md-6 corcho-container position-relative">
+        <div class="col-12 col-lg-6 corcho-container position-relative">
             <div class="welcome-banner d-flex flex-column align-items-center justify-content-center">
                 <div style="margin-left: 20%; margin-top: -7%; transform: rotate(-9deg);">
                     <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2>
@@ -69,7 +69,7 @@
         </div>
 
         <!-- Columna Libreta -->
-        <div class="col-md-6 notebook-container">
+        <div class="col-12 col-lg-6 notebook-container">
             <div class="notebook-content h-100 d-flex flex-column" style="margin-bottom: -10%;">
                 <!-- Fila 1: Búsqueda -->
                 <div class="notebook-row search-row mb-4">

@@ -26,8 +26,8 @@
 
 <body class="font-sans antialiased">
 
-    <header style="position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
-        <a href="{{ route('perfil') }}" class="volver-btn" style="position: absolute; top: 20px; left: 40px; z-index: 10;">
+    <header class="position-fixed bg-white w-100 top-0 start-0 z-3 py-2" style="height: 10%;">
+        <a href="{{ route('perfil') }}" class="volver-btn" style="position: absolute; top: 10px; left: 40px; z-index: 10;">
             <img src="{{ asset('img/elementos/bookly.png') }}" alt="Volver" style="width: 200px;">
         </a>
         @auth
@@ -48,7 +48,7 @@
         @endauth
     </header>
 
-    <main style="padding-top: 80px;"> @yield('content')
+    <main style="padding-top: 80px"> @yield('content')
     </main>
 
 
