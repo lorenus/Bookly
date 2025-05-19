@@ -5,7 +5,7 @@
         <!-- Columna Corcho -->
         <div class="col-12 col-lg-6 corcho-container position-relative">
             <div class="welcome-banner d-flex flex-column align-items-center justify-content-center">
-                <div style="margin-left: 20%; margin-top: -7%; transform: rotate(-9deg);">
+                <div class="saludo">
                     <h2 class="m-0">¡Hola, <br>{{ Auth::user()->name }}!</h2>
                 </div>
             </div>
@@ -14,7 +14,7 @@
                 <!-- Primera fila -->
                 <div class="row g-0 mb-3 flex-grow-1">
                     <!-- Columna izquierda - Polaroid con foto -->
-                    <div class="col-md-6 h-100 pe-2">
+                    <div class="columna1 col-md-6 h-100 pe-2">
                         <div class="polaroid-frame h-100 d-flex flex-column align-items-center justify-content-center p-4">
                             @php
                             $imagenPerfil = Auth::user()->imgPerfil
@@ -27,7 +27,7 @@
 
 
                     <!-- Columna derecha - Postits con logros -->
-                    <div class="col-md-6 h-100 ps-2">
+                    <div class="columna2 col-md-6 h-100 ps-2">
                         <div class="postits-container h-100 position-relative p-3">
                             <div class="postit-large">
                                 @if($ultimosLogros->count() > 0)
@@ -74,7 +74,7 @@
                 <!-- Fila 1: Búsqueda -->
                 <div class="notebook-row search-row mb-4">
                     <div class="d-flex align-items-center">
-                        <x-input-label for="basic-book-search" value="Buscar libros" class="text-lg font-bold mb-0 mr-3" />
+                        <x-input-label for="basic-book-search" value="Buscar libros:" class="buscar font-bold mb-0 mr-3" style="font-size: x-large;" />
                         <div class="flex-grow-1">
                             <input type="text" id="basic-book-search" placeholder="Buscar libros..." class="w-full p-2 border rounded">
                         </div>

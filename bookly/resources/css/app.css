@@ -239,7 +239,9 @@ body {
     background-image: url("/public/img/perfil/corcho.png");
     background-size: contain;
     background-repeat: no-repeat;
-    min-height: 80vh;
+    min-height: 60vh;
+    min-width: 600px;
+    max-width: 700px;
 }
 
 .corcho-content {
@@ -325,7 +327,7 @@ body {
     background-image: url("/public/img/perfil/papel.png");
     background-size: contain;
     background-repeat: no-repeat;
-    margin-top: -35%;
+    margin-top: -30%;
     max-width: 70%;
     margin-left: 15%;
 }
@@ -387,6 +389,7 @@ body {
     max-height: 85vh;
     position: relative;
     padding: 5% 10% 5% 11%;
+    margin-top: 2%;
 }
 
 .notebook-content {
@@ -550,16 +553,26 @@ body {
     transform: scale(1.03);
 }
 
+.saludo {
+    margin-left: 20%;
+    margin-top: -7%;
+    transform: rotate(-3deg);
+}
 /* TABLET */
 @media (max-width: 992px) {
-    .corcho-container,
+    .corcho-container {
+        margin-left: 15%;
+        height: auto !important;
+        width: 100% !important;
+    }
     .notebook-container {
+        margin-left: 5%;
         min-height: auto !important;
         height: auto !important;
     }
 
     .corcho-content {
-        padding-top: 2rem !important;
+        padding-top: 6rem !important;
     }
 
     .notebook-content {
@@ -571,11 +584,254 @@ body {
         width: 23% !important;
         margin-bottom: 1rem;
     }
+
+    .welcome-banner {
+        margin-top: -5%;
+        margin-left: -50%;
+        height: 250px;
+        width: auto;
+    }
+
+    .saludo {
+        margin-left: 10%;
+        margin-top: -2%;
+    }
+    .progress-container {
+        margin-top: 8%;
+    }
+
+    .paper-note {    
+        width: 60% !important;
+        margin-top: -35%;
+    }
+
+    .postits-container{
+        margin-top: -50%;
+        margin-left: -20%;
+    }
+
+    .polaroid-frame {
+        margin-top: -50% !important;
+        margin-left: 0 !important;
+    }
+
+    .polaroid-image {
+        width: 48% !important;
+        left: 53%;
+    }
+    .postit-large {
+        width: 75% !important;
+        top: 50% !important;
+        left: 50% !important;
+        margin-top: 0 !important;
+        transform: translate(-50%, -50%) rotate(4deg) !important;
+    }
+
+    .notebook-content{
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+    .book-covers {
+        height: 120px !important;
+        justify-content: space-between !important;
+        padding: 0 !important;
+        gap: 8px !important;
+    }
+    
+    .book-cover {
+        width: 18% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        flex-shrink: 0;
+    }
+    
+    .book-cover-container {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    .book-cover-image {
+        object-fit: contain !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 120px;
+    }
+    
+    .book-cover-image[src*="portada_default.png"] {
+        object-fit: contain !important;
+        margin-left: 0 !important;
+    }
+    .book-title-overlay {
+        font-size: 0.7rem !important;
+        padding: 2px !important;
+    }
+    .notebook-row.list-row {
+        min-height: 140px !important;
+        margin-bottom: 0.8rem !important;
+    }
+
+    .list-header h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.3rem !important;
+    }
+
 }
+
 /* MOVIL */
 @media (max-width: 768px) {
-    .book-cover {
+    .corcho-container {
+        margin-left: -40%;
+        margin-top: 10% !important;
+        background-size: cover;
+    }
+    /* Banner de bienvenida */
+    .welcome-banner {
+        width: auto;
+        height: 200px !important;
+        margin-top: -5% !important;
+        margin-left: -15% !important;
+    }
+
+    .welcome-banner h2 {
+        font-size: 2.2rem;
+        padding-top: 10px;
+        padding-left: 20px;
+    }
+    .columna1 {
+        margin-left: 140px !important;
+    }
+    .columna1,
+    .columna2 {
+        width: 50vw;
+        height: auto;
+        margin-top: -150px;
+    }
+    /* Elementos del corcho */
+    .polaroid-frame {
+        width: 280px !important;
+        margin-top: 20px !important;
+        margin-left: 50% !important;
+        transform: translateX(-50%) !important;
+        height: 220px !important;
+    }
+
+    .polaroid-image {
         width: 48% !important;
+        left: 53%;
+    }
+
+    .postits-container {
+        width: 210px !important;
+        height: 210px !important;
+        margin-top: 20px !important;
+        margin-left: 50% !important;
+        transform: translateX(-50%) rotate(4deg);
+        position: relative !important;
+    }
+
+    .postit-large {
+        width: 80% !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) rotate(4deg) !important;
+        margin-top: 0 !important;
+    }
+
+    .logro-miniatura {
+        width: 60px !important;
+        height: 60px !important;
+        margin: 5px;
+    }
+
+    .paper-note {
+        max-width: 60% !important;
+        margin-top: -40% !important;
+        margin-left: 25% !important;
+    }
+
+    .progress-container {
+        font-size: large !important;
+    }
+
+    /* Libreta */
+    .notebook-container {
+        padding: 2% 5% !important;
+        margin-top: 5% !important;
+        background-size: cover !important;
+        background-position: center;
+    }
+    .notebook-row.list-row {
+        min-height: 100px !important;
+    }
+    .list-header {
+        padding: 0 5px 5px 5px !important;
+        margin-bottom: 0.2rem !important;
+    }
+    .book-cover {
+        width: 30% !important;
+        height: 100px !important;
+    }
+
+    .book-cover-container {
+        width: 70px !important;
+        height: 100px !important;
+    }
+
+    .book-title-overlay {
+        font-size: 12px !important;
+        padding: 3px !important;
+    }
+
+    .see-all-icon {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .saludo {
+        margin-left: 5% !important;
+        margin-top: 0 !important;
+        transform: rotate(-3deg) scale(0.8);
+    }
+    .notebook-content {
+        gap: 0.3rem !important;
+    }
+    .book-covers {
+        height: 90% !important;
+        gap: 3px !important;
+    }
+
+    .list-header h3 {
+        margin-bottom: 0.1rem !important;
+        font-size: 1.2rem !important;
+    }
+
+    .see-all-icon {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .search-row {
+        margin-bottom: 4rem !important;
+    }
+
+    .search-row .d-flex {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+    .search-row .buscar {
+        font-size: large !important; 
+        margin-bottom: 0.5rem !important;
+        margin-right: 0 !important; 
+        width: 100%;
+    }
+
+    .search-row .flex-grow-1 {
+        width: 100% !important; 
+    }
+
+    #basic-results {
+        width: 100% !important; 
+        left: 0 !important;
     }
 }
 
@@ -1268,19 +1524,19 @@ body {
         height: 90%; /* Menos alto */
         padding: 1.5rem 3rem; /* Padding reducido */
         background-position: bottom center; /* Alineado al fondo */
-        background-image: url("/public/img/prestar/fondo-prestar-vertical-tablet.png"); 
+        background-image: url("/public/img/prestar/fondo-prestar-vertical-tablet.png");
         background-size: contain;
     }
-    .lapiz{
+    .lapiz {
         display: none;
     }
-     .fila-prestar{
+    .fila-prestar {
         padding-top: 10%;
         margin-left: 0%;
         margin-right: 5%;
         transform: rotate(-1deg);
     }
-    .columna-prestar1{
+    .columna-prestar1 {
         display: none;
     }
 }
@@ -1293,20 +1549,19 @@ body {
         height: 100%; /* Altura reducida */
         padding: 1rem; /* Padding mínimo */
         background-position: bottom center;
-        background-image: url("/public/img/prestar/fondo-prestar-vertical.png"); 
+        background-image: url("/public/img/prestar/fondo-prestar-vertical.png");
         background-size: contain;
-        
     }
-    .lapiz{
+    .lapiz {
         display: none;
     }
-    .fila-prestar{
+    .fila-prestar {
         padding-top: 10%;
         margin-left: 0%;
         margin-right: 5%;
         transform: rotate(-1deg);
     }
-    .columna-prestar1{
+    .columna-prestar1 {
         display: none;
     }
 }
