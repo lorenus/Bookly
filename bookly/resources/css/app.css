@@ -600,12 +600,12 @@ body {
         margin-top: 8%;
     }
 
-    .paper-note {    
+    .paper-note {
         width: 60% !important;
         margin-top: -35%;
     }
 
-    .postits-container{
+    .postits-container {
         margin-top: -50%;
         margin-left: -20%;
     }
@@ -627,7 +627,7 @@ body {
         transform: translate(-50%, -50%) rotate(4deg) !important;
     }
 
-    .notebook-content{
+    .notebook-content {
         padding-left: 15%;
         padding-right: 15%;
     }
@@ -637,26 +637,26 @@ body {
         padding: 0 !important;
         gap: 8px !important;
     }
-    
+
     .book-cover {
         width: 18% !important;
         height: 100% !important;
         margin: 0 !important;
         flex-shrink: 0;
     }
-    
+
     .book-cover-container {
         width: 100% !important;
         height: 100% !important;
     }
-    
+
     .book-cover-image {
         object-fit: contain !important;
         width: 100% !important;
         height: 100% !important;
         max-height: 120px;
     }
-    
+
     .book-cover-image[src*="portada_default.png"] {
         object-fit: contain !important;
         margin-left: 0 !important;
@@ -674,7 +674,6 @@ body {
         font-size: 1.1rem !important;
         margin-bottom: 0.3rem !important;
     }
-
 }
 
 /* MOVIL */
@@ -819,18 +818,18 @@ body {
     }
 
     .search-row .buscar {
-        font-size: large !important; 
+        font-size: large !important;
         margin-bottom: 0.5rem !important;
-        margin-right: 0 !important; 
+        margin-right: 0 !important;
         width: 100%;
     }
 
     .search-row .flex-grow-1 {
-        width: 100% !important; 
+        width: 100% !important;
     }
 
     #basic-results {
-        width: 100% !important; 
+        width: 100% !important;
         left: 0 !important;
     }
 }
@@ -1907,12 +1906,15 @@ input[type="file"]::file-selector-button {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 2rem;
+    height: auto;
+    min-height: 800px;
 }
 
 .libreta-background {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     background-image: url("/public/img/fichaLibro/libreta-ficha.png");
@@ -1920,18 +1922,34 @@ input[type="file"]::file-selector-button {
     background-position: center;
     background-repeat: no-repeat;
     z-index: -1;
+    pointer-events: none;
 }
 
 .libreta-content {
     display: flex;
-    max-height: 80vh;
+    max-height: 700px; /* Altura máxima del contenido */
     margin-left: 6%;
     margin-right: 8%;
+    position: relative;
+    z-index: 1;
 }
 
 .libreta-page {
     flex: 1;
     padding: 2rem;
+}
+
+.left-page {
+    max-height: 650px; /* Ajuste para el contenido izquierdo */
+    display: flex;
+    flex-direction: column;
+}
+
+.right-page {
+    max-height: 650px; /* Ajuste para el contenido derecho */
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
 }
 
 .portada-container {
@@ -2020,10 +2038,14 @@ input[type="file"]::file-selector-button {
 }
 
 .sinopsis-content {
+    padding-right: 10px;
     line-height: 1.6;
     color: #555;
 }
-
+.sinopsis-container {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
 .user-rating {
     margin-top: 2rem;
     padding-top: 1rem;
@@ -2070,4 +2092,82 @@ input[type="file"]::file-selector-button {
 
 .checkbox-label input {
     margin-right: 0.5rem;
+}
+
+.sinopsis-container {
+    height: 50vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* MOVIL TABLET */
+@media (max-width: 991px) {
+    .libreta-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sinopsis-container {
+        height: 50vh;
+    }
+
+    .portada-container {
+        margin: 2rem 0;
+    }
+
+    .portada-img {
+        max-height: 550px !important;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .portada-placeholder {
+        height: 350px !important;
+        width: 250px !important;
+    }
+
+    .libreta-page {
+        padding: 2rem 15%;
+        margin-bottom: 0;
+        position: relative;
+        min-height: 1000px;
+        width: 100%;
+    }
+
+    .left-page {
+        background-image: url("/public/img/fichaLibro/pagIzq.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+
+    .right-page {
+        background-image: url("/public/img/fichaLibro/pagDcha.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin-left: 0 !important;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+    }
+
+    .libreta-content {
+        flex-direction: column;
+        max-height: none;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .rating-container {
+        margin: 1.5rem 0;
+    }
+
+    .libreta-background {
+        display: none;
+    }
 }

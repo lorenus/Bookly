@@ -2,12 +2,12 @@
 
 @section('content')
 <!-- Botón de volver -->
-<a href="{{ route('perfil') }}" class="volver-btn" style="position: fixed;top: 100px;left: 40px;">
-    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver">
+<a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
+    <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
 
 <div class="libreta-container">
-    <!-- Fondo de libreta -->
+    <!-- Fondo de libreta (solo visible en desktop) -->
     <div class="libreta-background"></div>
 
     <!-- Contenido de la libreta -->
@@ -109,7 +109,7 @@
                 <!-- Primera fila: Añadir a lista + Checkbox -->
                 <div class="row mb-3">
                     <!-- Columna para Añadir a lista -->
-                    <div class="col-md-6 col-s-12">
+                    <div class="col-md-6 col-12">
                         <form action="{{ route('libros.add-to-list') }}" method="POST">
                             @csrf
                             <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
@@ -131,7 +131,7 @@
                     </div>
 
                     <!-- Columna para Checkbox "Lo tengo" -->
-                    <div class="col-md-6 col-s-12 mt-4 d-flex align-items-center">
+                    <div class="col-md-6 col-12 mt-md-0 mt-3 d-flex align-items-center">
                         <form action="{{ route('libros.comprar', $book['id']) }}" method="POST" class="w-100">
                             @csrf
                             <div class="form-check">
@@ -149,7 +149,7 @@
                 <!-- Segunda fila: Recomendar + Prestar -->
                 <div class="row">
                     <!-- Columna para Recomendar -->
-                    <div class="col-md-6 col-sm-6 mb-2">
+                    <div class="col-md-6 col-12 mb-2">
                         <div class="form-group">
                             <label for="recomendar-amigo">Recomendar a:</label>
                             <select id="recomendar-amigo" class="form-control select2-recomendar">
@@ -163,7 +163,7 @@
 
                     <!-- Columna para Prestar (solo visible si el libro está comprado) -->
                     @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
-                    <div class="col-md-6 col-sm-6 mb-2">
+                    <div class="col-md-6 col-12 mb-2">
                         <div class="form-group">
                             <label for="prestar-amigo">Prestar a:</label>
                             <select id="prestar-amigo" class="form-control select2-prestar">
@@ -179,17 +179,19 @@
             </div>
         </div>
         <!-- Página derecha -->
-        <div class="libreta-page right-page ms-5" style="height: 80vh; margin-left: 5%; display: flex; flex-direction: column;">
+        <div class="libreta-page right-page">
             <h2 class="sinopsis-title mb-3">Sinopsis</h2>
 
-            <!-- Contenedor de sinopsis con scroll -->
-            <div class="sinopsis-content flex-grow-1" style="overflow-y: auto; margin-bottom: 20px;">
-                {!! $book['volumeInfo']['description'] ?? 'No hay sinopsis disponible.' !!}
+            <!-- Contenedor de sinopsis con scroll - Versión corregida -->
+            <div class="sinopsis-container">
+                <div class="sinopsis-content">
+                    {!! $book['volumeInfo']['description'] ?? 'No hay sinopsis disponible.' !!}
+                </div>
             </div>
 
             <!-- Sección para valoración del usuario (si ha leído el libro) -->
             @if(Auth::user()->haLeidoLibro($book['id']))
-            <div class="user-rating mt-auto">
+            <div class="user-rating mt-3">
                 <h5 class="text-center mb-3">Tu valoración</h5>
                 <form action="{{ route('libros.rate', $book['id']) }}" method="POST">
                     @csrf
