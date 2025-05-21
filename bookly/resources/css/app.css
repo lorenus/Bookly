@@ -1912,8 +1912,9 @@ input[type="file"]::file-selector-button {
 
 .libreta-background {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     background-image: url("/public/img/fichaLibro/libreta-ficha.png");
@@ -1926,7 +1927,7 @@ input[type="file"]::file-selector-button {
 
 .libreta-content {
     display: flex;
-    max-height: 80vh;
+    max-height: 700px; /* Altura máxima del contenido */
     margin-left: 6%;
     margin-right: 8%;
     position: relative;
@@ -1949,6 +1950,19 @@ input[type="file"]::file-selector-button {
     padding-bottom: 2rem;
     padding-top: 1.5rem;
     gap: 0.5rem;
+}
+
+.left-page {
+    max-height: 650px; /* Ajuste para el contenido izquierdo */
+    display: flex;
+    flex-direction: column;
+}
+
+.right-page {
+    max-height: 650px; /* Ajuste para el contenido derecho */
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
 }
 
 .portada-container {
@@ -2047,7 +2061,10 @@ input[type="file"]::file-selector-button {
     position: relative;
     flex-grow: 1;
 }
-
+.sinopsis-container {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
 .user-rating {
     margin-top: 2rem;
     padding-top: 1rem;
