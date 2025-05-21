@@ -2281,6 +2281,8 @@ input[type="file"]::file-selector-button {
     flex: 1;
     padding: 2rem;
     position: relative;
+    padding-top: 10%;
+    margin-left: -15%;
 }
 
 .amigos-detail-container {
@@ -2288,6 +2290,7 @@ input[type="file"]::file-selector-button {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 15%;
 }
 
 .amigos-polaroid-container {
@@ -2300,7 +2303,7 @@ input[type="file"]::file-selector-button {
 .amigos-polaroid-frame {
     position: absolute;
     top: 0;
-    left: 50%;
+    left: 40%;
     transform: translateX(-50%);
     max-height: 300px;
     z-index: 1;
@@ -2320,11 +2323,14 @@ input[type="file"]::file-selector-button {
     width: 180px;
     height: 190px;
     object-fit: cover;
+    margin-left: -30%;
 }
 
 .amigos-detail-name {
     text-align: center;
     margin-top: 0.5rem;
+    font-size: medium;
+    margin-left: -40%;
 }
 
 .amigos-floral-decoration {

@@ -163,11 +163,11 @@
                         <p id="amigos-detalle-reto-texto"></p>
                     </div>
 
-                    <div id="amigos-detalle-boton-container" class="amigos-action-button">
+                    <div id="amigos-detalle-boton-container" class="amigos-action-button" style="display: none;>
                         <form action="#" method="POST" id="amigos-delete-form">
                             @csrf
                             @method('DELETE')
-                            <x-button type="submit" class="btn-amigos">
+                            <x-button type="submit" class="btn-amigos-eliminar">
                                 {{ __('Borrar amistad') }}
                             </x-button>
                         </form>
