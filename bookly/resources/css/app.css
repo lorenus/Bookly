@@ -2226,6 +2226,9 @@ input[type="file"]::file-selector-button {
     height: 100%;
     position: relative;
     z-index: 1;
+    max-width: 920px;
+    margin-left: 10%;
+    padding-top: 1%;
 }
 .amigos-left-page {
     flex: 1;
@@ -2233,7 +2236,6 @@ input[type="file"]::file-selector-button {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding-left: 10%;
     padding-top: 10%;
 }
 
@@ -2276,7 +2278,6 @@ input[type="file"]::file-selector-button {
     object-fit: cover;
 }
 
-/* Right page */
 .amigos-right-page {
     flex: 1;
     padding: 2rem;
@@ -2371,7 +2372,6 @@ input[type="file"]::file-selector-button {
     width: 80%;
 }
 
-/* Responsive */
 @media (max-width: 991px) {
     .amigos-libreta-background {
         display: none;
@@ -2379,26 +2379,85 @@ input[type="file"]::file-selector-button {
 
     .amigos-libreta-content {
         flex-direction: column;
+        margin-left: 0;
     }
 
     .amigos-left-page {
         background-image: url("/public/img/amigos/pagIzq-amigos.png");
         background-size: cover;
         background-repeat: no-repeat;
-        min-height: 800px;
+        background-position: top;
+        width: 100vw;
+        min-height: 100vh;
+        margin-top: 5%;
     }
 
     .amigos-right-page {
         background-image: url("/public/img/amigos/pagDcha.png");
         background-size: cover;
         background-repeat: no-repeat;
-        min-height: 800px;
+        min-height: 100vh;
     }
 
     .amigos-container {
         width: 100%;
         padding: 0;
         margin: 0;
+    }
+
+    .amigos-section {
+        margin-top: 23%;
+        margin-left: 10%;
+        font-size: 2rem;
+    }
+
+    .h3-responsive,
+    .h5-responsive {
+        font-size: 2rem;
+    }
+
+    .amigos-polaroid-container {
+        height: 450px !important;
+    }
+
+    .amigos-polaroid-frame {
+        width: 350px !important;
+        height: auto !important;
+        max-height: none !important;
+        margin-left: -15%;
+        margin-top: 15%;
+    }
+    .amigos-detail-image {
+        margin-left: -145%;
+        margin-top: 70%;
+        width: 220px;
+        height: 230px;
+    }
+
+    .amigos-detalle-nombre {
+        font-size: 1.5rem;
+        margin-left: -115%;
+        margin-top: 8%;
+    }
+    .amigos-floral-decoration {
+        top: 75px;
+        right: 84px;
+        height: 40vh;
+        width: auto;
+    }
+
+    .amigos-achievements-section {
+        margin-top: 10%;
+        margin-left: -10%;
+    }
+
+    .amigos-challenge-section{
+        margin-left: -10%;
+    }
+
+    .btn-amigos-eliminar{
+        font-size: 2rem !important;
+        margin-left: -10%;
     }
 }
 

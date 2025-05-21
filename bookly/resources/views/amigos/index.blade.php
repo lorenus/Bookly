@@ -17,7 +17,7 @@
             <div class="amigos-left-page">
                 <!-- Section 1: Search and request friendship -->
                 <div class="amigos-section">
-                    <h4>Solicitar amistad:</h4>
+                    <h3 class="h3-responsive">Solicitar amistad:</h3>
                     <form method="POST" action="{{ route('amigos.store') }}" class="mb-4">
                         @csrf
                         <input type="hidden" name="amigo_id" id="amigo-id-input">
@@ -53,7 +53,7 @@
                                                             <img src="${data.usuario.imgPerfil ? "/storage/"+data.usuario.imgPerfil : "/images/default-user.jpg"}"
                                                                 class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;" alt="Foto de perfil">
                                                             <div>
-                                                                <h5 class="mb-0">${data.usuario.name} ${data.usuario.apellidos || ""}</h5>
+                                                                <h5 class="mb-0 h5-responsive">${data.usuario.name} ${data.usuario.apellidos || ""}</h5>
                                                                 <small class="text-muted">${email}</small>
                                                             </div>
                                                         </div>
@@ -94,7 +94,7 @@
                 <!-- Section 2: Friends list with search -->
                 <div class="amigos-section mt-4">
                     <div class="mis-amigos">
-                        <h4>Mis Amigos ({{ $amigos->count() }})</h4>
+                        <h3 class="h3-responsive">Mis Amigos ({{ $amigos->count() }})</h3>
                         <div class="amigos-search-input">
                             <input
                                 type="text"
@@ -120,7 +120,7 @@
                                     <img src="{{ asset($amigo->imgPerfil) }}"
                                             alt="Foto de perfil" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     <div class="amigo-info">
-                                        <h5>{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h5>
+                                        <h5 class="h5-responsive">{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                             <img id="amigos-detalle-imagen" alt="Foto de perfil"
                                 src=""
                                 class="amigos-detail-image">
-                            <h3 id="amigos-detalle-nombre" class="amigos-detail-name">Nombre del amigo</h3>
+                            <h3 id="amigos-detalle-nombre" class="amigos-detalle-nombre">Nombre del amigo</h3>
                         </div>
 
                         <img src="{{ asset('img/amigos/polaroid-amigos.png') }}"
@@ -154,17 +154,17 @@
                     </div>
 
                     <div id="amigos-detalle-logros" class="amigos-achievements-section">
-                        <h4>Últimos Logros</h4>
+                        <h3 class="h3-responsive">Últimos Logros</h3>
                         <div class="amigos-achievements-container" id="amigos-logros-amigo-container"></div>
                     </div>
 
                     <div id="amigos-detalle-reto-container" class="amigos-challenge-section">
-                        <h4>Reto Anual</h4>
+                        <h3 class="h3-responsive">Reto Anual</h3>
                         <p id="amigos-detalle-reto-texto"></p>
                     </div>
 
-                    <div id="amigos-detalle-boton-container" class="amigos-action-button" style="display: none;>
-                        <form action="#" method="POST" id="amigos-delete-form">
+                    <div id="amigos-detalle-boton-container" class="amigos-action-button" style="display: none;">
+                        <form action="{{ route('amigos.destroy', $amigo->id) }}" method="POST" id="amigos-delete-form">
                             @csrf
                             @method('DELETE')
                             <x-button type="submit" class="btn-amigos-eliminar">
