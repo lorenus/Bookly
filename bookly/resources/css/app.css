@@ -2061,9 +2061,9 @@ input[type="file"]::file-selector-button {
     flex-grow: 1;
 }
 .sinopsis-container {
-        flex-grow: 1;
-        overflow-y: auto;
-    }
+    flex-grow: 1;
+    overflow-y: auto;
+}
 .user-rating {
     margin-top: 2rem;
     padding-top: 1rem;
@@ -2189,11 +2189,226 @@ input[type="file"]::file-selector-button {
     }
 }
 
-@media (max-width:768px) {
+@media (max-width: 768px) {
     .left-page {
         width: 120vw;
         margin-left: -10%;
-        padding-left: 20%
+        padding-left: 20%;
     }
-    
+}
+
+/******************* MIS AMIGOS *******************/
+.amigos-container {
+    position: relative;
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    min-height: 800px;
+}
+
+.amigos-libreta-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/public/img/amigos/libreta-amigos.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.amigos-libreta-content {
+    display: flex;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+.amigos-left-page {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-left: 10%;
+    padding-top: 10%;
+}
+
+.amigos-section {
+    padding: 1.5rem;
+}
+
+.amigos-search-input input {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    border-bottom: 2px solid #dee2e6;
+    background: transparent;
+}
+
+.amigos-list-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 1rem;
+}
+
+.amigo-item {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.amigo-item-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.amigo-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Right page */
+.amigos-right-page {
+    flex: 1;
+    padding: 2rem;
+    position: relative;
+}
+
+.amigos-detail-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.amigos-polaroid-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-bottom: 2rem;
+}
+
+.amigos-polaroid-frame {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 300px;
+    z-index: 1;
+}
+
+.amigos-polaroid-photo {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-6deg);
+    z-index: 2;
+    width: 150px;
+    display: none;
+}
+
+.amigos-detail-image {
+    width: 180px;
+    height: 190px;
+    object-fit: cover;
+}
+
+.amigos-detail-name {
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.amigos-floral-decoration {
+    position: absolute;
+    top: 75px;
+    right: -85px;
+    z-index: 0;
+    max-height: 450px;
+    transform: rotate(7deg);
+}
+
+.amigos-achievements-section,
+.amigos-challenge-section {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    display: none;
+}
+
+.amigos-achievements-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.amigos-logro-miniatura img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.btn-amigos {
+    margin-left: 30%;
+}
+
+.amigos-search-input {
+    width: 80%;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .amigos-libreta-background {
+        display: none;
+    }
+
+    .amigos-libreta-content {
+        flex-direction: column;
+    }
+
+    .amigos-left-page {
+        background-image: url("/public/img/amigos/pagIzq-amigos.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 800px;
+    }
+
+    .amigos-right-page {
+        background-image: url("/public/img/amigos/pagDcha.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        min-height: 800px;
+    }
+
+    .amigos-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .amigos-left-page,
+    .amigos-right-page {
+        min-height: 700px;
+        padding: 1.5rem;
+    }
+
+    .amigos-polaroid-container {
+        height: 250px;
+    }
+
+    .amigos-detail-image {
+        width: 150px;
+        height: 160px;
+    }
 }
