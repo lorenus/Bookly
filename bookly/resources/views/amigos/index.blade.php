@@ -48,10 +48,10 @@
                                         .then(data => {
                                             if (data.existe) {
                                                 resultadoDiv.innerHTML = `
-                                                    <div class="ms-5 p-3">
+                                                    <div class="p-3">
                                                         <div class="d-flex align-items-center">
                                                             <img src="${data.usuario.imgPerfil ? "/storage/"+data.usuario.imgPerfil : "/images/default-user.jpg"}"
-                                                                class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;" alt="Foto de perfil">
+                                                                class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;" alt="Foto">
                                                             <div>
                                                                 <h5 class="mb-0 h5-responsive">${data.usuario.name} ${data.usuario.apellidos || ""}</h5>
                                                                 <small class="text-muted">${email}</small>
@@ -118,7 +118,7 @@
                                 onclick="mostrarDetalleAmigo('{{ $amigo->id }}')">
                                 <div class="amigo-item-content">
                                     <img src="{{ asset($amigo->imgPerfil) }}"
-                                            alt="Foto de perfil" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                        alt="Foto de perfil" class="rounded-circle" width="40" height="40" style="object-fit: cover;">
                                     <div class="amigo-info">
                                         <h5 class="h5-responsive">{{ $amigo->name }} {{ $amigo->apellidos ?? '' }}</h5>
                                     </div>
@@ -164,7 +164,7 @@
                     </div>
 
                     <div id="amigos-detalle-boton-container" class="amigos-action-button" style="display: none;">
-                        <form action="{{ route('amigos.destroy', $amigo->id) }}" method="POST" id="amigos-delete-form">
+                        <form action="#" method="POST" id="amigos-delete-form">
                             @csrf
                             @method('DELETE')
                             <x-button type="submit" class="btn-amigos-eliminar">
@@ -178,62 +178,65 @@
     </div>
 </div>
 
-    <script>
-        function mostrarDetalleAmigo(amigoId) {
-            document.getElementById('amigos-detalle-imagen').src = '';
-            document.getElementById('amigos-logros-amigo-container').innerHTML = '';
+<script>
+    function mostrarDetalleAmigo(amigoId) {
+        document.getElementById('amigos-detalle-imagen').src = '';
+        document.getElementById('amigos-logros-amigo-container').innerHTML = '';
 
-            fetch(`/amigos/${amigoId}/detalle`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('No autorizado');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    document.getElementById('amigos-detalle-imagen-container').style.display = 'block';
-                    document.getElementById('amigos-detalle-logros').style.display = 'block';
-                    document.getElementById('amigos-detalle-reto-container').style.display = 'block';
-                    document.getElementById('amigos-detalle-boton-container').style.display = 'block';
+        fetch(`/amigos/${amigoId}/detalle`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No autorizado');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('amigos-detalle-imagen-container').style.display = 'block';
+                document.getElementById('amigos-detalle-logros').style.display = 'block';
+                document.getElementById('amigos-detalle-reto-container').style.display = 'block';
+                document.getElementById('amigos-detalle-boton-container').style.display = 'block';
 
-                    const imgElement = document.getElementById('amigos-detalle-imagen');
-                    const imgPerfil = data.imgPerfil ? `${data.imgPerfil}` : '/images/default-user.jpg';
-                    imgElement.src = imgPerfil;
-                    imgElement.onerror = function() {
-                        this.src = '/images/default-user.jpg';
-                    };
+                const imgElement = document.getElementById('amigos-detalle-imagen');
+                const imgPerfil = data.imgPerfil ? `${data.imgPerfil}` : '/images/default-user.jpg';
+                imgElement.src = imgPerfil;
+                imgElement.onerror = function() {
+                    this.src = '/images/default-user.jpg';
+                };
 
-                    document.getElementById('amigos-detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
+                const deleteForm = document.getElementById('amigos-delete-form');
+                deleteForm.action = `/amigos/${amigoId}`;
 
-                    const retoAnual = data.retoAnual || 0;
-                    const librosLeidos = data.librosLeidosAnual || 0;
-                    const porcentaje = retoAnual > 0 ? Math.min(100, Math.round((librosLeidos / retoAnual) * 100)) : 0;
-                    document.getElementById('amigos-detalle-reto-texto').textContent =
-                        `${librosLeidos} de ${retoAnual} libros (${porcentaje}%)`;
+                document.getElementById('amigos-detalle-nombre').textContent = `${data.name} ${data.apellidos || ''}`;
 
-                    const logrosContainer = document.getElementById('amigos-logros-amigo-container');
-                    if (data.logros && data.logros.length > 0) {
-                        data.logros.forEach(logro => {
-                            const logroDiv = document.createElement('div');
-                            logroDiv.className = 'amigos-logro-miniatura';
-                            logroDiv.innerHTML = `
+                const retoAnual = data.retoAnual || 0;
+                const librosLeidos = data.librosLeidosAnual || 0;
+                const porcentaje = retoAnual > 0 ? Math.min(100, Math.round((librosLeidos / retoAnual) * 100)) : 0;
+                document.getElementById('amigos-detalle-reto-texto').textContent =
+                    `${librosLeidos} de ${retoAnual} libros (${porcentaje}%)`;
+
+                const logrosContainer = document.getElementById('amigos-logros-amigo-container');
+                if (data.logros && data.logros.length > 0) {
+                    data.logros.forEach(logro => {
+                        const logroDiv = document.createElement('div');
+                        logroDiv.className = 'amigos-logro-miniatura';
+                        logroDiv.innerHTML = `
                             <img src="{{ asset('') }}${logro.imagen}"
                                  alt="${logro.nombre}"
                                  class="img-fluid rounded"
                                  data-bs-toggle="tooltip"
                                  title="${logro.nombre} - ${logro.fecha}">
                         `;
-                            logrosContainer.appendChild(logroDiv);
-                        });
+                        logrosContainer.appendChild(logroDiv);
+                    });
 
-                        $('[data-bs-toggle="tooltip"]').tooltip();
-                    } else {
-                        logrosContainer.innerHTML = '<p class="text-muted">Este usuario no tiene logros aún</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-    </script>
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                } else {
+                    logrosContainer.innerHTML = '<p class="text-muted">Este usuario no tiene logros aún</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
 @endsection

@@ -2416,28 +2416,25 @@ input[type="file"]::file-selector-button {
         font-size: 2rem;
     }
 
-    .amigos-polaroid-container {
-        height: 450px !important;
+    .amigos-polaroid-frame {
+        top: 21%;
+        left: 31%;
+        max-height: 351px;
     }
 
-    .amigos-polaroid-frame {
-        width: 350px !important;
-        height: auto !important;
-        max-height: none !important;
-        margin-left: -15%;
-        margin-top: 15%;
-    }
     .amigos-detail-image {
-        margin-left: -145%;
-        margin-top: 70%;
-        width: 220px;
-        height: 230px;
+        width: 211px;
+        height: 214px;
+        margin-left: -112%;
+        margin-top: 38%;
     }
 
     .amigos-detalle-nombre {
         font-size: 1.5rem;
-        margin-left: -115%;
+        margin-left: -109%;
         margin-top: 8%;
+        width: 200px;
+        text-align: center;
     }
     .amigos-floral-decoration {
         top: 75px;
@@ -2451,11 +2448,11 @@ input[type="file"]::file-selector-button {
         margin-left: -10%;
     }
 
-    .amigos-challenge-section{
+    .amigos-challenge-section {
         margin-left: -10%;
     }
 
-    .btn-amigos-eliminar{
+    .btn-amigos-eliminar {
         font-size: 2rem !important;
         margin-left: -10%;
     }
@@ -2465,15 +2462,76 @@ input[type="file"]::file-selector-button {
     .amigos-left-page,
     .amigos-right-page {
         min-height: 700px;
-        padding: 1.5rem;
     }
 
     .amigos-polaroid-container {
-        height: 250px;
+        height: 200px;
+    }
+
+    .amigos-polaroid-frame {
+        width: 270px;
+        margin-left: 0;
+    }
+
+    .amigos-polaroid-photo {
+        top: 50px;
+        width: 220px;
     }
 
     .amigos-detail-image {
-        width: 150px;
-        height: 160px;
+        width: 178px;
+        height: 190px;
+        margin-left: -19%;
+        margin-top: 10%;
+    }
+
+    .amigos-detalle-nombre {
+        text-align: center;
+        width: 100%;
+        margin-left: -27%;
+        margin-top: 3%;
+    }
+
+    .amigos-floral-decoration {
+        right: -98px;
+    }
+
+    .amigos-achievements-section {
+        margin-top: 30%;
+    }
+    
+    .btn-amigos-eliminar {
+        margin-left: 0%;
+        margin-bottom: 20%;
+    }
+
+    .h3-responsive,
+    .h5-responsive,
+    .amigos-section {
+        font-size: 1.5rem;
+    }
+    .amigo-item {
+        padding: 0;
+    }
+
+    .amigos-search-input {
+        width: 100%;
+        margin-left: -8%;
+    }
+
+    .btn-amigos {
+        margin-left: 20%;
+        margin-top: 5%;
+    }
+
+    .amigos-resultado-busqueda {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .amigos-search-input {
+        width: 80vw;
+        margin-left: -18%;
     }
 }
