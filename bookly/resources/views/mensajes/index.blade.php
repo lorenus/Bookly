@@ -6,9 +6,9 @@
     <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
 
-<div class="mensajes-container container-fluid d-flex justify-content-center align-items-end position-relative" style="min-height: 100vh;">
+<div class="mensajes-container container-fluid d-flex justify-content-center align-items-end position-relative">
     <div class="contenido rounded-4">
-        <div class="h-100 d-flex flex-column p-4">
+        <div class="d-flex flex-column p-4">
             <!-- Header -->
             <div class="mensajes-header text-center py-3">
                 <h1 class="h3 mb-0">Notificaciones</h1>
@@ -53,21 +53,21 @@
                                     <div style="width: 40px;"></div>
 
                                     <div class="d-flex gap-2 justify-content-center position-absolute start-50 translate-middle-x align-items-center">
-    @if ($notif->estado === App\Models\Notificacion::ESTADO_PENDIENTE)
-    <form method="POST" action="{{ route('mensajes.aceptar', $notif) }}" class="d-inline">
-        @csrf
-        <x-button-green type="submit" class="px-4 pt-3" style="height: 42px; line-height: 1.2; font-size: large;">
-            {{ __('Aceptar') }}
-        </x-button-green>
-    </form>
-    <form method="POST" action="{{ route('mensajes.rechazar', $notif) }}" class="d-inline">
-        @csrf
-        <x-button type="submit" class="px-4 pt-4" style="height: 42px; line-height: 1.2;">
-            {{ __('Rechazar') }}
-        </x-button>
-    </form>
-    @endif
-</div>
+                                        @if ($notif->estado === App\Models\Notificacion::ESTADO_PENDIENTE)
+                                        <form method="POST" action="{{ route('mensajes.aceptar', $notif) }}" class="d-inline">
+                                            @csrf
+                                            <x-button-green type="submit" class="px-4 pt-3" style="height: 42px; line-height: 1.2; font-size: large;">
+                                                {{ __('Aceptar') }}
+                                            </x-button-green>
+                                        </form>
+                                        <form method="POST" action="{{ route('mensajes.rechazar', $notif) }}" class="d-inline">
+                                            @csrf
+                                            <x-button type="submit" class="px-4 pt-4" style="height: 42px; line-height: 1.2;">
+                                                {{ __('Rechazar') }}
+                                            </x-button>
+                                        </form>
+                                        @endif
+                                    </div>
 
                                     <!-- Botón Eliminar a la derecha -->
                                     <form method="POST" action="{{ route('mensajes.eliminar', $notif) }}" class="ms-2">

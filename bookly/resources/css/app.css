@@ -1707,6 +1707,7 @@ input[type="file"]::file-selector-button {
     background-image: url("/public/img/mensajes/libreta-mensajes.png");
     background-repeat: no-repeat;
     background-position: bottom center;
+    background-size: contain;
     overflow: hidden;
     max-width: 1500px;
     height: 80vh;
@@ -1715,32 +1716,16 @@ input[type="file"]::file-selector-button {
     bottom: 0;
 }
 
-/* Desktop grande (xl y xxl) */
-@media (min-width: 1200px) {
-    .mensajes-container {
-        background-size: contain;
-    }
-    .contenido {
-        width: 50%;
-        margin-top: 5%;
-        margin-left: 10%;
-        transform: translateY(5%);
-    }
+.contenido {
+    width: 50%;
+    margin-top: 5%;
+    margin-left: 10%;
+    transform: translateY(5%);
+    height: 70vh;
+    overflow-y: scroll;
 }
 
-/* Desktop normal (lg) */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-    .mensajes-container {
-        background-size: contain;
-    }
-    .contenido {
-        width: 50%;
-        margin-top: 20%;
-        margin-left: 10%;
-    }
-}
-
-/* Tablet (md) */
+/* Tablet */
 @media (min-width: 768px) and (max-width: 992px) {
     .mensajes-container {
         background-size: cover;
@@ -1749,11 +1734,10 @@ input[type="file"]::file-selector-button {
     }
     .contenido {
         width: 60%;
-        margin-top: 10%;
+        height: 90vh;
     }
 }
 
-/* Móvil (sm y xs) */
 @media (max-width: 767.98px) {
     .mensajes-container {
         background-size: cover;
@@ -1763,6 +1747,7 @@ input[type="file"]::file-selector-button {
     .contenido {
         width: 90%;
         margin-top: 15%;
+        height: 90vh;
     }
 }
 
