@@ -52,23 +52,22 @@
                                     <!-- Espacio izquierdo vacío para balancear -->
                                     <div style="width: 40px;"></div>
 
-                                    <!-- Botones Aceptar/Rechazar centrados -->
-                                    <div class="d-flex gap-2 justify-content-center position-absolute start-50 translate-middle-x">
-                                        @if ($notif->estado === App\Models\Notificacion::ESTADO_PENDIENTE)
-                                        <form method="POST" action="{{ route('mensajes.aceptar', $notif) }}" class="d-inline">
-                                            @csrf
-                                            <x-button-green type="submit" class="px-4 py-2">
-                                                {{ __('Aceptar') }}
-                                            </x-button-green>
-                                        </form>
-                                        <form method="POST" action="{{ route('mensajes.rechazar', $notif) }}" class="d-inline">
-                                            @csrf
-                                            <x-button type="submit" class="px-4 py-2">
-                                                {{ __('Rechazar') }}
-                                            </x-button>
-                                        </form>
-                                        @endif
-                                    </div>
+                                    <div class="d-flex gap-2 justify-content-center position-absolute start-50 translate-middle-x align-items-center">
+    @if ($notif->estado === App\Models\Notificacion::ESTADO_PENDIENTE)
+    <form method="POST" action="{{ route('mensajes.aceptar', $notif) }}" class="d-inline">
+        @csrf
+        <x-button-green type="submit" class="px-4 pt-3" style="height: 42px; line-height: 1.2; font-size: large;">
+            {{ __('Aceptar') }}
+        </x-button-green>
+    </form>
+    <form method="POST" action="{{ route('mensajes.rechazar', $notif) }}" class="d-inline">
+        @csrf
+        <x-button type="submit" class="px-4 pt-4" style="height: 42px; line-height: 1.2;">
+            {{ __('Rechazar') }}
+        </x-button>
+    </form>
+    @endif
+</div>
 
                                     <!-- Botón Eliminar a la derecha -->
                                     <form method="POST" action="{{ route('mensajes.eliminar', $notif) }}" class="ms-2">
