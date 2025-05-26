@@ -41,7 +41,7 @@
                                 @endforeach
                                 @else
                                 <div class="no-logros">
-                                    <p>Aún no has desbloqueado logros</p>
+                                    <p>No tienes logros</p>
                                 </div>
                                 @endif
 
@@ -181,56 +181,72 @@
         </div>
 
         <script>
+
+            // Variable para guardar el temporizador
+            let timer;
+
+            // Escuchar cuando el usuario escribe en el buscador
             document.getElementById('basic-book-search').addEventListener('input', function(e) {
-                const query = e.target.value.trim();
-                const resultsDiv = document.getElementById('basic-results');
+                
+                // Limpiar el temporizador anterior para evitar múltiples búsquedas
+                clearTimeout(timer);
 
-                if (query.length < 2) {
-                    resultsDiv.innerHTML = '';
-                    resultsDiv.classList.add('hidden');
-                    return;
-                }
+                // Esperar 300ms antes de hacer la búsqueda (para no buscar con cada letra)
+                timer = setTimeout(function() {
+                    const query = e.target.value.trim();
+                    const resultsDiv = document.getElementById('basic-results');
 
-                fetch(`/buscar-libros?query=${encodeURIComponent(query)}`)
-                    .then(response => response.json())
-                    .then(books => {
-                        if (!books || books.length === 0) {
-                            resultsDiv.innerHTML = '<p>No se encontraron libros</p>';
+                    // Si la búsqueda es muy corta, limpiar resultados
+                    if (query.length < 2) {
+                        resultsDiv.innerHTML = '';
+                        resultsDiv.classList.add('hidden');
+                        return;
+                    }
+
+                    // Hacer la petición al servidor
+                    fetch(`/buscar-libros?query=${encodeURIComponent(query)}`)
+                        .then(response => response.json())
+                        .then(books => {
+                            // Si no hay libros, mostrar mensaje
+                            if (!books || books.length === 0) {
+                                resultsDiv.innerHTML = '<p>No se encontraron libros</p>';
+                                resultsDiv.classList.remove('hidden');
+                                return;
+                            }
+
+                            // Crear HTML para los resultados
+                            let html = '';
+                            for (let i = 0; i < books.length; i++) {
+                                html += `
+                            <div class="p-2 border-b">
+                                <a href="/libros/${books[i].id}" class="text-blue-600">
+                                    ${books[i].volumeInfo.title}
+                                </a>
+                            </div>
+                        `;
+                            }
+
+                            // Mostrar resultados
+                            resultsDiv.innerHTML = html;
                             resultsDiv.classList.remove('hidden');
-                            return;
-                        }
-
-                        let html = '';
-                        books.forEach(book => {
-                            html += `
-                                <div class="p-2 border-b">
-                                    <a href="/libros/${book.id}" class="text-blue-600">
-                                        ${book.volumeInfo.title}
-                                    </a>
-                                </div>
-                            `;
+                        })
+                        .catch(function(error) {
+                            console.error('Error:', error);
+                            resultsDiv.innerHTML = '<p class="text-red-500">Error al buscar</p>';
+                            resultsDiv.classList.remove('hidden');
                         });
-
-                        resultsDiv.innerHTML = html;
-                        resultsDiv.classList.remove('hidden');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        resultsDiv.innerHTML = '<p class="text-red-500">Error al buscar</p>';
-                        resultsDiv.classList.remove('hidden');
-                    });
+                }, 300); // Esperar 300ms
             });
 
-            // Add fallback for book cover images
             document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('.book-cover-fallback').forEach(function(img) {
-                    img.addEventListener('error', function() {
-                        if (img.src !== img.dataset.defaultCover) {
-                            img.src = img.dataset.defaultCover;
+                const images = document.querySelectorAll('.book-cover-fallback');
+                for (let i = 0; i < images.length; i++) {
+                    images[i].addEventListener('error', function() {
+                        if (this.src !== this.dataset.defaultCover) {
+                            this.src = this.dataset.defaultCover;
                         }
                     });
-                });
+                }
             });
         </script>
         @endsection
-        
