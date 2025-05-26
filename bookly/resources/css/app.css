@@ -936,6 +936,14 @@ body {
     margin-top: -10%;
 }
 
+.book-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    /* estilos adicionales para el badge */
+}
+
 /* MOVIL */
 @media (max-width: 767.98px) {
     .min-h-screen-misListas {
@@ -1182,13 +1190,21 @@ body {
     width: 100%;
     height: 200px;
     overflow: hidden;
-    border-radius: 4px;
+    background-image: url("/storage/app/public/default-cover.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .book-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width: 140px;
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
 }
 
 .book-placeholder {
@@ -1593,7 +1609,6 @@ body {
 .flor-editar {
     position: fixed;
     bottom: 0;
-    right: left;
     width: 15%;
     height: 50%;
     background-image: url("/public/img/editarPerfil/flor-editar.png");
@@ -2499,7 +2514,7 @@ input[type="file"]::file-selector-button {
     .amigos-achievements-section {
         margin-top: 30%;
     }
-    
+
     .btn-amigos-eliminar {
         margin-left: 0%;
         margin-bottom: 20%;

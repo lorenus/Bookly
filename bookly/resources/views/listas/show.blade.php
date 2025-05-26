@@ -49,15 +49,17 @@
             <div class="list-book-card" data-title="{{ strtolower($libro->titulo) }}" data-author="{{ strtolower($libro->autor) }}">
                 <a href="{{ route('libro.show', $libro->google_id) }}" class="book-link">
                     <div class="list-book-cover">
-                        @if($libro->urlPortada)
-                        <img src="{{ $libro->urlPortada }}" alt="Portada de {{ $libro->titulo }}" class="book-image">
-                        @else
-                        <div class="book-placeholder">
-                            <svg class="book-icon" viewBox="0 0 24 24">
-                                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
+                        @php
+                        $portada = $libro->urlPortada ?: '';
+                        @endphp
+
+                        @if($portada)
+                        <img src="{{ $portada }}"
+                            alt="Portada de {{ $libro->titulo }}"
+                            class="book-image"
+                            onerror="this.style.display='none'">
                         @endif
+
                         @if($mostrarInfoPrestamo ?? false)
                         <span class="book-badge">Prestado</span>
                         @endif
