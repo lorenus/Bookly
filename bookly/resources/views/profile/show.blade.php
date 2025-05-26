@@ -19,7 +19,7 @@
                             @php
                             $imagenPerfil = Auth::user()->imgPerfil
                             ? asset('storage/' . Auth::user()->imgPerfil)
-                            : asset('img/default-profile.jpg');
+                            : asset('storage/profile-photos/default.jpg');
                             @endphp
                             <img src="{{ Auth::user()->imgPerfil }}" class="polaroid-image" alt="Foto de perfil">
                         </div>

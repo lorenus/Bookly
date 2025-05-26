@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Back button -->
+<!-- Volver -->
 <a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
     <img src="{{ asset('img/elementos/volver.png') }}" alt="Volver" width="40" class="volver">
 </a>
@@ -9,13 +9,13 @@
 <div class="amigos-container">
     <!-- Main content -->
     <div class="amigos-libreta-wrapper">
-        <!-- Notebook background (desktop only) -->
+        <!-- Fondo (solo movil) -->
         <div class="amigos-libreta-background"></div>
 
         <div class="amigos-libreta-content">
-            <!-- Left page - Forms -->
+            <!-- Pagina izq. Formularios -->
             <div class="amigos-left-page">
-                <!-- Section 1: Search and request friendship -->
+                <!-- Section 1: Solicitar amistad -->
                 <div class="amigos-section">
                     <h3 class="h3-responsive">Solicitar amistad:</h3>
                     <form method="POST" action="{{ route('amigos.store') }}" class="mb-4">
@@ -91,7 +91,7 @@
                     </form>
                 </div>
 
-                <!-- Section 2: Friends list with search -->
+                <!-- Section 2: Lista amigos con buscador -->
                 <div class="amigos-section mt-4">
                     <div class="mis-amigos">
                         <h3 class="h3-responsive">Mis Amigos ({{ $amigos->count() }})</h3>
@@ -133,7 +133,7 @@
                 </div>
             </div>
 
-            <!-- Right page - Friend details -->
+            <!-- Pagina derecha: detalles amigos -->
             <div class="amigos-right-page">
                 <div class="amigos-detail-container">
                     <div class="amigos-polaroid-container">
@@ -141,7 +141,7 @@
                             <img id="amigos-detalle-imagen" alt="Foto de perfil"
                                 src=""
                                 class="amigos-detail-image">
-                            <h3 id="amigos-detalle-nombre" class="amigos-detalle-nombre">Nombre del amigo</h3>
+                            <h3 id="amigos-detalle-nombre" class="amigos-detalle-nombre" style="font-size: large; text-align: center; margin-left: -35%;">Nombre del amigo</h3>
                         </div>
 
                         <img src="{{ asset('img/amigos/polaroid-amigos.png') }}"
