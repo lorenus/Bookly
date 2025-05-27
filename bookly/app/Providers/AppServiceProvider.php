@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             });
         } else {
             Http::macro('insecure', function () {
-                return Http::this(); // Versión segura para producción
+                return Http::this(); 
             });
         }
     }

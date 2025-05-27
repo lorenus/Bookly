@@ -90,8 +90,13 @@ class User extends Authenticatable
 
     public function libros()
     {
-        return $this->belongsToMany(Libro::class, 'libros_usuario')
-            ->withPivot(['estado', 'comprado', 'valoracion']);
+         return $this->belongsToMany(Libro::class, 'libros_usuario')
+        ->withPivot(['estado', 'comprado', 'valoracion', 'created_at', 'updated_at']);
+    }
+
+    public function librosLeidos()
+    {
+        return $this->libros()->wherePivot('estado', 'leido');
     }
 
     public function librosLeidosEsteAnio()

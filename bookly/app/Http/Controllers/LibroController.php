@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use App\Events\LibroLeido;
 
 
 class LibroController extends Controller
@@ -130,23 +132,21 @@ class LibroController extends Controller
 
     public function addToList(Request $request)
     {
-        $user = Auth::user();
+        $user = User::with('libros')->find(Auth::id());
 
         $request->validate([
             'libro_id' => 'required|string',
             'titulo' => 'required|string',
             'autor' => 'nullable|string',
             'portada' => 'nullable|url',
-            'estado' => 'required|in:leyendo,leido,porLeer,favoritos' // Nota: 'leido' en minúscula
+            'estado' => 'required|in:leyendo,leido,porLeer,favoritos'
         ]);
 
         try {
-            // Obtener detalles del libro
             $bookDetails = Http::withoutVerifying()
                 ->get("https://www.googleapis.com/books/v1/volumes/{$request->libro_id}")
                 ->json();
 
-            // Buscar o crear el libro
             $libro = Libro::firstOrCreate(
                 ['google_id' => $request->libro_id],
                 [
@@ -159,42 +159,39 @@ class LibroController extends Controller
                 ]
             );
 
-            // Verificar si el libro ya está en la lista del usuario
-            $existingRecord = DB::table('libros_usuario')
-                ->where('user_id', $user->id)
-                ->where('libro_id', $libro->id)
-                ->first();
+            // *** ESTE ES EL ÚNICO BLOQUE QUE DEBE GESTIONAR LA TABLA PIVOTE ***
+            // Recuperar la valoración existente si el libro ya está en la lista del usuario
+            $existingPivot = $user->libros()->wherePivot('libro_id', $libro->id)->first()->pivot ?? null;
+            $valoracionToSave = $existingPivot ? $existingPivot->valoracion : null; // Valoración por defecto: la que ya tenía o null
 
-            if ($existingRecord) {
-                // Actualizar el estado existente
-                DB::table('libros_usuario')
-                    ->where('user_id', $user->id)
-                    ->where('libro_id', $libro->id)
-                    ->update([
-                        'estado' => $request->estado,
-                        'valoracion' => $request->estado === 'favoritos' ? 5 : $existingRecord->valoracion,
-                        'updated_at' => now()
-                    ]);
-            } else {
-                // Crear nuevo registro
-                DB::table('libros_usuario')->insert([
-                    'user_id' => $user->id,
-                    'libro_id' => $libro->id,
-                    'estado' => $request->estado,
-                    'valoracion' => $request->estado === 'favoritos' ? 5 : null,
-                    'comprado' => false,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+            // Si el estado es 'favoritos', forzar valoración a 5
+            if ($request->estado === 'favoritos') {
+                $valoracionToSave = 5;
             }
+            // Si el libro ya estaba en 'leido' y ahora se cambia a otra cosa que no es 'favoritos',
+            // la valoración se mantiene si no se sobrescribe.
+            // Si quieres que se borre si ya no es 'leido' o 'favoritos', la lógica sería diferente.
+            // Para este caso, mantenemos la que tenía a menos que se marque como 'favoritos'.
 
-            // Disparar evento si el estado es 'leido'
+            $user->libros()->syncWithoutDetaching([
+                $libro->id => [
+                    'estado' => $request->estado,
+                    'valoracion' => $valoracionToSave,
+                    // No necesitas 'created_at' ni 'updated_at' aquí, Eloquent los gestiona automáticamente
+                ]
+            ]);
+            // ***************************************************************
+
+            // Disparar evento SIEMPRE DESPUÉS de que la base de datos se haya actualizado correctamente.
             if ($request->estado === 'leido') {
-                event(new \App\Events\LibroLeido($user, $libro));
+                Log::info("DEBUG: Disparando evento LibroLeido para usuario ID: {$user->id} y libro ID: {$libro->id}");
+                event(new LibroLeido($user, $libro));
+                Log::info("DEBUG: Evento LibroLeido disparado.");
             }
 
             return back()->with('success', 'Libro añadido a tu lista correctamente');
         } catch (\Exception $e) {
+            Log::error("Error en addToList: " . $e->getMessage() . " en " . $e->getFile() . " línea " . $e->getLine());
             return back()->with('error', 'Error al añadir el libro a tu lista: ' . $e->getMessage());
         }
     }
