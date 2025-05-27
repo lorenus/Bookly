@@ -7,6 +7,7 @@ use App\Models\Notificacion;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AmistadController extends Controller
 {
@@ -112,11 +113,18 @@ public function store(Request $request)
         'retoAnual' => $amigo->reto_anual,
         'librosLeidosAnual' => $amigo->libros_leidos_anual,
         'logros' => $amigo->logros->map(function($logro) {
+             $nombreArchivoImagen = 'logro'.$logro->id.'.png';
+
+             $fechaCompletado = $logro->pivot->completado_en;
+            if (is_string($fechaCompletado)) {
+                $fechaCompletado = Carbon::parse($fechaCompletado);
+            }
+
             return [
                 'id' => $logro->id,
                 'nombre' => $logro->nombre,
-                'imagen' => 'logros/logro'.$logro->id.'.png',
-                'fecha' => $logro->pivot->completado_en->format('d/m/Y')
+                 'imagen' => asset('img/logros/'.$nombreArchivoImagen),
+                'fecha' => $fechaCompletado->format('d/m/Y')
             ];
         })
     ]);

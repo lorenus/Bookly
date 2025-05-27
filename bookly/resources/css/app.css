@@ -2362,7 +2362,7 @@ input[type="file"]::file-selector-button {
 .amigos-logro-miniatura img {
     width: 50px;
     height: 50px;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .btn-amigos {
