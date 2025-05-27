@@ -73,7 +73,7 @@
                 @else
                 <div class="no-rating-text">
                     Sé el primero en valorar este libro
-                    </div>
+                </div>
                 @endif
 
                 <!-- Valoración de Google Books -->
@@ -132,61 +132,67 @@
 
                     <!-- Columna para Checkbox "Lo tengo" -->
                     <div class="col-md-6 col-12 mt-md-0 mt-3 d-flex align-items-center">
-                        <form action="{{ route('libros.comprar', $book['id']) }}" method="POST" class="w-100">
+                        <form action="{{ route('libros.comprar', $book['id']) }}" method="POST">
                             @csrf
-                            <div class="form-check">
-                                <input type="checkbox" name="comprado"
-                                    {{ Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists() ? 'checked' : '' }}
-                                    onchange="this.form.submit()">
-                                <label class="form-check-label" for="comprado">
-                                    ¡Lo tengo!
-                                </label>
-                            </div>
+                            <input type="checkbox" name="comprado" id="comprado-checkbox"
+                                {{ Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists() ? 'checked' : '' }}
+                                onchange="this.form.submit()">
+                            <label for="comprado-checkbox">¡Lo tengo!</label>
                         </form>
                     </div>
                 </div>
 
                 <!-- Segunda fila: Recomendar + Prestar -->
-                <div class="row">
-                    <!-- Columna para Recomendar -->
-                    <div class="col-md-6 col-12 mb-2">
-                        <div class="form-group">
-                            <label for="recomendar-amigo">Recomendar a:</label>
-                            <select id="recomendar-amigo" class="form-control select2-recomendar">
-                                <option></option>
-                                @foreach(Auth::user()->amigos as $amigo)
-                                <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                <div class="col-md-6 col-12 mb-2">
+                    <div class="form-group">
+                        <label for="recomendar-amigo">Recomendar a:</label>
 
-                    <!-- Columna para Prestar (solo visible si el libro está comprado) -->
-                    @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
-                    <div class="col-md-6 col-12 mb-2">
-                        <div class="form-group">
-                            <label for="prestar-amigo">Prestar a:</label>
-                            <select id="prestar-amigo" class="form-control select2-prestar">
-                                <option></option>
+                        <!-- FORMULARIO PARA RECOMENDAR -->
+                        <form id="recommend-form-{{ $book['id'] }}" action="{{ route('libros.recomendar') }}" method="POST">
+                            @csrf
+                            {{-- Campos ocultos para enviar los datos del libro --}}
+                            <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                            <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                            <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                            {{-- El select para el amigo --}}
+                            <select name="amigo_id" id="recomendar-amigo" class="form-control select2-recomendar" onchange="this.form.submit()">
+                                <option value="">Seleccionar amigo...</option> {{-- Añade un valor vacío para 'Seleccionar...' --}}
                                 @foreach(Auth::user()->amigos as $amigo)
                                 <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </form>
                     </div>
-                    @endif
                 </div>
+
+                <!-- FORMULARIO PARA PRESTAR -->
+                @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
+                <div class="col-md-6 col-12 mb-2">
+                    <div class="form-group">
+                        <label for="prestar-amigo">Prestar a:</label>
+
+                          <input type="hidden" id="prestamo-libro-id-{{ $book['id'] }}" value="{{ $libro->id ?? '' }}">
+
+                        <select name="amigo_id_prestar" id="prestar-amigo" class="form-control select2-prestar" onchange="redirectToPrestar(this)">
+                            <option value="">Seleccionar amigo...</option>
+                            @foreach(Auth::user()->amigos as $amigo)
+                            <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
         <!-- Página derecha -->
         <div class="libreta-page right-page">
             <h2 class="sinopsis-title mb-3">Sinopsis</h2>
-<div class="sinopsis-container">
-            <!-- Contenedor de sinopsis con scroll -->
-            <div class="sinopsis-content flex-grow-1">
-                {!! $book['volumeInfo']['description'] ?? 'No hay sinopsis disponible.' !!}
+            <div class="sinopsis-container">
+                <!-- Contenedor de sinopsis con scroll -->
+                <div class="sinopsis-content flex-grow-1">
+                    {!! $book['volumeInfo']['description'] ?? 'No hay sinopsis disponible.' !!}
+                </div>
             </div>
-</div>
             <!-- Sección para valoración del usuario (si ha leído el libro) -->
             @if(Auth::user()->haLeidoLibro($book['id']))
             <div class="user-rating mt-3">
@@ -215,16 +221,37 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
+        // Inicializar Select2 para recomendar
         $('.select2-recomendar').select2({
             placeholder: "Buscar amigo...",
-            allowClear: true
+            allowClear: true,
+            width: '100%'
         });
 
+        // Inicializar Select2 para prestar
         $('.select2-prestar').select2({
-            placeholder: "Buscar amigo...",
-            allowClear: true
+            placeholder: "Seleccionar amigo...",
+            allowClear: true,
+            width: '100%',
+            minimumResultsForSearch: Infinity
         });
     });
+
+    function redirectToPrestar(selectElement) {
+    console.log("redirectToPrestar called!"); // <--- Añade esto
+    const amigoId = selectElement.value;
+    const libroId = document.getElementById("prestamo-libro-id-{{ $book['id'] }}").value;
+
+    console.log("Amigo ID:", amigoId); // <--- Añade esto
+    console.log("Libro ID:", libroId); // <--- Añade esto
+
+    if (amigoId && libroId) {
+        console.log("Attempting redirection..."); // <--- Añade esto
+        window.location.href = "{{ route('prestamos.crear') }}?libro_id=" + libroId + "&amigo_id=" + amigoId;
+    } else {
+        console.log("Redirection blocked: amigoId or libroId missing."); // <--- Añade esto
+    }
+}
 </script>
 @endpush
 @endsection

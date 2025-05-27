@@ -220,7 +220,7 @@
                         const logroDiv = document.createElement('div');
                         logroDiv.className = 'amigos-logro-miniatura';
                         logroDiv.innerHTML = `
-                            <img src="{{ asset('') }}${logro.imagen}"
+                            <img src="${logro.imagen}"
                                  alt="${logro.nombre}"
                                  class="img-fluid rounded"
                                  data-bs-toggle="tooltip"

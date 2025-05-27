@@ -41,14 +41,28 @@ class LibroController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($googleId)
     {
-        $response = Http::withoutVerifying()
-            ->get("https://www.googleapis.com/books/v1/volumes/{$id}");
+        try {
+            
+            $response = Http::withoutVerifying()
+                ->get("https://www.googleapis.com/books/v1/volumes/{$googleId}");
+            $bookDetails = $response->json();
 
-        return view('libros.show', [
-            'book' => $response->json()
-        ]);
+            if (empty($bookDetails)) {
+                abort(404, 'Libro no encontrado en la API de Google Books.');
+            }
+            
+            $libroDB = Libro::where('google_id', $googleId)->first();
+
+            return view('libros.show', [
+                'book' => $bookDetails,
+                'libro' => $libroDB
+            ]);
+
+        } catch (\Exception $e) {
+            abort(500, 'Hubo un problema al cargar los detalles del libro.');
+        }
     }
 
     /**
@@ -76,29 +90,43 @@ class LibroController extends Controller
     }
 
     public function marcarComoComprado(Request $request, $googleId)
-{
-    try {
-        $user = User::with('libros')->find(Auth::id());
-        $comprado = $request->has('comprado');
+    {
+        try {
+            $user = User::with('libros')->find(Auth::id());
+            $comprado = $request->has('comprado');
 
-        // Buscar el libro local por google_id
-        $libro = Libro::where('google_id', $googleId)->firstOrFail();
+            // Obtener datos del libro de Google Books
+            $bookDetails = Http::withoutVerifying()
+                ->get("https://www.googleapis.com/books/v1/volumes/{$googleId}")
+                ->json();
 
-        // Sincronizar la relación
-        $user->libros()->syncWithoutDetaching([
-            $libro->id => [
-                'comprado' => $comprado,
-                'updated_at' => now()
-            ]
-        ]);
+            // Crear o actualizar el libro en la base de datos
+            $libro = Libro::firstOrCreate(
+                ['google_id' => $googleId],
+                [
+                    'titulo' => $bookDetails['volumeInfo']['title'] ?? 'Sin título',
+                    'autor' => isset($bookDetails['volumeInfo']['authors']) ? implode(', ', $bookDetails['volumeInfo']['authors']) : 'Autor desconocido',
+                    'sinopsis' => $bookDetails['volumeInfo']['description'] ?? 'Sin sinopsis disponible',
+                    'urlPortada' => $bookDetails['volumeInfo']['imageLinks']['thumbnail'] ?? asset('images/default-cover.jpg'),
+                    'isbn' => $this->extractIsbn($bookDetails),
+                    'numPaginas' => $bookDetails['volumeInfo']['pageCount'] ?? null
+                ]
+            );
 
-        return back()->with('success', $comprado
-            ? 'Libro marcado como comprado'
-            : 'Libro marcado como no comprado');
-    } catch (\Exception $e) {
-        return back()->with('error', 'Error: ' . $e->getMessage());
+            $user->libros()->syncWithoutDetaching([
+                $libro->id => [
+                    'comprado' => $comprado,
+                    'updated_at' => now()
+                ]
+            ]);
+
+            return back()->with('success', $comprado
+                ? 'Libro marcado como "Lo tengo"'
+                : 'Libro marcado como "No lo tengo"');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al actualizar el estado del libro: ' . $e->getMessage());
+        }
     }
-}
 
     public function addToList(Request $request)
     {

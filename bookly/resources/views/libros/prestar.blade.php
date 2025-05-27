@@ -2,7 +2,8 @@
 
 @section('content')
 @php
-$oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
+$selectedLibroId = $preselectedLibroId ?? old('libro_id') ?? null;
+$selectedAmigoId = $preselectedAmigoId ?? old('amigo_id') ?? null;
 @endphp
 <!-- Botón de volver -->
 <a href="{{ route('perfil') }}" class="position-fixed d-none d-lg-block" style="top: 100px; left: 40px; z-index: 1000;">
@@ -38,7 +39,8 @@ $oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
                         <select name="libro_id" id="libro_id" class="w-full px-3 py-2 border rounded select2" required>
                             <option value="">Buscar libro...</option>
                             @foreach($librosDisponibles as $libro)
-                            <option value="{{ $libro->id }}" data-portada="{{ $libro->urlPortada ?? asset('img/default-book.png') }}">
+                            <option value="{{ $libro->id }}" data-portada="{{ $libro->urlPortada ?? asset('img/default-book.png') }}"
+                                {{ $selectedLibroId == $libro->id ? 'selected' : '' }}>
                                 {{ $libro->titulo }} ({{ $libro->autor }})
                             </option>
                             @endforeach
@@ -50,12 +52,14 @@ $oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
                         <select name="amigo_id" id="amigo_id" class="w-full px-3 py-2 border rounded select2" required>
                             <option value="">Buscar amigo...</option>
                             @foreach($amigos as $amigo)
-                            <option value="{{ $amigo->id }}">
-                                {{ $amigo->name }} {{ $amigo->lastname }}
+                            <option value="{{ $amigo->id }}"
+                                {{ $selectedAmigoId == $amigo->id ? 'selected' : '' }}>
+                                {{ $amigo->name }} {{ $amigo->apellidos }}
                             </option>
                             @endforeach
                         </select>
                     </div>
+
 
                     <div class="mb-4">
                         <label for="fecha_devolucion" class="block text-gray-700 mb-2">Fecha de devolución:</label>
@@ -81,7 +85,7 @@ $oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
 
 <script>
     $(document).ready(function() {
-        // Inicializar Select2
+
         $('.select2').select2({
             language: {
                 inputTooShort: function() {
@@ -94,12 +98,24 @@ $oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
             placeholder: "Buscar...",
             allowClear: true,
             width: '100%',
-            minimumInputLength: 1,
-            allowClear: false
+            minimumInputLength: 0
         });
 
+        var selectedLibroId = "{{ $selectedLibroId ?? '' }}";
+        var selectedAmigoId = "{{ $selectedAmigoId ?? '' }}";
 
-        // Manejar cambio de libro
+        if (selectedLibroId) {
+            $('#libro_id').val(selectedLibroId).trigger('change');
+            var portadaUrl = $('#libro_id option[value="' + selectedLibroId + '"]').data('portada');
+            if (portadaUrl) {
+                $('#portada-libro').attr('src', portadaUrl).show();
+            }
+        }
+
+        if (selectedAmigoId) {
+            $('#amigo_id').val(selectedAmigoId).trigger('change');
+        }
+
         $('#libro_id').on('change', function() {
             var portadaUrl = $(this).find(':selected').data('portada');
             var imgElement = $('#portada-libro');
@@ -110,16 +126,6 @@ $oldLibroId = old('libro_id') ?? null; // Definimos la variable aquí
                 imgElement.hide();
             }
         });
-
-        // Cargar libro seleccionado anteriormente (si existe)
-        var oldLibroId = "{{ $oldLibroId ?? '' }}"; // Usamos la variable PHP con valor por defecto
-        if (oldLibroId && oldLibroId !== '') {
-            var portadaUrl = $('#libro_id option[value="' + oldLibroId + '"]').data('portada');
-            if (portadaUrl) {
-                $('#portada-libro').attr('src', portadaUrl).show();
-            }
-            $('#libro_id').val(oldLibroId).trigger('change');
-        }
     });
 </script>
 @endsection

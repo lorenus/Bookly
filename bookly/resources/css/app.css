@@ -1767,6 +1767,7 @@ input[type="file"]::file-selector-button {
     align-content: center;
     max-height: 80vh;
     margin-top: 5%;
+    max-width: 1000px;
 }
 
 .logros-grid {

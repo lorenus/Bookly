@@ -12,39 +12,46 @@ use App\Models\User;
 
 class PrestamoController extends Controller
 {
-    public function create()
-{
-    $user = User::with('libros')->find(Auth::id());
-    
-    // Obtener libros disponibles para prestar
-    $librosDisponibles = $user->libros()
-        ->wherePivot('comprado', true)
-        ->whereDoesntHave('prestamos', function($query) use ($user) {
-            $query->where('devuelto', false)
-                  ->where('propietario_id', $user->id);
-        })
-        ->get();
+    public function create(Request $request)
+    {
+        $user = User::with('libros')->find(Auth::id());
 
-    // Obtener amigos sin duplicados y con nombre completo
-    $amigos = User::where(function($query) use ($user) {
-            $query->whereHas('amistadesComoUsuario', function($q) use ($user) {
-                $q->where('amigo_id', $user->id)
-                  ->where('estado', 'aceptada');
+        // Obtener libros disponibles para prestar
+        $librosDisponibles = $user->libros()
+            ->wherePivot('comprado', true)
+            ->whereDoesntHave('prestamos', function($query) use ($user) {
+                $query->where('devuelto', false)
+                      ->where('propietario_id', $user->id);
             })
-            ->orWhereHas('amistadesComoAmigo', function($q) use ($user) {
-                $q->where('user_id', $user->id)
-                  ->where('estado', 'aceptada');
-            });
-        })
-        ->select('id', 'name', 'apellidos')
-        ->distinct()
-        ->get();
+            ->get();
 
-    return view('libros.prestar', [
-        'librosDisponibles' => $librosDisponibles,
-        'amigos' => $amigos
-    ]);
-}
+        // Obtener amigos sin duplicados y con nombre completo
+        $amigos = User::where(function($query) use ($user) {
+                $query->whereHas('amistadesComoUsuario', function($q) use ($user) {
+                    $q->where('amigo_id', $user->id)
+                      ->where('estado', 'aceptada');
+                })
+                ->orWhereHas('amistadesComoAmigo', function($q) use ($user) {
+                    $q->where('user_id', $user->id)
+                      ->where('estado', 'aceptada');
+                });
+            })
+            ->select('id', 'name', 'apellidos')
+            ->distinct()
+            ->get();
+
+        // Obtener los IDs preseleccionados de la URL (si existen)
+        $preselectedLibroId = $request->query('libro_id');
+        $preselectedAmigoId = $request->query('amigo_id');
+
+        return view('libros.prestar', [
+            'librosDisponibles' => $librosDisponibles,
+            'amigos' => $amigos,
+            'preselectedLibroId' => $preselectedLibroId,
+            'preselectedAmigoId' => $preselectedAmigoId
+        ]);
+    }
+
 
     public function store(Request $request)
     {

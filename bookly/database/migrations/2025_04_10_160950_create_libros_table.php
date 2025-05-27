@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('libros', function (Blueprint $table) {
             $table->id();
             $table->string('google_id')->unique();
-            $table->string('isbn')->unique;
+            $table->string('isbn')->unique()->nullable();
             $table->string('titulo');
             $table->string('autor');
             $table->integer('numPaginas');

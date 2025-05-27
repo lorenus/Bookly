@@ -49,11 +49,11 @@
                                 <p class="text-muted mb-2">{{ $notif->contenido }}</p>
 
                                 <div class="d-flex justify-content-between align-items-center mt-2 position-relative">
-                                    <!-- Espacio izquierdo vacío para balancear -->
+                                    
                                     <div style="width: 40px;"></div>
 
                                     <div class="d-flex gap-2 justify-content-center position-absolute start-50 translate-middle-x align-items-center">
-                                        @if ($notif->estado === App\Models\Notificacion::ESTADO_PENDIENTE)
+                                        @if ($notif->estado === App\Models\Notificacion::ESTADO_PENDIENTE && $notif->tipo !== App\Models\Notificacion::TIPO_PRESTAMO)
                                         <form method="POST" action="{{ route('mensajes.aceptar', $notif) }}" class="d-inline">
                                             @csrf
                                             <x-button-green type="submit" class="px-4 pt-3" style="height: 42px; line-height: 1.2; font-size: large;">
