@@ -56,7 +56,7 @@
                 <!-- Segunda fila - Papel con reto anual -->
                 <div class="row g-0 flex-grow-1">
                     <div class="col-12 h-100">
-                        <div class="paper-note h-100 p-4 d-flex flex-column">
+                        <div class="paper-note-perfil h-100 p-4 d-flex flex-column">
                             <div class="progress-container mx-auto">
                                 <div class="progress-text text-center mb-2">
                                     {{ auth()->user()->librosLeidosEsteAnio() }} de {{ auth()->user()->retoAnual }} libros leídos
@@ -84,7 +84,7 @@
 
                 <!-- Fila 2: Leyendo actualmente -->
                 <div class="notebook-row list-row">
-                    <div class="list-header d-flex justify-content-between align-items-center">
+                    <div class="list-header-profile d-flex justify-content-between align-items-center">
                         <h3 class="m-0">Leyendo actualmente</h3>
                         <a href="{{ route('listas.show', 'leyendo') }}" class="see-all-link">
                             <img src="{{ asset('img/elementos/flecha1.png') }}" alt="Ver todos" class="see-all-icon">
@@ -233,6 +233,6 @@
                         });
                 }, 300); // Esperar 300ms
             });
-            
+
         </script>
         @endsection

@@ -240,7 +240,7 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     min-height: 60vh;
-    min-width: 600px;
+    min-width: 646px;
     max-width: 700px;
 }
 
@@ -254,7 +254,7 @@ body {
 /* Banner superior */
 .welcome-banner {
     position: relative;
-    z-index: 10;
+    z-index: 2;
     background-image: url("http://[::1]:5173/public/img/perfil/etiqueta.png");
     background-size: contain;
     background-repeat: no-repeat;
@@ -321,8 +321,9 @@ body {
     justify-content: center;
     margin-top: -30px;
 }
+
 /* Estilo papel reto anual */
-.paper-note {
+.paper-note-perfil {
     position: relative;
     background-image: url("/public/img/perfil/papel.png");
     background-size: contain;
@@ -466,6 +467,27 @@ body {
     object-fit: contain;
 }
 
+/* TABLET */
+@media (max-width: 992px) {
+    .paper-note-perfil {
+        max-width: 55%;
+    }
+}
+
+
+/* MOVIL */
+@media (max-width: 768px) {
+    .paper-note-perfil {
+        margin-top: -32%;
+        max-width: 43%;
+        margin-left: 33%;
+    }
+
+    .progress-text{
+        margin-top: 15%;
+    }
+}
+
 /********** Buscador mi perfil **************/
 
 #basic-results {
@@ -512,11 +534,14 @@ body {
 /* Portadas genéricas */
 /* ESTILOS UNIFICADOS PARA PORTADAS */
 .book-cover-container {
-    width: 80px;
+    width: 97px;
     height: 120px;
     position: relative;
     overflow: hidden;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
 }
 
 .book-cover-image {
@@ -531,7 +556,6 @@ body {
 /* Cuando la imagen es la portada por defecto */
 .book-cover-image[src*="portada_default.png"] {
     min-width: 120px;
-    margin-left: -27%;
     object-fit: contain;
 }
 
@@ -557,7 +581,6 @@ body {
 .book-cover-container:not(.default-cover-active) .book-title-overlay {
     display: none !important;
 }
-
 
 .book-cover-container.default-cover-active .book-title-overlay {
     display: flex !important;
@@ -770,11 +793,7 @@ body {
     .notebook-row.list-row {
         min-height: 100px !important;
     }
-    .list-header {
-        padding: 0 5px 5px 5px !important;
-        margin-bottom: 0.2rem !important;
-    }
-
+    
     .book-cover-container {
         width: 70px !important;
         height: 100px !important;
@@ -1230,7 +1249,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-     width: 140px;
+    width: 140px;
 }
 
 .book-info h3 {
@@ -1241,7 +1260,7 @@ body {
     white-space: normal;
     overflow-wrap: break-word;
     text-align: center;
-    font-size: 1rem;  
+    font-size: 1rem;
 }
 
 .book-info p {
