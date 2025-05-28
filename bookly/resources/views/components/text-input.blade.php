@@ -8,7 +8,7 @@
                   color:rgb(0, 0, 0);
                   width: 100%;
                   border: none;
-                  border-bottom: 2px solid black;
+                  border-bottom: 1px solid #777;
                   background-color: transparent;
                   border-radius: 0;
                   box-shadow: none;
@@ -16,5 +16,7 @@
                   outline: none;
                   padding-bottom: 0;
                   margin-bottom: 5%;
-                  margin-top: 0.1rem;',
+                  margin-top: 0.1rem;
+                  font-size: 1.2rem;
+                  ',
     ]) }}>
