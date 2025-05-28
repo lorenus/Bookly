@@ -92,24 +92,22 @@
                     </div>
                     <div class="book-covers d-flex justify-content-between">
                         @foreach($leyendoActual as $libro)
-                        @php
-                        $portadaUrl = $libro->getPortadaSegura();
-                        $defaultCover = asset('img/elementos/portada_default.png');
-                        $isDefaultCover = $portadaUrl === $defaultCover;
-                        @endphp
-                        <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
-                            <div class="book-cover-container">
-                                <img src="{{ $portadaUrl }}"
-                                    alt="{{ $libro->titulo }}"
-                                    class="book-cover-image"
-                                    @if($isDefaultCover) style="background-image: url('{{ $defaultCover }}');" @endif>
-                                @if($isDefaultCover)
-                                <div class="book-title-overlay">
-                                    {{ Str::limit($libro->titulo, 30) }}
+                            @php
+                                $portadaUrl = $libro->getPortadaSegura();
+                                $defaultCover = asset('img/elementos/portada_default.png');
+                                $isDefaultCover = ($portadaUrl === $defaultCover); // Comprueba si es la portada por defecto
+                            @endphp
+                            <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
+                                <div class="book-cover-container">
+                                    <img src="{{ $portadaUrl }}"
+                                        alt="{{ $libro->titulo }}"
+                                        class="book-cover-image"
+                                        onerror="this.onerror=null; this.src='{{ $defaultCover }}'; this.closest('.book-cover-container').classList.add('default-cover-active');">
+                                    <div class="book-title-overlay @if(!$isDefaultCover) d-none @endif"> {{-- Añade d-none si no es default --}}
+                                        {{ Str::limit($libro->titulo, 30) }}
+                                    </div>
                                 </div>
-                                @endif
-                            </div>
-                        </a>
+                            </a>
                         @endforeach
                     </div>
                 </div>
@@ -124,24 +122,23 @@
                     </div>
                     <div class="book-covers d-flex justify-content-between">
                         @foreach($paraLeer as $libro)
-                        @php
-                        $portadaUrl = $libro->getPortadaSegura();
-                        $defaultCover = asset('img/elementos/portada_default.png');
-                        $isDefaultCover = $portadaUrl === $defaultCover;
-                        @endphp
-                        <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
-                            <div class="book-cover-container">
-                                <img src="{{ $portadaUrl }}"
-                                    alt="{{ $libro->titulo }}"
-                                    class="book-cover-image book-cover-fallback"
-                                    data-default-cover="{{ $defaultCover }}">
-                                @if($isDefaultCover)
-                                <div class="book-title-overlay">
-                                    {{ Str::limit($libro->titulo, 30) }}
+                            @php
+                                $portadaUrl = $libro->getPortadaSegura();
+                                $defaultCover = asset('img/elementos/portada_default.png');
+                                $isDefaultCover = ($portadaUrl === $defaultCover);
+                            @endphp
+                            <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
+                                <div class="book-cover-container">
+                                    <img src="{{ $portadaUrl }}"
+                                        alt="{{ $libro->titulo }}"
+                                        class="book-cover-image"
+                                        onerror="this.onerror=null; this.src='{{ $defaultCover }}'; this.closest('.book-cover-container').classList.add('default-cover-active');">
+                                    {{-- El overlay solo se muestra si es la portada por defecto --}}
+                                    <div class="book-title-overlay @if(!$isDefaultCover) d-none @endif">
+                                        {{ Str::limit($libro->titulo, 30) }}
+                                    </div>
                                 </div>
-                                @endif
-                            </div>
-                        </a>
+                            </a>
                         @endforeach
                     </div>
                 </div>
@@ -156,24 +153,23 @@
                     </div>
                     <div class="book-covers d-flex justify-content-between">
                         @foreach($ultimasLecturas as $libro)
-                        @php
-                        $portadaUrl = $libro->getPortadaSegura();
-                        $defaultCover = asset('img/elementos/portada_default.png');
-                        $isDefaultCover = $portadaUrl === $defaultCover;
-                        @endphp
-                        <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
-                            <div class="book-cover-container">
-                                <img src="{{ $portadaUrl }}"
-                                    alt="{{ $libro->titulo }}"
-                                    class="book-cover-image"
-                                    onerror="this.onerror=null; this.src='{{ $defaultCover }}'">
-                                @if($isDefaultCover)
-                                <div class="book-title-overlay">
-                                    {{ Str::limit($libro->titulo, 30) }}
+                            @php
+                                $portadaUrl = $libro->getPortadaSegura();
+                                $defaultCover = asset('img/elementos/portada_default.png');
+                                $isDefaultCover = ($portadaUrl === $defaultCover);
+                            @endphp
+                            <a href="{{ route('libro.show', $libro->google_id ?? $libro->id) }}" class="book-cover">
+                                <div class="book-cover-container">
+                                    <img src="{{ $portadaUrl }}"
+                                        alt="{{ $libro->titulo }}"
+                                        class="book-cover-image"
+                                        onerror="this.onerror=null; this.src='{{ $defaultCover }}'; this.closest('.book-cover-container').classList.add('default-cover-active');">
+                                    {{-- El overlay solo se muestra si es la portada por defecto --}}
+                                    <div class="book-title-overlay @if(!$isDefaultCover) d-none @endif">
+                                        {{ Str::limit($libro->titulo, 30) }}
+                                    </div>
                                 </div>
-                                @endif
-                            </div>
-                        </a>
+                            </a>
                         @endforeach
                     </div>
                 </div>
@@ -237,16 +233,6 @@
                         });
                 }, 300); // Esperar 300ms
             });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const images = document.querySelectorAll('.book-cover-fallback');
-                for (let i = 0; i < images.length; i++) {
-                    images[i].addEventListener('error', function() {
-                        if (this.src !== this.dataset.defaultCover) {
-                            this.src = this.dataset.defaultCover;
-                        }
-                    });
-                }
-            });
+            
         </script>
         @endsection
