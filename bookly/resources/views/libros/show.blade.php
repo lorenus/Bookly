@@ -141,47 +141,45 @@
                         </form>
                     </div>
                 </div>
-
                 <!-- Segunda fila: Recomendar + Prestar -->
-                <div class="col-md-6 col-12 mb-2">
-                    <div class="form-group">
-                        <label for="recomendar-amigo">Recomendar a:</label>
+                <div class="row">
+                    <!-- FORMULARIO PARA RECOMENDAR -->
+                    <div class="col-md-6 col-12 mb-2">
+                        <div class="form-group">
+                            <label for="recomendar-amigo">Recomendar a:</label>
+                            <form id="recommend-form-{{ $book['id'] }}" action="{{ route('libros.recomendar') }}" method="POST">
+                                @csrf
+                                {{-- Campos ocultos para enviar los datos del libro --}}
+                                <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
+                                <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
+                                <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
+                                {{-- El select para el amigo --}}
+                                <select name="amigo_id" id="recomendar-amigo" class="form-control select2-recomendar" onchange="this.form.submit()">
+                                    <option value="">Seleccionar amigo...</option>
+                                    @foreach(Auth::user()->amigos as $amigo)
+                                    <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
+                    </div>
 
-                        <!-- FORMULARIO PARA RECOMENDAR -->
-                        <form id="recommend-form-{{ $book['id'] }}" action="{{ route('libros.recomendar') }}" method="POST">
-                            @csrf
-                            {{-- Campos ocultos para enviar los datos del libro --}}
-                            <input type="hidden" name="libro_id" value="{{ $book['id'] }}">
-                            <input type="hidden" name="titulo" value="{{ $book['volumeInfo']['title'] ?? '' }}">
-                            <input type="hidden" name="portada" value="{{ $book['volumeInfo']['imageLinks']['thumbnail'] ?? '' }}">
-                            {{-- El select para el amigo --}}
-                            <select name="amigo_id" id="recomendar-amigo" class="form-control select2-recomendar" onchange="this.form.submit()">
-                                <option value="">Seleccionar amigo...</option> {{-- Añade un valor vacío para 'Seleccionar...' --}}
+                    <!-- FORMULARIO PARA PRESTAR -->
+                    @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
+                    <div class="col-md-6 col-12 mb-2">
+                        <div class="form-group">
+                            <label for="prestar-amigo">Prestar a:</label>
+                            <input type="hidden" id="prestamo-libro-id-{{ $book['id'] }}" value="{{ $libro->id ?? '' }}">
+                            <select name="amigo_id_prestar" id="prestar-amigo" class="form-control select2-prestar" onchange="redirectToPrestar(this)">
+                                <option value="">Seleccionar amigo...</option>
                                 @foreach(Auth::user()->amigos as $amigo)
                                 <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
                                 @endforeach
                             </select>
-                        </form>
+                        </div>
                     </div>
+                    @endif
                 </div>
-
-                <!-- FORMULARIO PARA PRESTAR -->
-                @if(Auth::user()->libros()->where('libros.google_id', $book['id'])->wherePivot('comprado', true)->exists())
-                <div class="col-md-6 col-12 mb-2">
-                    <div class="form-group">
-                        <label for="prestar-amigo">Prestar a:</label>
-
-                          <input type="hidden" id="prestamo-libro-id-{{ $book['id'] }}" value="{{ $libro->id ?? '' }}">
-
-                        <select name="amigo_id_prestar" id="prestar-amigo" class="form-control select2-prestar" onchange="redirectToPrestar(this)">
-                            <option value="">Seleccionar amigo...</option>
-                            @foreach(Auth::user()->amigos as $amigo)
-                            <option value="{{ $amigo->id }}">{{ $amigo->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                @endif
             </div>
         </div>
         <!-- Página derecha -->
@@ -238,20 +236,20 @@
     });
 
     function redirectToPrestar(selectElement) {
-    console.log("redirectToPrestar called!"); // <--- Añade esto
-    const amigoId = selectElement.value;
-    const libroId = document.getElementById("prestamo-libro-id-{{ $book['id'] }}").value;
+        console.log("redirectToPrestar called!"); // <--- Añade esto
+        const amigoId = selectElement.value;
+        const libroId = document.getElementById("prestamo-libro-id-{{ $book['id'] }}").value;
 
-    console.log("Amigo ID:", amigoId); // <--- Añade esto
-    console.log("Libro ID:", libroId); // <--- Añade esto
+        console.log("Amigo ID:", amigoId); // <--- Añade esto
+        console.log("Libro ID:", libroId); // <--- Añade esto
 
-    if (amigoId && libroId) {
-        console.log("Attempting redirection..."); // <--- Añade esto
-        window.location.href = "{{ route('prestamos.crear') }}?libro_id=" + libroId + "&amigo_id=" + amigoId;
-    } else {
-        console.log("Redirection blocked: amigoId or libroId missing."); // <--- Añade esto
+        if (amigoId && libroId) {
+            console.log("Attempting redirection..."); // <--- Añade esto
+            window.location.href = "{{ route('prestamos.crear') }}?libro_id=" + libroId + "&amigo_id=" + amigoId;
+        } else {
+            console.log("Redirection blocked: amigoId or libroId missing."); // <--- Añade esto
+        }
     }
-}
 </script>
 @endpush
 @endsection
