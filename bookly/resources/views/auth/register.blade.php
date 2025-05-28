@@ -44,7 +44,7 @@
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2 input-error" />
                 </div>
 
-                <div class="form-group register-link">
+                <div class="form-link">
                     <a href="{{ route('login') }}">
                         {{ __('¿Ya tienes cuenta?') }}
                     </a>
