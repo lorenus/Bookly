@@ -37,7 +37,8 @@ class ListaController extends Controller
             }, function ($query) use ($tipoLista, $estados) {
                 return $query->where('libros_usuario.estado', $estados[$tipoLista]);
             })
-            ->withPivot(['estado', 'valoracion', 'comprado'])
+            ->orderByPivot('updated_at', 'desc')
+            ->withPivot(['estado', 'valoracion', 'comprado','updated_at'])
             ->get();
 
         $titulos = [
