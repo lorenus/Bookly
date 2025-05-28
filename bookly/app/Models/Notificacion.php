@@ -73,11 +73,13 @@ class Notificacion extends Model
 
     public static function crearNotificacionPrestamo(int $emisorId, int $receptorId, Libro $libro, string $fechaLimite): self
     {
+        $fechaAMostrar = (new \DateTime($fechaLimite))->format('d-m-Y');
+
         return self::create([
             'emisor_id' => $emisorId,
             'receptor_id' => $receptorId,
             'tipo' => self::TIPO_PRESTAMO,
-            'contenido' => "Te han prestado el libro: {$libro->titulo}. Devuélvelo antes del {$fechaLimite}",
+            'contenido' => "Te han prestado el libro: {$libro->titulo}. Devuélvelo antes del {$fechaAMostrar}",
             'estado' => self::ESTADO_PENDIENTE,
             'datos' => [
                 'libro_id' => $libro->id,

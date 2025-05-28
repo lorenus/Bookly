@@ -474,7 +474,6 @@ body {
     }
 }
 
-
 /* MOVIL */
 @media (max-width: 768px) {
     .paper-note-perfil {
@@ -483,7 +482,7 @@ body {
         margin-left: 33%;
     }
 
-    .progress-text{
+    .progress-text {
         margin-top: 15%;
     }
 }
@@ -541,7 +540,7 @@ body {
     border-radius: 4px;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
 }
 
 .book-cover-image {
@@ -793,7 +792,7 @@ body {
     .notebook-row.list-row {
         min-height: 100px !important;
     }
-    
+
     .book-cover-container {
         width: 70px !important;
         height: 100px !important;
@@ -1760,8 +1759,9 @@ input[type="file"]::file-selector-button {
         height: 100vh;
     }
     .contenido {
-        width: 60%;
+        width: 80%;
         height: 90vh;
+        margin-left: 0;
     }
 }
 
@@ -1775,6 +1775,7 @@ input[type="file"]::file-selector-button {
         width: 90%;
         margin-top: 15%;
         height: 90vh;
+        margin-left: 0;
     }
 }
 
