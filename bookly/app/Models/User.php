@@ -193,4 +193,9 @@ class User extends Authenticatable
 
         return $libro ? $libro->pivot->valoracion : null;
     }
+
+    public function getLibrosLeidosAnualAttribute(): int
+{
+    return $this->librosLeidosEsteAnio();
+}
 }

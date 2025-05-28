@@ -92,7 +92,7 @@
                 </div>
 
                 <!-- Section 2: Lista amigos con buscador -->
-                <div class="amigos-section mt-4">
+                <div id="lista-amigos" class="amigos-sectio mt-1" style="height: 40vh; overflow-y: auto; width: 70%;">
                     <div class="mis-amigos">
                         <h3 class="h3-responsive">Mis Amigos ({{ $amigos->count() }})</h3>
                         <div class="amigos-search-input">

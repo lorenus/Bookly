@@ -105,12 +105,12 @@ public function store(Request $request)
               ->take(3);
     }])->findOrFail($amigoId);
 
-    return response()->json([
+    $responseData = [
         'id' => $amigo->id,
         'name' => $amigo->name,
         'apellidos' => $amigo->apellidos,
         'imgPerfil' => $amigo->imgPerfil,
-        'retoAnual' => $amigo->reto_anual,
+        'retoAnual' => $amigo->retoAnual,
         'librosLeidosAnual' => $amigo->libros_leidos_anual,
         'logros' => $amigo->logros->map(function($logro) {
              $nombreArchivoImagen = 'logro'.$logro->id.'.png';
@@ -123,11 +123,13 @@ public function store(Request $request)
             return [
                 'id' => $logro->id,
                 'nombre' => $logro->nombre,
-                 'imagen' => asset('img/logros/'.$nombreArchivoImagen),
+                'imagen' => asset('img/logros/'.$nombreArchivoImagen),
                 'fecha' => $fechaCompletado->format('d/m/Y')
             ];
         })
-    ]);
+    ];
+
+    return response()->json($responseData);
 }
 
 public function verificarEmail(Request $request)

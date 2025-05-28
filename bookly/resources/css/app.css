@@ -2549,7 +2549,6 @@ input[type="file"]::file-selector-button {
 
     .amigos-search-input {
         width: 100%;
-        margin-left: -8%;
     }
 
     .btn-amigos {
@@ -2560,12 +2559,21 @@ input[type="file"]::file-selector-button {
     .amigos-resultado-busqueda {
         width: 100% !important;
     }
+    #buscar-email{
+        margin-left: -10% !important;
+        width: 90% !important;
+        font-size: medium;
+    }
 }
 
 @media (max-width: 576px) {
     .amigos-search-input {
         width: 80vw;
-        margin-left: -18%;
+    }
+
+    #lista-amigos {
+        width: 100%;
+        margin-left: 15%;
     }
 }
 
