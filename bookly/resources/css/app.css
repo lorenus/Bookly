@@ -1587,18 +1587,18 @@ body {
 @media (max-width: 767px) {
     .prestar-paper-background {
         background-size: cover;
-        width: 100%; /* Ocupa todo el ancho */
-        height: 100%; /* Altura reducida */
-        padding: 1rem; /* Padding mínimo */
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
         background-position: bottom center;
-        background-image: url("/public/img/prestar/fondo-prestar-vertical.png");
+        background-image: url("/public/img/prestar/fondo-prestar-vertical-movil.png");
         background-size: contain;
     }
     .lapiz {
         display: none;
     }
     .fila-prestar {
-        padding-top: 10%;
+        padding-top: 50%;
         margin-left: 0%;
         margin-right: 5%;
         transform: rotate(-1deg);
@@ -1618,7 +1618,7 @@ body {
     height: 90%;
     position: fixed;
     bottom: 0;
-    padding: 2rem 4rem; /* Ajusta según necesites */
+    padding: 2rem 4rem;
     min-width: 80vw;
     min-height: 80vh;
 }
