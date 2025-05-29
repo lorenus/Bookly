@@ -47,8 +47,7 @@ class BookSearchController extends Controller
 
             // 2. Si necesitamos más resultados, buscar en Google Books API
             if ($remainingSlots > 0) {
-                $response = Http::withoutVerifying()
-                    ->timeout(15)
+                $response = Http::timeout(15)
                     ->get('https://www.googleapis.com/books/v1/volumes', [
                         'q' => $query,
                         'maxResults' => $remainingSlots,
