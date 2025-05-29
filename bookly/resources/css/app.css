@@ -1024,7 +1024,7 @@ body {
 
 /* Menú con imagen de fondo */
 .menu {
-    background-image: url("/public/img/elementos/fondomenu.png");
+    background-image: url("/img/elementos/fondomenu.png");
     position: fixed;
     top: 0;
     right: -400px;
