@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('contenido');
             $table->json('datos')->nullable();
             $table->enum('estado', ['pendiente','aceptada','rechazada','leida'])->default('pendiente');
+            $table->boolean('leida')->default(false);
             $table->timestamps();
         });
     }
