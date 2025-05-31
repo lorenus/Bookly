@@ -15,7 +15,7 @@ class LogroController extends Controller
 
         $userLogrosIds = $user->logros->pluck('id')->toArray();
         
-        dd($logros, $userLogrosIds);
+       // dd($logros, $userLogrosIds);
 
         return view('logros.index', compact('logros', 'userLogrosIds'));
     }
