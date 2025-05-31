@@ -1,4 +1,4 @@
-@extends('layouts.App')
+@extends('layouts.app')
 
 @section('content')
 <!-- Botón de volver -->
