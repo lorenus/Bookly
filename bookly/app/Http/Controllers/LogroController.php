@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logro;
-use App\Models\User; // Asegúrate de importar el modelo User
+use App\Models\User;
 
 class LogroController extends Controller
 {
@@ -15,7 +15,7 @@ class LogroController extends Controller
 
         $userLogrosIds = $user->logros->pluck('id')->toArray();
         
-        // dd($logros, $userLogrosIds);
+        dd($logros, $userLogrosIds);
 
         return view('logros.index', compact('logros', 'userLogrosIds'));
     }
