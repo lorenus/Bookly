@@ -1,12 +1,7 @@
 /* resources/css/app.css */
 @font-face {
     font-family: "Providence Sans";
-    src: url("/fonts/Providence-Sans.woff2") format("woff2"),
-         url("/fonts/Providence-Sans.woff") format("woff"),
-         url("/fonts/Providence-Sans.ttf") format("truetype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
+    src: url("/fonts/Providence-Sans.otf") format("opentype");
 }
 
 body {
